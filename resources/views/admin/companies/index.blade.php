@@ -1,0 +1,467 @@
+@extends('admin.dashboard')
+
+@section('content')
+
+<div class="w-full border p-4 m-4">
+
+    @if (session('success'))
+    <h6 class="alert alert-success">{{ session('success') }}</h6>
+    @endif
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+        <p class="m-0">{{ $error }}</p>
+        @endforeach
+    </div>
+    @endif
+
+
+    <div class="w-6 my-4">
+        <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+            Crear empresa <i class="ps-2 fa-solid fa-plus"></i>
+        </a>
+    </div>
+
+
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre Establecimiento</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Actividad Comercial</th>
+                <th scope="col" class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($companies as $company)
+            <tr>
+                <td>{{$company->id}}</td>
+                <td>{{$company->nombre}}</td>
+                <td>{{$company->direccion}}</td>
+                <td>{{$company->telefono}}</td>
+                <td>{{$company->actividad_comercial}}</td>
+                <td>
+                    <div class="d-flex justify-content-center gap-2">
+                        <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{$company->id}}"> <i class="fa-solid fa-magnifying-glass-plus"></i></a>
+                        <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{$company->id}}"> <i class="fa-solid fa-pen"></i></a>
+                        <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#inspectionModal{{$company->id}}"> <i class="fa-regular fa-square-check"></i></a>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- MODAL VER DETALLE -->
+            <div class="modal fade" id="modal{{$company->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Ver detalle</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="mb-3 row g-3">
+                                <div class="col-6">
+                                    <label for="nombre" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" value="{{ $company->nombre }}" readonly>
+                                </div>
+                                <div class="col-6">
+                                    <label for="representante_legal" class="form-label">Representante Legal</label>
+                                    <input type="text" class="form-control" id="representante_legal" value="{{ $company->representante_legal }}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row g-3">
+                                <div class="col-6">
+                                    <label for="nit" class="form-label">NIT</label>
+                                    <input type="text" class="form-control" id="nit" value="{{ $company->nit }}" readonly>
+                                </div>
+                                <div class="col-6">
+                                    <label for="direccion" class="form-label">Dirección</label>
+                                    <input type="text" class="form-control" id="direccion" value="{{ $company->direccion }}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row g-3">
+                                <div class="col-6">
+                                    <label for="telefono" class="form-label">Teléfono</label>
+                                    <input type="text" class="form-control" id="telefono" value="{{ $company->telefono }}" readonly>
+                                </div>
+                                <div class="col-6">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="text" class="form-control" id="email" value="{{ $company->email }}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="actividad_comercial" class="form-label">Actividad Comercial</label>
+                                <input type="text" class="form-control" id="actividad_comercial" value="{{ $company->actividad_comercial }}" readonly>
+                            </div>
+
+                            <div class="mb-3 row g-3">
+                                <div class="col-6">
+                                    <label for="ancho_dimensiones" class="form-label">Dimensiones Ancho</label>
+                                    <input type="text" class="form-control" id="ancho_dimensiones" value="{{ $company->ancho_dimensiones }}" readonly>
+                                </div>
+                                <div class="col-6">
+                                    <label for="largo_dimensiones" class="form-label">Dimensiones Largo</label>
+                                    <input type="text" class="form-control" id="largo_dimensiones" value="{{ $company->largo_dimensiones }}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="num_pisos" class="form-label">Número de Pisos</label>
+                                <input type="text" class="form-control" id="num_pisos" value="{{ $company->num_pisos }}" readonly>
+                            </div>
+
+
+                            <h6 class="mt-4">Información relacionada a esta empresa: </h6>
+                            <div class="accordion" id="accordionCompany">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Inspector asignado:
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionCompany">
+                                        <div class="accordion-body">
+
+
+                                            @if($company->inspections->isEmpty())
+                                            <h6 class="mt-4">No tiene inspecciones creadas</h6>
+                                            @else
+
+                                            @foreach ($company->inspections as $inspection)
+
+                                            <p>Inspector: {{ $inspection->user->nombre }} {{ $inspection->user->apellido }}</p>
+                                            <p>Fecha Solicitud: {{ $inspection->fecha_solicitud }}</p>
+                                            <p>Estado Actual: {{ $inspection->estado }}</p>
+
+                                            @endforeach
+
+
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            Documentos cargados:
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionCompany">
+                                        <div class="accordion-body">
+                                            @if($company->documents->isEmpty())
+                                            <h6 class="mt-4">No tiene documentos cargados</h6>
+                                            @else
+                                            @foreach ($company->documents as $document)
+                                            <p>{{ $document->tipo_documento }} <a href="google.com">{{ $document->archivo }}</a> </p>
+                                            @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL EDITAR -->
+            <div class="modal fade" id="editModal{{$company->id}}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Editar Empresa</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{{ route('companies.update', [$company->id]) }}">
+                                @method('PATCH')
+                                @csrf
+
+                                <div class="mb-3 col">
+                                    @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        @foreach ($errors->all() as $error)
+                                        <p class="m-0">{{ $error }}</p>
+                                        @endforeach
+                                    </div>
+                                    @endif
+
+                                    <div class="mb-3 row g-3">
+                                        <div class="col-6">
+                                            <label for="nombre" class="form-label">Nombre</label>
+                                            <input type="text" class="form-control" id="nombre" value="{{ $company->nombre }}" name="nombre">
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="representante_legal" class="form-label">Representante Legal</label>
+                                            <input type="text" class="form-control" id="representante_legal" value="{{ $company->representante_legal }}" name="representante_legal">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 row g-3">
+                                        <div class="col-6">
+                                            <label for="nit" class="form-label">NIT</label>
+                                            <input type="text" class="form-control" id="nit" value="{{ $company->nit }}" name="nit">
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="direccion" class="form-label">Dirección</label>
+                                            <input type="text" class="form-control" id="direccion" value="{{ $company->direccion }}" name="direccion">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 row g-3">
+                                        <div class="col-6">
+                                            <label for="telefono" class="form-label">Teléfono</label>
+                                            <input type="text" class="form-control" id="telefono" value="{{ $company->telefono }}" name="telefono">
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="text" class="form-control" id="email" value="{{ $company->email }}" name="email">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="actividad_comercial" class="form-label">Actividad Comercial</label>
+                                        <input type="text" class="form-control" id="actividad_comercial" value="{{ $company->actividad_comercial }}" name="actividad_comercial">
+                                    </div>
+
+                                    <div class="mb-3 row g-3">
+                                        <div class="col-6">
+                                            <label for="ancho_dimensiones" class="form-label">Dimensiones Ancho</label>
+                                            <input type="text" class="form-control" id="ancho_dimensiones" value="{{ $company->ancho_dimensiones }}" name="ancho_dimensiones">
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="largo_dimensiones" class="form-label">Dimensiones Largo</label>
+                                            <input type="text" class="form-control" id="largo_dimensiones" value="{{ $company->largo_dimensiones }}" name="largo_dimensiones">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="num_pisos" class="form-label">Número de Pisos</label>
+                                        <select class="form-select" name="num_pisos" id="num_pisos" value="{{ $company->num_pisos }}">
+                                            @foreach ($opcionesPisos as $opcion)
+                                            <option value="{{ $opcion }}">{{$opcion}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <!-- <div class="mb-3">
+                                        <label for="rut" class="form-label">Copia del RUT, vigencia no superior los treinta (30) días</label>
+                                        <input class="form-control" type="file" id="rut" name="rut" value="Hola">
+                                    </div> -->
+
+                                    <div class="mb-3">
+                                        <label for="rut" class="form-label">Copia del RUT, vigencia no superior los treinta (30) días *</label>
+                                        <input class="form-control" type="file" id="rut" accept=".pdf" name="rut" value="Hola">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="camara_comercio" class="form-label">Copia del certificado de existencia y representación Legal (Cámara de comercio), vigencia no superior los treinta (30) días. *</label>
+                                        <input class="form-control" type="file" id="camara_comercio" accept=".pdf" name="camara_comercio">
+                                    </div>
+
+
+
+                                    <div class="mb-3">
+                                        <label for="cedula" class="form-label">Copia de la cédula de ciudadanía del representante legal *</label>
+                                        <input class="form-control" type="file" id="cedula" name="cedula" accept=".pdf">
+                                    </div>
+                                    <div class="mb-5">
+                                        <label for="fachada" class="form-label">Fotografía de la fachada del establecimiento a inspeccionar *</label>
+                                        <input class="form-control" type="file" id="fachada" name="fachada" accept="image/*">
+                                    </div>
+
+                                    <input type="submit" value="Actualizar" class="btn btn-primary my-2" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- MODAL INSPECCIÓN -->
+            <div class="modal fade" id="inspectionModal{{$company->id}}" tabindex="-1" role="dialog" aria-labelledby="inspectionModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            @if($company->inspections->isEmpty())
+                            <h5 class="modal-title" id="inspectionModalLabel">Crear Inspección</h5>
+                            @else
+                            <h5 class="modal-title" id="inspectionModalLabel">Ver Inspección</h5>
+                            @endif
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                        </div>
+                        <div class="modal-body">
+
+                            @if($company->inspections->isEmpty())
+
+
+                            <form method="POST" action="{{ route('inspections.store', [$company->id]) }}">
+                                @method('PATCH')
+                                @csrf
+
+                                <div class="mb-3 col">
+                                    @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        @foreach ($errors->all() as $error)
+                                        <p class="m-0">{{ $error }}</p>
+                                        @endforeach
+                                    </div>
+                                    @endif
+
+                                    <div class="mb-3">
+                                        <label for="inspector_id" class="form-label">Inspector</label>
+
+                                        <select class="form-select" name="inspector_id" id="inspector_id">
+                                            @foreach ($inspectors as $inspector)
+                                            <option value="{{ $inspector->id }}">{{$inspector->nombre}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <input type="submit" value="Crear Inspeccion" class="btn btn-primary my-2" />
+                                </div>
+                            </form>
+                            @else
+                            @foreach ($company->inspections as $inspection)
+
+                            <p>Inspector: {{ $inspection->user->nombre }} {{ $inspection->user->apellido }}</p>
+                            <p>Fecha Solicitud: {{ $inspection->fecha_solicitud }}</p>
+                            <p>Estado Actual: {{ $inspection->estado }}</p>
+
+                            @endforeach
+
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Modal Crear Empresa -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Crear Nueva Empresa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('companies.store') }}" method="POST">
+                    @csrf
+
+                    <div class="mb-3 row g-3">
+
+                        <div class="col-6">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" placeholder="Escriba el nombre..." class="form-control" id="nombre" name="nombre">
+                        </div>
+
+                        <div class="col-6">
+                            <label for="representante_legal" class="form-label">Representante Legal</label>
+                            <input type="text" placeholder="Escriba el nombre del representante legal" class="form-control" id="representante_legal" name="representante_legal">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row g-3">
+                        <div class="col-6">
+                            <label for="nit" class="form-label">Nit</label>
+                            <input type="text" placeholder="Escriba el nit" class="form-control" id="nit" name="nit">
+                        </div>
+
+                        <div class="col-6">
+                            <label for="direccion" class="form-label">Dirección</label>
+                            <input type="text" placeholder="Escriba la dirección" class="form-control" id="direccion" name="direccion">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row g-3">
+
+                        <div class="col-6">
+                            <label for="telefono" class="form-label">Teléfono</label>
+                            <input type="text" placeholder="Escriba el número de teléfono" class="form-control" id="telefono" name="telefono">
+                        </div>
+
+                        <div class="col-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" placeholder="Escriba el correo electrónico" class="form-control" id="email" name="email">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="actividad_comercial" class="form-label">Actividad Comercial</label>
+                        <input type="text" placeholder="Escriba la actividad comercial" class="form-control" id="actividad_comercial" name="actividad_comercial">
+                    </div>
+
+                    <div class="mb-3 row g-3">
+
+                        <div class="col-6">
+                            <label for="ancho_dimensiones" class="form-label">Dimensiones Ancho</label>
+                            <input type="number" placeholder="Digite las medidas del ancho" class="form-control" id="ancho_dimensiones" name="ancho_dimensiones">
+                        </div>
+
+                        <div class="col-6">
+                            <label for="largo_dimensiones" class="form-label">Dimensiones Largo</label>
+                            <input type="number" placeholder="Digite las medidas del largo" class="form-control" id="largo_dimensiones" name="largo_dimensiones">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="num_pisos" class="form-label">Número de Pisos</label>
+                        <select class="form-select" placeholder="Seleccione" name="num_pisos" id="num_pisos">
+                            @foreach ($opcionesPisos as $opcion)
+                            <option value="{{ $opcion }}">{{$opcion}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="rut" class="form-label">Copia del RUT, vigencia no superior los treinta (30) días *</label>
+                        <input class="form-control" type="file" id="rut" accept=".pdf" name="rut">
+                    </div>
+                    <div class="mb-3">
+                        <label for="camara_comercio" class="form-label">Copia del certificado de existencia y representación Legal (Cámara de comercio), vigencia no superior los treinta (30) días. *</label>
+                        <input class="form-control" type="file" id="camara_comercio" accept=".pdf" name="camara_comercio">
+                    </div>
+
+
+
+                    <div class="mb-3">
+                        <label for="cedula" class="form-label">Copia de la cédula de ciudadanía del representante legal *</label>
+                        <input class="form-control" type="file" id="cedula" name="cedula" accept=".pdf">
+                    </div>
+                    <div class="mb-5">
+                        <label for="fachada" class="form-label">Fotografía de la fachada del establecimiento a inspeccionar *</label>
+                        <input class="form-control" type="file" id="fachada" name="fachada" accept="image/*">
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@endsection
