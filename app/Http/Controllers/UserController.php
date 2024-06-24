@@ -22,8 +22,6 @@ class UserController extends Controller
     {
         $validated = $request->validated();
 
-        // dd($validated); // Puedes descomentar esto para depuración si es necesario
-
         $user = User::create([
             'nombre' => $validated['nombre'],
             'apellido' => $validated['apellido'] ?? null,
@@ -47,11 +45,11 @@ class UserController extends Controller
         $user->apellido = $request->apellido;
         $user->documento = $request->documento;
         $user->telefono = $request->telefono;
-        $user->disponibilidad = $request->disponibilidad;
+        $user->disponibilidad = $request->disponibilidad == 'on' ? 1 : 0;
         $user->email = $request->email;
 
         if ($request->password != null) {
-            $user->password = $request->password;
+            $user->password = Hash::make($request->password);
         }
 
         $user->rol_id = $request->rol_id;

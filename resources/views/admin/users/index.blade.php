@@ -82,54 +82,69 @@
 
                         </div>
                         <div class="modal-body">
-                            <form method="POST" action="{{ route('users.update', [$user->id]) }}">
+                            <form method="POST" action="{{ route('users.update', [$user->id]) }}" class="needs-validation" novalidate>
                                 @method('PATCH')
                                 @csrf
 
                                 <div class="mb-3 row g-3">
                                     <div class="col-6">
                                         <label for="nombre" class="form-label">Nombre *</label>
-                                        <input type="text" class="form-control mb-2" name="nombre" id="exampleFormControlInput1" placeholder="Escriba el nombre..." value="{{ $user->nombre }}">
+                                        <input type="text" class="form-control mb-2" name="nombre" id="exampleFormControlInput1" placeholder="Escriba el nombre..." value="{{ $user->nombre }}" required>
+                                        <div class="invalid-feedback">
+                                            Complete este campo.
+                                        </div>
                                     </div>
                                     <div class="col-6">
 
                                         <label for="apellido" class="form-label">Apellido</label>
-                                        <input type="text" class="form-control mb-2" name="apellido" id="exampleFormControlInput1" placeholder="Escriba el apellido..." value="{{ $user->apellido }}">
+                                        <input type="text" class="form-control mb-2" name="apellido" id="exampleFormControlInput1" placeholder="Escriba el apellido..." value="{{ $user->apellido }}" required>
+                                        <div class="invalid-feedback">
+                                            Complete este campo.
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="documento" class="form-label">Documento *</label>
-                                    <input type="text" class="form-control mb-2" name="documento" id="exampleFormControlInput1" placeholder="Escriba el documento..." value="{{ $user->documento }}">
+                                    <input type="text" class="form-control mb-2" name="documento" id="exampleFormControlInput1" placeholder="Escriba el documento..." value="{{ $user->documento }}" required>
+                                    <div class="invalid-feedback">
+                                        Complete este campo.
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="telefono" class="form-label">Teléfono *</label>
-                                    <input type="text" class="form-control mb-2" name="telefono" id="exampleFormControlInput1" placeholder="Escriba el teléfono..." value="{{ $user->telefono }}">
+                                    <input type="text" class="form-control mb-2" name="telefono" id="exampleFormControlInput1" placeholder="Escriba el teléfono..." value="{{ $user->telefono }}" required>
+                                    <div class="invalid-feedback">
+                                        Complete este campo.
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email *</label>
-                                    <input type="text" class="form-control mb-2" name="email" id="exampleFormControlInput1" placeholder="Escriba el contenido..." value="{{ $user->email }}">
+                                    <input type="email" class="form-control mb-2" name="email" id="exampleFormControlInput1" placeholder="Escriba el contenido..." value="{{ $user->email }}" required>
+                                    <div class="invalid-feedback">
+                                        Por favor, ingrese un correo electrónico.
+                                    </div>
                                 </div>
-
-                                <!-- <label for="disponibilidad" class="form-label">Disponibilidad *</label>
-                                    <input type="text" class="form-control mb-2" name="disponibilidad" id="exampleFormControlInput1" placeholder="Disponibilidad" value="{{ $user->disponibilidad }}"> -->
 
 
                                 <div class="mb-3">
                                     <label for="rol_id" class="form-label">Rol *</label>
-                                    <select class="form-select" name="rol_id" id="rol_id">
+                                    <select class="form-select" name="rol_id" id="rol_id" required>
                                         @foreach ($roles as $rol)
                                         <option value="{{ $rol->id }}" {{ $user->rol_id == $rol->id ? 'selected' : '' }}>{{ $rol->nombre }}</option>
                                         @endforeach
                                     </select>
+                                    <div class="invalid-feedback">
+                                        Seleccione un rol.
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <div class="form-check form-switch my-2">
                                         <label class="form-check-label" for="disponibilidad">Disponibilidad </label>
-                                        <input class="form-check-input" type="checkbox" role="switch" id="disponibilidad" name="disponibilidad">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="disponibilidad" name="disponibilidad" {{ $user->disponibilidad ? 'checked' : '' }}>
                                     </div>
                                 </div>
 
@@ -226,7 +241,7 @@
                     <div class="mb-3">
                         <div class="form-check form-switch my-2">
                             <label class="form-check-label" for="disponibilidad">Disponibilidad </label>
-                            <input class="form-check-input" type="checkbox" role="switch" id="disponibilidad" name="disponibilidad">
+                            <input class="form-check-input" type="checkbox" role="switch" id="disponibilidad" name="disponibilidad" checked>
                         </div>
                     </div>
 

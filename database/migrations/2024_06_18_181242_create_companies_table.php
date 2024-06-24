@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
+            $table->string('razon_social');
+            $table->string('horario_funcionamiento');
+            $table->string('cedula_representante');
             $table->string('nombre');
             $table->string('representante_legal');
             $table->string('nit');
@@ -23,7 +26,8 @@ return new class extends Migration
             $table->float('ancho_dimensiones');
             $table->float('largo_dimensiones');
             $table->integer('num_pisos');
-
+            $table->unsignedBigInteger('cliente_id');
+            $table->foreign('cliente_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -19,6 +19,9 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout')->middl
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/admin', [HomeController::class, 'index'])->name('home');
+Route::get('/inspector', [HomeController::class, 'index'])->name('home');
+Route::get('/cliente', [HomeController::class, 'index'])->name('home');
 
 // Route::middleware(['auth'])->group(function () {
 //     Route::get('/', function () {
