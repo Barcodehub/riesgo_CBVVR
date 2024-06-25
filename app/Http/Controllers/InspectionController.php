@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Company;
 use App\Models\Inspection;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -24,22 +22,23 @@ class InspectionController extends Controller
         return view('admin.inspections.index', ['inspections' => $inspections, 'opcionesEstado' => $opcionesEstado]);
     }
 
-    public function store(Request $request, $companyId) {
+    public function store(Request $request) {
 
         $request->validate([
-            'inspector_id' => 'required'
+            'inspector_id' => 'required',
+            'company_id' => 'required'
         ]);
 
         $inspection = new Inspection();
 
         $inspection->fecha_solicitud = Carbon::now()->toDateString();
-        $inspection->establecimiento_id = $companyId;
+        $inspection->establecimiento_id = $request->company_id;
         $inspection->inspector_id = $request->inspector_id;
         $inspection->estado = 'SOLICITADA';
 
         $inspection->save();
 
-        return redirect()->route('admin.companies.index')->with('success', 'La inspección se creó con éxito');
+        return redirect()->route('companies.index')->with('success', 'La inspección se creó con éxito');
     }
 
 
@@ -55,7 +54,7 @@ class InspectionController extends Controller
 
         $inspection->save();
 
-        return redirect()->route('admin.inspections.index')->with('success', 'La inspección se actualizó con éxito');
+        return redirect()->route('inspections.index')->with('success', 'La inspección se actualizó con éxito');
     } 
 
     public function destroy($id) {
@@ -63,7 +62,7 @@ class InspectionController extends Controller
 
         $inspection->delete();
         
-        return redirect()->route('admin.inspections.index')->with('success', 'La inspección se eliminó con éxito');
+        return redirect()->route('inspections.index')->with('success', 'La inspección se eliminó con éxito');
 
     }
 

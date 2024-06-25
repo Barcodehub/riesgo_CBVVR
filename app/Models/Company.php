@@ -9,7 +9,7 @@ class Company extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'representante_legal', 'nit', 'direccion', 'telefono', 'email', 'actividad_comercial', 'ancho_dimensiones', 'largo_dimensiones', 'num_pisos'];
+    protected $fillable = ['razon_social', 'representante_legal', 'horario_funcionamiento', 'cedula_representante', 'nit', 'direccion', 'telefono', 'email', 'actividad_comercial', 'ancho_dimensiones', 'largo_dimensiones', 'num_pisos'];
 
 
     public function inspections()

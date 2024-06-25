@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ExtintorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InspectionController;
+use App\Http\Controllers\KitController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -44,12 +46,15 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('dashboard', [LoginController::class, 'adminDashboard'])->name('admin.dashboard');
 
     Route::resources([
-        'roles' => RoleController::class,
+        'extintores' => ExtintorController::class,
+        'kits' => KitController::class,
         'users' => UserController::class,
         'documents' => DocumentController::class,
         'companies' => CompanyController::class,
-        'inspections' => InspectionController::class,
     ], ['except' => ['create', 'edit', 'show']]);
+
+    Route::resource('roles', RoleController::class)->only(['index', 'destroy']);
+    Route::resource('inspections', InspectionController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('empresa_recarga');
             $table->date('fecha_vencimiento');
             $table->unsignedBigInteger('tipo_extintor_id');
-            $table->foreign('tipo_extintor_id')->references('id')->on('tipo_extintores')->onDelete('cascade');
+            $table->foreign('tipo_extintor_id')->references('id')->on('type_extinguishers')->onDelete('cascade');
             $table->unsignedBigInteger('concepto_id');
             $table->foreign('concepto_id')->references('id')->on('concepts')->onDelete('cascade');
             $table->timestamps();

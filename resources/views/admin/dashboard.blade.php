@@ -32,6 +32,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('roles.index') }}">Roles</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('extintores.index') }}">Tipo de Extintores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('kits.index') }}">Tipo de Botiquines</a>
+                    </li>
                 </ul>
                 <span class="navbar-text">
                     <a class="nav-link" href="{{ route('logout') }}"><i class="fa-solid fa-power-off me-4"></i></a>
@@ -42,15 +48,6 @@
 
     <div class="w-full mx-5 my-4">
         @auth
-
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-            <p class="m-0">{{ $error }}</p>
-            @endforeach
-        </div>
-        @endif
-
         <h3>Hola {{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</h3>
         @endauth
 
@@ -58,6 +55,18 @@
 
 
     @yield('content')
+
+
+    @if ($errors->any())
+    <div class="w-full p-4">
+        <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+            <p class="m-0">{{ $error }}</p>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
 </body>
 
 </html>

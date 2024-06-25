@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('empresa_recarga');
             $table->date('fecha_vencimiento');
             $table->unsignedBigInteger('tipo_botiquin_id');
-            $table->foreign('tipo_botiquin_id')->references('id')->on('tipo_botiquines')->onDelete('cascade');
+            $table->foreign('tipo_botiquin_id')->references('id')->on('type_kits')->onDelete('cascade');
             $table->unsignedBigInteger('concepto_id');
             $table->foreign('concepto_id')->references('id')->on('concepts')->onDelete('cascade');
             $table->timestamps();

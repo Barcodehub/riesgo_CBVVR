@@ -11,7 +11,7 @@
 
     <div class="w-6 my-4">
         <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRoleModal">
-            Crear user <i class="ps-2 fa-solid fa-plus"></i>
+            Crear usuario <i class="ps-2 fa-solid fa-plus"></i>
         </a>
     </div>
 

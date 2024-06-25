@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipo_extintores', function (Blueprint $table) {
+        Schema::create('type_extinguishers', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion')->unique();
             $table->timestamps();
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipo_extintores');
+        Schema::dropIfExists('type_extinguishers');
     }
 };

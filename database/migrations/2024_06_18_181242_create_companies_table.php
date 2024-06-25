@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('razon_social');
             $table->string('horario_funcionamiento');
             $table->string('cedula_representante');
-            $table->string('nombre');
             $table->string('representante_legal');
             $table->string('nit');
             $table->string('direccion');
@@ -26,7 +25,7 @@ return new class extends Migration
             $table->float('ancho_dimensiones');
             $table->float('largo_dimensiones');
             $table->integer('num_pisos');
-            $table->unsignedBigInteger('cliente_id');
+            $table->unsignedBigInteger('cliente_id')->nullable(true);
             $table->foreign('cliente_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

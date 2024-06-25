@@ -37,8 +37,10 @@ class CompanyController extends Controller
         //TODO: Primero se almacenan los documentos cargados.
 
         $validatedData = $request->validate([
-            'nombre' => 'required',
+            'razon_social' => 'required',
             'representante_legal' => 'required',
+            'horario_funcionamiento' => 'required',
+            'cedula_representante' => 'required',
             'nit' => 'required',
             'direccion' => 'required',
             'telefono' => 'required',
@@ -54,7 +56,7 @@ class CompanyController extends Controller
 
         //CREAR LOS DOCUMENTOS QUE LLEGAN EN EL REQUEST ASOCIANDO CADA EMPRESA
 
-        return redirect()->route('admin.companies.index')->with('success', 'La empresa se creó con éxito');
+        return redirect()->route('companies.index')->with('success', 'La empresa se creó con éxito');
     }
 
 
@@ -63,8 +65,10 @@ class CompanyController extends Controller
 
 
         $validatedData = $request->validate([
-            'nombre' => 'required',
+            'razon_social' => 'required',
             'representante_legal' => 'required',
+            'horario_funcionamiento' => 'required',
+            'cedula_representante' => 'required',
             'nit' => 'required',
             'direccion' => 'required',
             'telefono' => 'required',
@@ -77,7 +81,7 @@ class CompanyController extends Controller
 
         $company->update($validatedData);
 
-        return redirect()->route('admin.companies.index')->with('success', 'La empresa se actualizó con éxito');
+        return redirect()->route('companies.index')->with('success', 'La empresa se actualizó con éxito');
     } 
 
     public function destroy($id) {
@@ -85,13 +89,15 @@ class CompanyController extends Controller
 
         $company->delete();
         
-        return redirect()->route('admin.companies.index')->with('success', 'La empresa se eliminó con éxito');
+        return redirect()->route('companies.index')->with('success', 'La empresa se eliminó con éxito');
 
     }
 
-    public function datosEmpresa($id) {
+    public function datosEmpresa() {
 
-        $company = Company::find($id);
+        $user = auth()->user();
+
+        $company = Company::where('cliente_id', $user->id)->first();
 
         return view('cliente.detalle-company', ['company' => $company]);
     }

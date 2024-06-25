@@ -14,7 +14,7 @@ class TypeExtintorConcept extends Authenticatable
 
     public function tipo_extintor()
     {
-        return $this->hasOne('App\Models\TypeExtintor', 'id', 'tipo_extintor_id');
+        return $this->hasOne('App\Models\TypeExtinguisher', 'id', 'tipo_extintor_id');
     }
 
     public function concepto()

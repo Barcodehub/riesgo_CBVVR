@@ -8,15 +8,6 @@
     <h6 class="alert alert-success">{{ session('success') }}</h6>
     @endif
 
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        @foreach ($errors->all() as $error)
-        <p class="m-0">{{ $error }}</p>
-        @endforeach
-    </div>
-    @endif
-
-
     <div class="w-6 my-4">
         <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
             Crear empresa <i class="ps-2 fa-solid fa-plus"></i>
@@ -31,6 +22,7 @@
                 <th scope="col">Nombre Establecimiento</th>
                 <th scope="col">Dirección</th>
                 <th scope="col">Teléfono</th>
+                <th scope="col">Email</th>
                 <th scope="col">Actividad Comercial</th>
                 <th scope="col" class="text-center">Acciones</th>
             </tr>
@@ -39,9 +31,10 @@
             @foreach ($companies as $company)
             <tr>
                 <td>{{$company->id}}</td>
-                <td>{{$company->nombre}}</td>
+                <td>{{$company->razon_social}}</td>
                 <td>{{$company->direccion}}</td>
                 <td>{{$company->telefono}}</td>
+                <td>{{$company->email}}</td>
                 <td>{{$company->actividad_comercial}}</td>
                 <td>
                     <div class="d-flex justify-content-center gap-2">
@@ -63,13 +56,17 @@
                         <div class="modal-body">
 
                             <div class="mb-3 row g-3">
-                                <div class="col-6">
-                                    <label for="nombre" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="nombre" value="{{ $company->nombre }}" readonly>
+                                <div class="col-4">
+                                    <label for="razon_social" class="form-label">Razón social</label>
+                                    <input type="text" class="form-control" id="razon_social" value="{{ $company->razon_social }}" readonly>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label for="representante_legal" class="form-label">Representante Legal</label>
                                     <input type="text" class="form-control" id="representante_legal" value="{{ $company->representante_legal }}" readonly>
+                                </div>
+                                <div class="col-4">
+                                    <label for="cedula_representante" class="form-label">Documento Representante</label>
+                                    <input type="text" class="form-control" id="cedula_representante" value="{{ $company->cedula_representante }}" readonly>
                                 </div>
                             </div>
 
@@ -95,9 +92,15 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="actividad_comercial" class="form-label">Actividad Comercial</label>
-                                <input type="text" class="form-control" id="actividad_comercial" value="{{ $company->actividad_comercial }}" readonly>
+                            <div class="mb-3 row g-3">
+                                <div class="col-6">
+                                    <label for="actividad_comercial" class="form-label">Actividad Comercial</label>
+                                    <input type="text" class="form-control" id="actividad_comercial" value="{{ $company->actividad_comercial }}" readonly>
+                                </div>
+                                <div class="col-6">
+                                    <label for="horario_funcionamiento" class="form-label">Horario Funcionamiento</label>
+                                    <input type="text" class="form-control" id="horario_funcionamiento" value="{{ $company->horario_funcionamiento }}" readonly>
+                                </div>
                             </div>
 
                             <div class="mb-3 row g-3">
@@ -191,87 +194,82 @@
                                 @csrf
 
                                 <div class="mb-3 col">
-                                    @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        @foreach ($errors->all() as $error)
-                                        <p class="m-0">{{ $error }}</p>
-                                        @endforeach
-                                    </div>
-                                    @endif
 
                                     <div class="mb-3 row g-3">
-                                        <div class="col-6">
-                                            <label for="nombre" class="form-label">Nombre</label>
-                                            <input type="text" class="form-control" id="nombre" value="{{ $company->nombre }}" name="nombre">
+                                        <div class="col-4">
+                                            <label for="razon_social" class="form-label">Razón social</label>
+                                            <input type="text" class="form-control" id="razon_social" value="{{ $company->razon_social }}" name="razon_social">
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <label for="representante_legal" class="form-label">Representante Legal</label>
                                             <input type="text" class="form-control" id="representante_legal" value="{{ $company->representante_legal }}" name="representante_legal">
                                         </div>
+                                        <div class="col-4">
+                                            <label for="cedula_representante" class="form-label">Documento del representante *</label>
+                                            <input type="text" placeholder="Escriba el documento del representante legal" class="form-control" id="cedula_representante" value="{{ $company->cedula_representante }}" name="cedula_representante">
+                                        </div>
+
                                     </div>
 
                                     <div class="mb-3 row g-3">
-                                        <div class="col-6">
+                                        <div class="col-4">
+                                            <label for="horario_funcionamiento" class="form-label">Horario funcionamiento *</label>
+                                            <input type="text" placeholder="Escriba el horario de funcionamiento" class="form-control" id="horario_funcionamiento" value="{{ $company->horario_funcionamiento }}" name="horario_funcionamiento">
+                                        </div>
+                                        <div class="col-4">
                                             <label for="nit" class="form-label">NIT</label>
                                             <input type="text" class="form-control" id="nit" value="{{ $company->nit }}" name="nit">
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <label for="direccion" class="form-label">Dirección</label>
                                             <input type="text" class="form-control" id="direccion" value="{{ $company->direccion }}" name="direccion">
                                         </div>
                                     </div>
 
                                     <div class="mb-3 row g-3">
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <label for="telefono" class="form-label">Teléfono</label>
                                             <input type="text" class="form-control" id="telefono" value="{{ $company->telefono }}" name="telefono">
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <label for="email" class="form-label">Email</label>
                                             <input type="text" class="form-control" id="email" value="{{ $company->email }}" name="email">
                                         </div>
+                                        <div class="col-4">
+                                            <label for="actividad_comercial" class="form-label">Actividad Comercial</label>
+                                            <input type="text" class="form-control" id="actividad_comercial" value="{{ $company->actividad_comercial }}" name="actividad_comercial">
+                                        </div>
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label for="actividad_comercial" class="form-label">Actividad Comercial</label>
-                                        <input type="text" class="form-control" id="actividad_comercial" value="{{ $company->actividad_comercial }}" name="actividad_comercial">
-                                    </div>
+
 
                                     <div class="mb-3 row g-3">
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <label for="ancho_dimensiones" class="form-label">Dimensiones Ancho</label>
                                             <input type="text" class="form-control" id="ancho_dimensiones" value="{{ $company->ancho_dimensiones }}" name="ancho_dimensiones">
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <label for="largo_dimensiones" class="form-label">Dimensiones Largo</label>
                                             <input type="text" class="form-control" id="largo_dimensiones" value="{{ $company->largo_dimensiones }}" name="largo_dimensiones">
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="num_pisos" class="form-label">Número de Pisos</label>
+                                            <select class="form-select" name="num_pisos" id="num_pisos" value="{{ $company->num_pisos }}">
+                                                @foreach ($opcionesPisos as $opcion)
+                                                <option value="{{ $opcion }}">{{$opcion}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="num_pisos" class="form-label">Número de Pisos</label>
-                                        <select class="form-select" name="num_pisos" id="num_pisos" value="{{ $company->num_pisos }}">
-                                            @foreach ($opcionesPisos as $opcion)
-                                            <option value="{{ $opcion }}">{{$opcion}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <!-- <div class="mb-3">
-                                        <label for="rut" class="form-label">Copia del RUT, vigencia no superior los treinta (30) días</label>
-                                        <input class="form-control" type="file" id="rut" name="rut" value="Hola">
-                                    </div> -->
-
-                                    <div class="mb-3">
                                         <label for="rut" class="form-label">Copia del RUT, vigencia no superior los treinta (30) días *</label>
-                                        <input class="form-control" type="file" id="rut" accept=".pdf" name="rut" value="Hola">
+                                        <input class="form-control" type="file" id="rut" accept=".pdf" name="rut">
                                     </div>
                                     <div class="mb-3">
                                         <label for="camara_comercio" class="form-label">Copia del certificado de existencia y representación Legal (Cámara de comercio), vigencia no superior los treinta (30) días. *</label>
                                         <input class="form-control" type="file" id="camara_comercio" accept=".pdf" name="camara_comercio">
                                     </div>
-
-
 
                                     <div class="mb-3">
                                         <label for="cedula" class="form-label">Copia de la cédula de ciudadanía del representante legal *</label>
@@ -309,18 +307,12 @@
                             @if($company->inspections->isEmpty())
 
 
-                            <form method="POST" action="{{ route('inspections.store', [$company->id]) }}">
-                                @method('PATCH')
+                            <form method="POST" action="{{ route('inspections.store') }}">
                                 @csrf
 
+                                <input type="hidden" name="company_id" value="{{ $company->id }}" id="company_id">
+
                                 <div class="mb-3 col">
-                                    @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        @foreach ($errors->all() as $error)
-                                        <p class="m-0">{{ $error }}</p>
-                                        @endforeach
-                                    </div>
-                                    @endif
 
                                     <div class="mb-3">
                                         <label for="inspector_id" class="form-label">Inspector</label>
@@ -370,68 +362,79 @@
 
                     <div class="mb-3 row g-3">
 
-                        <div class="col-6">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" placeholder="Escriba el nombre..." class="form-control" id="nombre" name="nombre">
+                        <div class="col-4">
+                            <label for="razon_social" class="form-label">Razón social</label>
+                            <input type="text" placeholder="Escriba el nombre..." class="form-control" id="razon_social" name="razon_social">
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="representante_legal" class="form-label">Representante Legal</label>
                             <input type="text" placeholder="Escriba el nombre del representante legal" class="form-control" id="representante_legal" name="representante_legal">
+                        </div>
+
+                        <div class="col-4">
+                            <label for="cedula_representante" class="form-label">Documento del representante *</label>
+                            <input type="text" placeholder="Escriba el documento del representante legal" class="form-control" id="cedula_representante" name="cedula_representante">
                         </div>
                     </div>
 
                     <div class="mb-3 row g-3">
-                        <div class="col-6">
+
+                        <div class="col-4">
+                            <label for="horario_funcionamiento" class="form-label">Horario funcionamiento *</label>
+                            <input type="text" placeholder="Escriba el horario de funcionamiento" class="form-control" id="horario_funcionamiento" name="horario_funcionamiento">
+                        </div>
+                        <div class="col-4">
                             <label for="nit" class="form-label">Nit</label>
                             <input type="text" placeholder="Escriba el nit" class="form-control" id="nit" name="nit">
                         </div>
-
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="direccion" class="form-label">Dirección</label>
                             <input type="text" placeholder="Escriba la dirección" class="form-control" id="direccion" name="direccion">
                         </div>
                     </div>
 
+
                     <div class="mb-3 row g-3">
 
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="telefono" class="form-label">Teléfono</label>
                             <input type="text" placeholder="Escriba el número de teléfono" class="form-control" id="telefono" name="telefono">
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" placeholder="Escriba el correo electrónico" class="form-control" id="email" name="email">
                         </div>
+                        <div class="col-4">
+                            <label for="actividad_comercial" class="form-label">Actividad Comercial</label>
+                            <input type="text" placeholder="Escriba la actividad comercial" class="form-control" id="actividad_comercial" name="actividad_comercial">
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="actividad_comercial" class="form-label">Actividad Comercial</label>
-                        <input type="text" placeholder="Escriba la actividad comercial" class="form-control" id="actividad_comercial" name="actividad_comercial">
-                    </div>
 
                     <div class="mb-3 row g-3">
 
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="ancho_dimensiones" class="form-label">Dimensiones Ancho</label>
                             <input type="number" placeholder="Digite las medidas del ancho" class="form-control" id="ancho_dimensiones" name="ancho_dimensiones">
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="largo_dimensiones" class="form-label">Dimensiones Largo</label>
                             <input type="number" placeholder="Digite las medidas del largo" class="form-control" id="largo_dimensiones" name="largo_dimensiones">
                         </div>
+
+                        <div class="col-4">
+                            <label for="num_pisos" class="form-label">Número de Pisos</label>
+                            <select class="form-select" placeholder="Seleccione" name="num_pisos" id="num_pisos">
+                                @foreach ($opcionesPisos as $opcion)
+                                <option value="{{ $opcion }}">{{$opcion}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="num_pisos" class="form-label">Número de Pisos</label>
-                        <select class="form-select" placeholder="Seleccione" name="num_pisos" id="num_pisos">
-                            @foreach ($opcionesPisos as $opcion)
-                            <option value="{{ $opcion }}">{{$opcion}}</option>
-                            @endforeach
-                        </select>
-                    </div>
 
 
                     <div class="mb-3">
