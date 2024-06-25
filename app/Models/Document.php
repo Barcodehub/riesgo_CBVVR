@@ -9,12 +9,12 @@ class Document extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['tipo_documento', 'archivo'];
+    protected $fillable = ['tipo_documento', 'archivo', 'empresa_id'];
 
 
-    public function document()
+    public function company()
     {
-        return $this->hasOne('App\Models\Document', 'id', 'document_id');
+        return $this->hasOne('App\Models\Company', 'id', 'empresa_id');
     }
     
 }

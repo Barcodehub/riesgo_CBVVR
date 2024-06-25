@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\Document;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -29,6 +31,8 @@ class CompanyController extends Controller
             $query->where('nombre', 'INSPECTOR');
         })->get();
 
+
+
         return view('admin.companies.index', ['companies' => $companies, 'opcionesPisos' => $opcionesPisos, 'inspectors' => $inspectors]);
     }
 
@@ -51,10 +55,40 @@ class CompanyController extends Controller
             'num_pisos' => 'required'
         ]);
 
+        $companyCreated = Company::create($validatedData);
 
-        Company::create($validatedData);
 
-        //CREAR LOS DOCUMENTOS QUE LLEGAN EN EL REQUEST ASOCIANDO CADA EMPRESA
+        $request->validate([
+            'rut' => 'required|mimes:pdf',
+            'camara_comercio' => 'required|mimes:pdf',
+            'cedula' => 'required|mimes:pdf',
+            'fachada' => 'required|mimes:jpeg,jpg,png'
+        ]);
+
+        $documents = [
+            'RUT' => 'rut',
+            'CAMARA_COMERCIO' => 'camara_comercio',
+            'CEDULA_REPRESENTANTE' => 'cedula',
+            'FOTO_FACHADA' => 'fachada'
+        ];
+
+        foreach ($documents as $tipo_documento => $input_name) {
+            if ($request->hasFile($input_name)) {
+
+                $file = $request->file($input_name);
+                
+                $file_name = $input_name . '-' . $companyCreated->id . "." . $file->extension();
+                
+                Storage::disk('public')->put('documentos/' . $file_name, file_get_contents($request->file($input_name)));
+
+                Document::create([
+                    'tipo_documento' => $tipo_documento,
+                    'archivo' => $file_name,
+                    'empresa_id' => $companyCreated->id
+                ]);
+            }
+        }
+
 
         return redirect()->route('companies.index')->with('success', 'La empresa se creó con éxito');
     }
@@ -80,6 +114,36 @@ class CompanyController extends Controller
         ]);
 
         $company->update($validatedData);
+
+        $documents = [
+            'RUT' => 'rut',
+            'CAMARA_COMERCIO' => 'camara_comercio',
+            'CEDULA_REPRESENTANTE' => 'cedula',
+            'FOTO_FACHADA' => 'fachada',
+        ];
+
+        foreach ($documents as $tipo_documento => $input_name) {
+            if ($request->hasFile($input_name)) {
+                // Generar el nombre del archivo
+                $file = $request->file($input_name);
+
+                $file_name = $input_name . '-' . $company->id . "." . $file->extension();
+
+                // Guardar el archivo en el disco público
+                Storage::disk('public')->put('documentos/' . $file_name, file_get_contents($request->file($input_name)));
+    
+                // Buscar el documento existente o crear uno nuevo
+                $document = Document::updateOrCreate(
+                    [
+                        'empresa_id' => $company->id,
+                        'tipo_documento' => $tipo_documento
+                    ],
+                    [
+                        'archivo' => $file_name
+                    ]
+                );
+            }
+        }
 
         return redirect()->route('companies.index')->with('success', 'La empresa se actualizó con éxito');
     } 
