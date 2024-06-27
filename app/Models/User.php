@@ -20,4 +20,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Inspection', 'inspector_id', 'id');
     }
+
+    public function companies()
+    {
+        return $this->hasMany('App\Models\Company', 'cliente_id', 'id');
+    }
 }

@@ -14,7 +14,7 @@ class TypeKit extends Authenticatable
 
     public function tipo_botiquines_concepto()
     {
-        return $this->hasMany('App\Models\TypeKitConcept', 'id', 'id');
+        return $this->hasMany('App\Models\TipoBotiquinConcepto', 'id', 'id');
     }
 
 }

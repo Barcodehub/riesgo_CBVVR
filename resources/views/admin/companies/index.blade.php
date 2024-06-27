@@ -200,33 +200,32 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="editModalLabel">Editar Empresa</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
                         </div>
                         <div class="modal-body">
-                            <form method="POST" action="{{ route('companies.update', [$company->id]) }}" enctype="multipart/form-data" class="needs-validation" novalidate>
+                            <form method="POST" action="{{ route('companies.update', [$company->id]) }}" enctype="multipart/form-data" class="needs-validation-update" novalidate>
                                 @method('PATCH')
                                 @csrf
 
-                                <div class="mb-3 col">
+                                <div class="mb-3">
 
                                     <div class="mb-3 row g-3">
                                         <div class="col-4">
                                             <label for="razon_social" class="form-label">Razón social</label>
-                                            <input type="text" class="form-control" id="razon_social" value="{{ $company->razon_social }}" name="razon_social">
+                                            <input type="text" class="form-control" id="razon_social" value="{{ $company->razon_social }}" name="razon_social" required>
                                             <div class="invalid-feedback">
                                                 Complete este campo.
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <label for="representante_legal" class="form-label">Representante Legal</label>
-                                            <input type="text" class="form-control" id="representante_legal" value="{{ $company->representante_legal }}" name="representante_legal">
+                                            <input required type="text" class="form-control" id="representante_legal" value="{{ $company->representante_legal }}" name="representante_legal">
                                             <div class="invalid-feedback">
                                                 Complete este campo.
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <label for="cedula_representante" class="form-label">Documento del representante *</label>
-                                            <input type="text" placeholder="Escriba el documento del representante legal" class="form-control" id="cedula_representante" value="{{ $company->cedula_representante }}" name="cedula_representante">
+                                            <input required type="text" placeholder="Escriba el documento del representante legal" class="form-control" id="cedula_representante" value="{{ $company->cedula_representante }}" name="cedula_representante">
                                             <div class="invalid-feedback">
                                                 Complete este campo.
                                             </div>
@@ -237,18 +236,21 @@
                                     <div class="mb-3 row g-3">
                                         <div class="col-4">
                                             <label for="horario_funcionamiento" class="form-label">Horario funcionamiento *</label>
-                                            <input type="text" placeholder="Escriba el horario de funcionamiento" class="form-control" id="horario_funcionamiento" value="{{ $company->horario_funcionamiento }}" name="horario_funcionamiento">
+                                            <input required type="text" placeholder="Escriba el horario de funcionamiento" class="form-control" id="horario_funcionamiento" value="{{ $company->horario_funcionamiento }}" name="horario_funcionamiento">
                                             <div class="invalid-feedback">
                                                 Complete este campo.
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <label for="nit" class="form-label">NIT</label>
-                                            <input type="text" class="form-control" id="nit" value="{{ $company->nit }}" name="nit">
+                                            <input required type="text" class="form-control" id="nit" value="{{ $company->nit }}" name="nit">
+                                            <div class="invalid-feedback">
+                                                Complete este campo.
+                                            </div>
                                         </div>
                                         <div class="col-4">
                                             <label for="direccion" class="form-label">Dirección</label>
-                                            <input type="text" class="form-control" id="direccion" value="{{ $company->direccion }}" name="direccion">
+                                            <input required type="text" class="form-control" id="direccion" value="{{ $company->direccion }}" name="direccion">
                                             <div class="invalid-feedback">
                                                 Complete este campo.
                                             </div>
@@ -258,21 +260,21 @@
                                     <div class="mb-3 row g-3">
                                         <div class="col-4">
                                             <label for="telefono" class="form-label">Teléfono</label>
-                                            <input type="text" class="form-control" id="telefono" value="{{ $company->telefono }}" name="telefono">
+                                            <input required type="text" class="form-control" id="telefono" value="{{ $company->telefono }}" name="telefono">
                                             <div class="invalid-feedback">
                                                 Complete este campo.
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="text" class="form-control" id="email" value="{{ $company->email }}" name="email">
+                                            <input required type="text" class="form-control" id="email" value="{{ $company->email }}" name="email">
                                             <div class="invalid-feedback">
                                                 Complete este campo.
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <label for="actividad_comercial" class="form-label">Actividad Comercial</label>
-                                            <input type="text" class="form-control" id="actividad_comercial" value="{{ $company->actividad_comercial }}" name="actividad_comercial">
+                                            <input required type="text" class="form-control" id="actividad_comercial" value="{{ $company->actividad_comercial }}" name="actividad_comercial">
                                             <div class="invalid-feedback">
                                                 Complete este campo.
                                             </div>
@@ -284,23 +286,24 @@
                                     <div class="mb-3 row g-3">
                                         <div class="col-4">
                                             <label for="ancho_dimensiones" class="form-label">Dimensiones Ancho</label>
-                                            <input type="text" class="form-control" id="ancho_dimensiones" value="{{ $company->ancho_dimensiones }}" name="ancho_dimensiones">
+                                            <input required type="text" class="form-control" id="ancho_dimensiones" value="{{ $company->ancho_dimensiones }}" name="ancho_dimensiones">
                                             <div class="invalid-feedback">
                                                 Complete este campo.
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <label for="largo_dimensiones" class="form-label">Dimensiones Largo</label>
-                                            <input type="text" class="form-control" id="largo_dimensiones" value="{{ $company->largo_dimensiones }}" name="largo_dimensiones">
+                                            <input required type="text" class="form-control" id="largo_dimensiones" value="{{ $company->largo_dimensiones }}" name="largo_dimensiones">
                                             <div class="invalid-feedback">
                                                 Complete este campo.
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <label for="num_pisos" class="form-label">Número de Pisos</label>
-                                            <select class="form-select" name="num_pisos" id="num_pisos" value="{{ $company->num_pisos }}">
+                                            <select class="form-select" name="num_pisos" id="num_pisos" value="{{ $company->num_pisos }}" required>
+                                                <option disabled value="">Seleccione</option>
                                                 @foreach ($opcionesPisos as $opcion)
-                                                <option value="{{ $opcion }}">{{$opcion}}</option>
+                                                <option value="{{ $opcion }}" {{ $company->num_pisos == $opcion ? 'selected' : '' }}>{{ $opcion }}</option>
                                                 @endforeach
                                             </select>
                                             <div class="invalid-feedback">
@@ -612,4 +615,19 @@
     </div>
 </div>
 
+<script>
+    (() => {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation-update')
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
 @endsection

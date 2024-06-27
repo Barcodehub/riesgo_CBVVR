@@ -8,14 +8,6 @@
     <h6 class="alert alert-success">{{ session('success') }}</h6>
     @endif
 
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        @foreach ($errors->all() as $error)
-        <p class="m-0">{{ $error }}</p>
-        @endforeach
-    </div>
-    @endif
-
     <table class="table table-striped">
         <thead class="table-dark">
             <tr>

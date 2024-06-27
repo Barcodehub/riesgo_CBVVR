@@ -9,7 +9,7 @@ class Company extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['razon_social', 'representante_legal', 'horario_funcionamiento', 'cedula_representante', 'nit', 'direccion', 'telefono', 'email', 'actividad_comercial', 'ancho_dimensiones', 'largo_dimensiones', 'num_pisos'];
+    protected $fillable = ['razon_social', 'representante_legal', 'horario_funcionamiento', 'cedula_representante', 'nit', 'direccion', 'telefono', 'email', 'actividad_comercial', 'ancho_dimensiones', 'largo_dimensiones', 'num_pisos', 'cliente_id'];
 
 
     public function inspections()
@@ -20,5 +20,10 @@ class Company extends Authenticatable
     public function documents()
     {
         return $this->hasMany('App\Models\Document', 'empresa_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'cliente_id');
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ConceptController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ExtintorController;
 use App\Http\Controllers\HomeController;
@@ -67,5 +68,8 @@ Route::prefix('inspector')->middleware(['inspector'])->group(function () {
 Route::prefix('cliente')->middleware(['cliente'])->group(function () {
     Route::get('dashboard', [LoginController::class, 'clienteDashboard'])->name('cliente.dashboard');
     Route::get('datosEmpresa', [CompanyController::class, 'datosEmpresa'])->name('cliente.datosEmpresa');
-    
+    Route::get('detalleInspeccion', [InspectionController::class, 'inspeccionByEmpresa'])->name('cliente.detalleInspeccion');
+    Route::post('storeCliente', [CompanyController::class, 'storeCliente'])->name('cliente.storeCliente');
+    Route::patch('updateCliente/{id}', [CompanyController::class, 'updateCliente'])->name('cliente.updateCliente');
+    // Route::resource('companies', [CompanyController::class], ['except' => ['create', 'edit', 'show']]);
 });

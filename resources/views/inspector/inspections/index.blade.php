@@ -8,10 +8,6 @@
     <h6 class="alert alert-success">{{ session('success') }}</h6>
     @endif
 
-    @error('nombre')
-    <h6 class="alert alert-danger">{{ $message }}</h6>
-    @enderror
-
     <table class="table table-striped">
         <thead class="table-dark">
             <tr>
@@ -23,10 +19,11 @@
             </tr>
         </thead>
         <tbody>
+            {{ $inspections }}
             @foreach ($inspections as $inspection)
             <tr>
                 <td>{{$inspection->id}}</td>
-                <td>{{$inspection->company->nombre}}</td>
+                <td>{{$inspection->company->razon_social}}</td>
                 <td>{{$inspection->fecha_solicitud}}</td>
                 <td>{{$inspection->estado}}</td>
                 <td>
@@ -53,7 +50,7 @@
                             <div class="mb-3 row g-3">
                                 <div class="col-6">
                                     <label for="establecimiento" class="form-label">Establecimiento </label>
-                                    <input type="text" class="form-control" id="establecimiento" value="{{ $inspection->company->nombre }}" readonly>
+                                    <input type="text" class="form-control" id="establecimiento" value="{{ $inspection->company->razon_social }}" readonly>
                                 </div>
                                 <div class="col-6">
                                     <label for="telefono" class="form-label">Teléfono</label>

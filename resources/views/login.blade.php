@@ -26,6 +26,7 @@
   <div class="fondo-login">
 
     <div class="card row col-6 border p-4 mt-5 mx-auto">
+      <h3 class="mb-4">Iniciar sesión</h3>
       @if ($errors->any())
       <div class="alert alert-danger">
         @foreach ($errors->all() as $error)
@@ -33,6 +34,7 @@
         @endforeach
       </div>
       @endif
+
       <form method="POST" action="{{ route('inicia-sesion') }}">
         @csrf
         <div class="mb-3">

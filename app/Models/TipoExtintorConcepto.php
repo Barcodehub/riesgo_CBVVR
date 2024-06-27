@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class TypeExtintorConcept extends Authenticatable
+class TipoExtintorConcepto extends Authenticatable
 {
     use HasFactory;
 

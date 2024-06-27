@@ -9,20 +9,21 @@ class Concept extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'apellido', 'documento', 'telefono', 'disponibilidad', 'email', 'password', 'rol_id'];
+    protected $fillable = ['fecha_concepto', 'carga_ocupacional_fija', 'carga_ocupacional_flotante', 'anios_contruccion', 'nrs10', 'sgsst', 'sist_automatico_incendios', 'observaciones_sist_incendios', 
+                        'descripcion_concepto', 'hidrante', 'tipo_hidrante', 'capacitacion', 'tipo_camilla', 'inmovilizador_vertical', 'capacitacion_primeros_auxilios', 'inspeccion_id'];
 
     public function inspection()
     {
         return $this->hasOne('App\Models\Inspection', 'id', 'inspeccion_id');
     }
 
-    public function type_estinguishers()
+    public function tipo_extintor_conceptos()
     {
-        return $this->hasMany('App\Models\TypeExtinguisher', 'tipo_extintor_id', 'id');
+        return $this->hasMany('App\Models\TipoExtintorConcepto', 'concepto_id', 'id');
     }
 
-    public function type_kits()
+    public function tipo_botiquin_conceptos()
     {
-        return $this->hasMany('App\Models\TypeKit', 'tipo_botiquin_id', 'id');
+        return $this->hasMany('App\Models\TipoBotiquinConcepto', 'concepto_id', 'id');
     }
 }

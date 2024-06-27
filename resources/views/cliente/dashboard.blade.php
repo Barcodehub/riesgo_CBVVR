@@ -22,11 +22,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('cliente.datosEmpresa') }}">Datos de Empresa</a>
                     </li>
+
+                    @if (Auth::user()->companies->first() && Auth::user()->companies->first()->inspections->first())
+
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('cliente.datosEmpresa') }}">Ver Cotización</a>
+                        <a class="nav-link" href="{{ route('cliente.detalleInspeccion') }}">Seguimiento</a>
                     </li>
+                        
+                    @endif
                 </ul>
-                <span class="navbar-text">
+                <span class="navbar-text d-flex">
+                    <span class="me-4">{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</span>
                     <a class="nav-link" href="{{ route('logout') }}"><i class="fa-solid fa-power-off me-4"></i></a>
                 </span>
             </div>
@@ -45,8 +51,6 @@
             @endforeach
         </div>
         @endif
-
-        <h3>Hola cliente {{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</h3>
 
         @endauth
 

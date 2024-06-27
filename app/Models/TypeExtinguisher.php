@@ -14,7 +14,7 @@ class TypeExtinguisher extends Authenticatable
 
     public function tipo_extintores_concepto()
     {
-        return $this->hasMany('App\Models\TypeExtintorConcept', 'id', 'id');
+        return $this->hasMany('App\Models\TipoExtintorConcepto', 'id', 'id');
     }
 
 }

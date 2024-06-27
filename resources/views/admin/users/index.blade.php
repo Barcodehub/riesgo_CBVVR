@@ -82,14 +82,14 @@
 
                         </div>
                         <div class="modal-body">
-                            <form method="POST" action="{{ route('users.update', [$user->id]) }}" class="needs-validation" novalidate>
+                            <form method="POST" action="{{ route('users.update', [$user->id]) }}" class="needs-validation-update" novalidate>
                                 @method('PATCH')
                                 @csrf
 
                                 <div class="mb-3 row g-3">
                                     <div class="col-6">
                                         <label for="nombre" class="form-label">Nombre *</label>
-                                        <input type="text" class="form-control mb-2" name="nombre" id="exampleFormControlInput1" placeholder="Escriba el nombre..." value="{{ $user->nombre }}" required>
+                                        <input type="text" class="form-control mb-2" name="nombre" id="nombre" placeholder="Escriba el nombre..." value="{{ $user->nombre }}" required>
                                         <div class="invalid-feedback">
                                             Complete este campo.
                                         </div>
@@ -97,7 +97,7 @@
                                     <div class="col-6">
 
                                         <label for="apellido" class="form-label">Apellido</label>
-                                        <input type="text" class="form-control mb-2" name="apellido" id="exampleFormControlInput1" placeholder="Escriba el apellido..." value="{{ $user->apellido }}" required>
+                                        <input type="text" class="form-control mb-2" name="apellido" id="apellido" placeholder="Escriba el apellido..." value="{{ $user->apellido }}" required>
                                         <div class="invalid-feedback">
                                             Complete este campo.
                                         </div>
@@ -106,7 +106,7 @@
 
                                 <div class="mb-3">
                                     <label for="documento" class="form-label">Documento *</label>
-                                    <input type="text" class="form-control mb-2" name="documento" id="exampleFormControlInput1" placeholder="Escriba el documento..." value="{{ $user->documento }}" required>
+                                    <input type="text" class="form-control mb-2" name="documento" id="documento" placeholder="Escriba el documento..." value="{{ $user->documento }}" required>
                                     <div class="invalid-feedback">
                                         Complete este campo.
                                     </div>
@@ -114,7 +114,7 @@
 
                                 <div class="mb-3">
                                     <label for="telefono" class="form-label">Teléfono *</label>
-                                    <input type="text" class="form-control mb-2" name="telefono" id="exampleFormControlInput1" placeholder="Escriba el teléfono..." value="{{ $user->telefono }}" required>
+                                    <input type="text" class="form-control mb-2" name="telefono" id="telefono" placeholder="Escriba el teléfono..." value="{{ $user->telefono }}" required>
                                     <div class="invalid-feedback">
                                         Complete este campo.
                                     </div>
@@ -122,7 +122,7 @@
 
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email *</label>
-                                    <input type="email" class="form-control mb-2" name="email" id="exampleFormControlInput1" placeholder="Escriba el contenido..." value="{{ $user->email }}" required>
+                                    <input type="email" class="form-control mb-2" name="email" id="email" placeholder="Escriba el contenido..." value="{{ $user->email }}" required>
                                     <div class="invalid-feedback">
                                         Por favor, ingrese un correo electrónico.
                                     </div>
@@ -251,5 +251,20 @@
         </div>
     </div>
 </div>
-
+<script>
+        (() => {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation-update')
+            console.log("hola", forms)
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
 @endsection

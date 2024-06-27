@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class TypeKitConcept extends Authenticatable
+class TipoBotiquinConcepto extends Authenticatable
 {
     use HasFactory;
 

@@ -20,4 +20,9 @@ class Inspection extends Authenticatable
     {
         return $this->hasOne('App\Models\User', 'id', 'inspector_id');
     }
+
+    public function concept()
+    {
+        return $this->hasMany('App\Models\Concept', 'inspeccion_id', 'id');
+    }
 }

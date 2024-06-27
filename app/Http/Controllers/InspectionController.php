@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Concept;
 use App\Models\Inspection;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InspectionController extends Controller
 {
@@ -67,8 +69,22 @@ class InspectionController extends Controller
     }
 
     public function inspeccionesAsignadas() {
-        $inspections = Inspection::where('estado', 'ASIGNADA')->get();
+        $inspections = Inspection::where('estado', 'SOLICITADA')->get();
 
         return view('inspector.inspections.index', ['inspections' => $inspections]);
+    }
+
+    public function inspeccionByEmpresa() {
+
+        $empresaId = Auth::user()->companies->first()->id;
+
+        
+        $inspection = Inspection::where('establecimiento_id', $empresaId)->first();
+
+        $concept = Concept::where('inspeccion_id', $inspection->id)->first();
+
+        
+
+        return view('cliente.detalle-inspeccion', ['inspection' => $inspection, 'concept' => $concept]);
     }
 }
