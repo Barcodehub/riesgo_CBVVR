@@ -8,6 +8,8 @@
     <h6 class="alert alert-success">{{ session('success') }}</h6>
     @endif
 
+    <h4 class="mb-4">Gestión de Extintores: </h4>
+
     <div class="w-6 my-4">
         <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
             Crear extintor <i class="ps-2 fa-solid fa-plus"></i>
@@ -24,14 +26,21 @@
             </tr>
         </thead>
         <tbody>
+            @if ($extintores->isEmpty())
+            <tr>
+                <td colspan="3" class="text-center">
+                    No hay extintores
+                </td>
+            </tr>
+            @endif
             @foreach ($extintores as $extintor)
             <tr>
                 <td>{{$extintor->id}}</td>
                 <td>{{$extintor->descripcion}}</td>
                 <td>
                     <div class="flex justify-between items-center gap-2">
-                    <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{$extintor->id}}">Editar</a>
-                    <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{$extintor->id}}">Eliminar</a>
+                        <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{$extintor->id}}">Editar</a>
+                        <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{$extintor->id}}">Eliminar</a>
                     </div>
                 </td>
             </tr>

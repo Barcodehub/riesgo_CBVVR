@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Concept;
 use App\Models\Inspection;
+use App\Models\TypeExtinguisher;
+use App\Models\TypeKit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,10 +51,12 @@ class InspectionController extends Controller
 
 
         $request->validate([
-            'estado' => 'required'
+            'valor' => 'required|numeric|gt:1000',
         ]);
 
-        $inspection->estado = $request->estado;
+        $inspection->valor = $request->valor;
+        $inspection->estado = 'COTIZADA';
+
 
         $inspection->save();
 
@@ -69,9 +73,47 @@ class InspectionController extends Controller
     }
 
     public function inspeccionesAsignadas() {
-        $inspections = Inspection::where('estado', 'SOLICITADA')->get();
+        $estados = ['SOLICITADA'];
+        $inspector_id = Auth::user()->id;
 
-        return view('inspector.inspections.index', ['inspections' => $inspections]);
+        $inspections = $this->getInspectionsByStateAndInspector($estados, $inspector_id);
+
+        $tipos_extintor = TypeExtinguisher::all();
+        $tipos_botiquin = TypeKit::all();
+
+
+        return view('inspector.inspections.index', ['inspections' => $inspections, 'tipos_extintor' => $tipos_extintor, 'tipos_botiquin' => $tipos_botiquin]);
+    }
+
+    public function inspeccionesRealizadas() {
+
+        $estados = ['REVISADA', 'COTIZADA', 'FINALIZADA'];
+        $inspector_id = Auth::user()->id;
+
+        $inspections = $this->getInspectionsByStateAndInspector($estados, $inspector_id);
+
+        return view('inspector.inspecciones-realizadas.index', ['inspections' => $inspections]);
+    }
+
+
+    public function finalizar($inspection_id) {
+        $inspection = Inspection::find($inspection_id);
+
+        $inspection->estado = 'FINALIZADA';
+
+        $inspection->save();
+
+        return redirect()->route('inspector.inspeccionesRealizadas')->with('success', 'La inspección se finalizó con éxito');
+    }
+
+    public function getInspectionsByStateAndInspector(array $estados, $inspector_id)
+    {
+
+        $inspections = Inspection::whereIn('estado', $estados)
+                                ->where('inspector_id', $inspector_id)
+                                ->get();
+
+        return $inspections;
     }
 
     public function inspeccionByEmpresa() {

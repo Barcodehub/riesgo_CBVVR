@@ -23,34 +23,28 @@
                         <a class="nav-link" href="{{ route('inspector.inspeccionesAsignadas') }}">Empresas a Inspeccionar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('inspector.inspeccionesAsignadas') }}">Inspecciones realizadas</a>
+                        <a class="nav-link" href="{{ route('inspector.inspeccionesRealizadas') }}">Inspecciones realizadas</a>
                     </li>
                 </ul>
-                <span class="navbar-text">
+                <span class="navbar-text d-flex">
+                    <span class="me-4">{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</span>
                     <a class="nav-link" href="{{ route('logout') }}"><i class="fa-solid fa-power-off me-4"></i></a>
                 </span>
             </div>
         </div>
     </nav>
 
-    <div class="w-full mx-5 my-4">
-        @auth
-
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-            <p class="m-0">{{ $error }}</p>
-            @endforeach
-        </div>
-        @endif
-
-        <h3>Hola inspector {{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</h3>
-        @endauth
-
-    </div>
-
 
     @yield('content')
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+        <p class="m-0">{{ $error }}</p>
+        @endforeach
+    </div>
+    @endif
+
 </body>
 
 </html>

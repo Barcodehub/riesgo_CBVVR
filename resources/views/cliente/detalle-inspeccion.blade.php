@@ -17,7 +17,7 @@
     <div class="mb-3 row g-3">
         <div class="col-6">
             <label for="inspector" class="form-label">Inspector Asignado</label>
-            <input type="text" class="form-control" id="inspector" value="{{ $inspection->user->nombre }}" readonly>
+            <input type="text" class="form-control" id="inspector" value="{{ $inspection->user->nombre . ' ' . $inspection->user->apellido }}" readonly>
         </div>
 
         <div class="col-6">
@@ -26,12 +26,11 @@
         </div>
     </div>
 
-    <h4 class="mt-5">Valor: </h4>
 
     @if ($inspection->valor)
     <div class="mb-3">
         <label for="valor" class="form-label">Valor de la Inspección</label>
-        <input type="text" class="form-control" id="valor" value="{{ $inspection->valor }}" readonly>
+        <input type="text" class="form-control" id="valor" value="$ {{ $inspection->valor }}" readonly>
     </div>
     @else
     <h6>No tiene valor asignado</h6>
@@ -78,11 +77,11 @@
                         </div>
                         <div class="col-4">
                             <label for="nrs10" class="form-label">NSR10</label>
-                            <input type="text" class="form-control" id="nrs10" value="{{ $concept->nrs10 }}" readonly>
+                            <input type="text" class="form-control" id="nrs10" value="{{ $concept->nrs10 ? 'Si' : 'No' }}" readonly>
                         </div>
                         <div class="col-4">
-                            <label for="sgsst" class="form-label">Sistema de Gestion de Seguridad y Salud en el Trabajo</label>
-                            <input type="text" class="form-control" id="sgsst" value="{{ $concept->sgsst }}" readonly>
+                            <label for="sgsst" class="form-label">Sist. de Gestion de Seguridad y Salud en el Trabajo</label>
+                            <input type="text" class="form-control" id="sgsst" value="{{ $concept->sgsst ? 'Si' : 'No' }}" readonly>
                         </div>
                     </div>
 
@@ -102,36 +101,32 @@
                     </div>
 
                     <div class="mb-3 row g-3">
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="hidrante" class="form-label">Hidrante</label>
-                            <input type="text" class="form-control" id="hidrante" value="{{ $concept->hidrante }}" readonly>
+                            <input type="text" class="form-control" id="hidrante" value="{{ $concept->hidrante ? 'Si' : 'No' }}" readonly>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="tipo_hidrante" class="form-label">Tipo de Hidrante</label>
                             <input type="text" class="form-control" id="tipo_hidrante" value="{{ $concept->tipo_hidrante }}" readonly>
                         </div>
-                    </div>
-
-                    <div class="mb-3 row g-3">
-
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="tipo_camilla" class="form-label">Tipo de Camilla</label>
                             <input type="text" class="form-control" id="tipo_camilla" value="{{ $concept->tipo_camilla }}" readonly>
                         </div>
-                        <div class="col-6">
-                            <label for="inmovilizador_vertical" class="form-label">Inmovilizador Vertical</label>
-                            <input type="text" class="form-control" id="inmovilizador_vertical" value="{{ $concept->inmovilizador_vertical }}" readonly>
-                        </div>
                     </div>
 
                     <div class="mb-3 row g-3">
-                        <div class="col-6">
-                            <label for="capacitacion" class="form-label">Capacitación</label>
-                            <input type="text" class="form-control" id="capacitacion" value="{{ $concept->capacitacion }}" readonly>
+                        <div class="col-4">
+                            <label for="inmovilizador_vertical" class="form-label">Inmovilizador Vertical</label>
+                            <input type="text" class="form-control" id="inmovilizador_vertical" value="{{ $concept->inmovilizador_vertical }}" readonly>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
+                            <label for="capacitacion" class="form-label">Capacitación</label>
+                            <input type="text" class="form-control" id="capacitacion" value="{{ $concept->capacitacion ? 'Si' : 'No' }}" readonly>
+                        </div>
+                        <div class="col-4">
                             <label for="capacitacion_primeros_auxilios" class="form-label">Capacitación de primeros auxilios</label>
-                            <input type="text" class="form-control" id="capacitacion_primeros_auxilios" value="{{ $concept->capacitacion_primeros_auxilios }}" readonly>
+                            <input type="text" class="form-control" id="capacitacion_primeros_auxilios" value="{{ $concept->capacitacion_primeros_auxilios ? 'Si' : 'No' }}" readonly>
                         </div>
                     </div>
 
@@ -179,16 +174,18 @@
                                         @if ($concept->tipo_botiquin_conceptos->isEmpty())
                                         <h6>No hay botiquines</h6>
                                         @else
-                                        <ul>
+                                        <div class="d-flex gap-2">
                                             @foreach ($concept->tipo_botiquin_conceptos as $tipo_botiquin_concepto)
-                                            <li>
-                                                <p>Botiquín: {{$tipo_botiquin_concepto->tipo_botiquin->descripcion}}</p>
-                                                <p>Empresa Recarga: {{$tipo_botiquin_concepto->empresa_recarga}}</p>
-                                                <p>Fecha Vencimiento: {{$tipo_botiquin_concepto->fecha_vencimiento}}</p>
 
-                                            </li>
+                                            <div class="border w-50 p-1">
+                                                <p class="m-0 p-0">Botiquín: {{$tipo_botiquin_concepto->tipo_botiquin->descripcion}}</p>
+                                                <p class="m-0 p-0">Empresa Recarga: {{$tipo_botiquin_concepto->empresa_recarga}}</p>
+                                                <p class="m-0 p-0">Fecha Vencimiento: {{$tipo_botiquin_concepto->fecha_vencimiento}}</p>
+
+                                            </div>
+
                                             @endforeach
-                                        </ul>
+                                        </div>
                                         @endif
                                     </div>
                                 </div>

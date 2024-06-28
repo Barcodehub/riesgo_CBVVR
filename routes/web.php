@@ -62,6 +62,11 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
 Route::prefix('inspector')->middleware(['inspector'])->group(function () {
     Route::get('dashboard', [LoginController::class, 'inspectorDashboard'])->name('inspector.dashboard');
     Route::get('inspeccionesAsignadas', [InspectionController::class, 'inspeccionesAsignadas'])->name('inspector.inspeccionesAsignadas');
+    Route::get('inspeccionesRealizadas', [InspectionController::class, 'inspeccionesRealizadas'])->name('inspector.inspeccionesRealizadas');
+
+    Route::post('store/{id}', [ConceptController::class, 'store'])->name('inspector.store');
+    Route::patch('finalizar/{id}', [InspectionController::class, 'finalizar'])->name('inspector.finalizar');
+
     
 });
 

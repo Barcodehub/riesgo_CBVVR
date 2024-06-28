@@ -39,19 +39,14 @@
                         <a class="nav-link" href="{{ route('kits.index') }}">Tipo de Botiquines</a>
                     </li>
                 </ul>
-                <span class="navbar-text">
+                <span class="navbar-text d-flex">
+                    <span class="me-4">{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</span>
                     <a class="nav-link" href="{{ route('logout') }}"><i class="fa-solid fa-power-off me-4"></i></a>
                 </span>
             </div>
         </div>
     </nav>
 
-    <div class="w-full mx-5 my-4">
-        @auth
-        <h3>Hola {{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</h3>
-        @endauth
-
-    </div>
 
 
     @yield('content')

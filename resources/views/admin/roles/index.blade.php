@@ -8,6 +8,7 @@
     <h6 class="alert alert-success">{{ session('success') }}</h6>
     @endif
 
+    <h4 class="mb-4">Gestión de Roles: </h4>
 
     <table class="table table-striped">
         <thead class="table-dark">
@@ -18,6 +19,13 @@
             </tr>
         </thead>
         <tbody>
+            @if ($roles->isEmpty())
+            <tr>
+                <td colspan="3" class="text-center">
+                    No hay roles
+                </td>
+            </tr>
+            @endif
             @foreach ($roles as $rol)
             <tr>
                 <td>{{$rol->id}}</td>

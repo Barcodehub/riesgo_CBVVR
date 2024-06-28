@@ -8,6 +8,9 @@
     <h6 class="alert alert-success">{{ session('success') }}</h6>
     @endif
 
+    <h4 class="mb-4">Gestión de Botiquines: </h4>
+
+
     <div class="w-6 my-4">
         <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
             Crear tipo de botiquín <i class="ps-2 fa-solid fa-plus"></i>
@@ -24,6 +27,13 @@
             </tr>
         </thead>
         <tbody>
+            @if ($kits->isEmpty())
+            <tr>
+                <td colspan="3" class="text-center">
+                    No hay botiquines
+                </td>
+            </tr>
+            @endif
             @foreach ($kits as $kit)
             <tr>
                 <td>{{$kit->id}}</td>

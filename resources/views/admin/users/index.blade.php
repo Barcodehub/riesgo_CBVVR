@@ -8,6 +8,7 @@
     <h6 class="alert alert-success">{{ session('success') }}</h6>
     @endif
 
+    <h4 class="mb-4">Gestión de Usuarios: </h4>
 
     <div class="w-6 my-4">
         <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRoleModal">
@@ -30,6 +31,13 @@
             </tr>
         </thead>
         <tbody>
+            @if ($users->isEmpty())
+            <tr>
+                <td colspan="3" class="text-center">
+                    No hay usuarios
+                </td>
+            </tr>
+            @endif
             @foreach ($users as $user)
             <tr>
                 <td>{{$user->id}}</td>

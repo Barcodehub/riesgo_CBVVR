@@ -28,7 +28,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('cliente.detalleInspeccion') }}">Seguimiento</a>
                     </li>
-                        
+
                     @endif
                 </ul>
                 <span class="navbar-text d-flex">
@@ -37,27 +37,22 @@
                 </span>
             </div>
 
-            
+
         </div>
     </nav>
 
-    <div class="w-full mx-5 my-4">
-        @auth
-
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-            <p class="m-0">{{ $error }}</p>
-            @endforeach
-        </div>
-        @endif
-
-        @endauth
-
-    </div>
-
+    
 
     @yield('content')
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+        <p class="m-0">{{ $error }}</p>
+        @endforeach
+    </div>
+    @endif
+
 </body>
 
 </html>
