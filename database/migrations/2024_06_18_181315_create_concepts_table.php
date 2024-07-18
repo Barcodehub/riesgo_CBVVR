@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('tipo_camilla')->nullable(true);
             $table->string('inmovilizador_vertical')->nullable(true);
             $table->boolean('capacitacion_primeros_auxilios');
+            $table->boolean('favorable');
             $table->timestamps();
         });
     }

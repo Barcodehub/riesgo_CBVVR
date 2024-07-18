@@ -33,7 +33,14 @@
             <tr>
                 <td>{{$inspection->id}}</td>
                 <td>{{$inspection->company->razon_social}}</td>
-                <td>{{$inspection->user->nombre}} {{$inspection->user->apellido}}</td>
+                
+                <td>
+                    @if ($inspection->user)
+                    {{$inspection->user->nombre}} {{$inspection->user->apellido}}
+                    @else
+                    No asignado
+                    @endif
+                </td>
                 <td>{{$inspection->fecha_solicitud}}</td>
                 <td>{{$inspection->estado}}</td>
                 <td>
@@ -43,6 +50,8 @@
                         <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#cotizarModal{{$inspection->id}}">Cotizar <i class="ps-2 fa-solid fa-pen"></i></a>
                             
                         @endif
+                        <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#asignarInspectorModal{{$inspection->id}}">Inspector <i class="fa-regular fa-square-check"></i></a>
+                            
                     </div>
                 </td>
             </tr>
@@ -70,7 +79,7 @@
 
                             <div class="mb-3">
                                 <label for="inspector" class="form-label">Inspector</label>
-                                <input type="text" class="form-control" id="inspector" value="{{ $inspection->user->nombre }}" readonly>
+                                <input type="text" class="form-control" id="inspector" value="{{ $inspection->user ? $inspection->user->nombre : 'No asignado' }}" readonly>
                             </div>
 
                             <div class="mb-3">
@@ -128,10 +137,87 @@
                     </div>
                 </div>
             </div>
+
+            <!-- MODAL ASIGNAR INSPECTOR -->
+            <div class="modal fade" id="asignarInspectorModal{{$inspection->id}}" tabindex="-1" role="dialog" aria-labelledby="asignarInspectorModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            @if($inspection->user)
+                            <h5 class="modal-title" id="asignarInspectorModalLabel">Ver Asignación de Inspector</h5>
+                            @else
+                            <h5 class="modal-title" id="asignarInspectorModalLabel">Asignar Inspector</h5>
+                            @endif
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                        </div>
+                        <div class="modal-body">
+
+                            @if($inspection->user)
+
+                            <p>Inspector: {{ $inspection->user->nombre }} {{ $inspection->user->apellido }}</p>
+                            <p>Fecha Asignación: {{ $inspection->fecha_asignacion_inspector }}</p>
+                            <p>Estado Actual: {{ $inspection->estado }}</p>
+
+
+                            @else
+                            
+                            <form method="POST" action="{{ route('inspections.asignarInspector', [$inspection->id]) }}" class="needs-validation" novalidate>
+                                @method('PATCH')
+                                
+                                @csrf
+
+                                <div class="mb-3 col">
+
+                                    <div class="mb-3">
+                                        <label for="inspector_id" class="form-label">Inspector</label>
+
+                                        <select class="form-select" name="inspector_id" id="inspector_id" required>
+                                            <option selected disabled value="">Seleccione</option>
+                                            @foreach ($inspectors as $inspector)
+                                            <option value="{{ $inspector->id }}">{{$inspector->nombre . ' ' . $inspector->apellido}}</option>
+                                            @endforeach
+                                        </select>
+
+                                        <div class="invalid-feedback">
+                                            Complete este campo.
+                                        </div>
+                                    </div>
+
+                                    <input type="submit" value="Asignar" class="btn btn-primary my-2" />
+                                </div>
+                            </form>
+                            
+
+
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @endforeach
         </tbody>
     </table>
 </div>
+
+<script>
+    (() => {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
 
 
 @endsection

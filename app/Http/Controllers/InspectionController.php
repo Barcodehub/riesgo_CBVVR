@@ -7,6 +7,7 @@ use App\Models\Concept;
 use App\Models\Inspection;
 use App\Models\TypeExtinguisher;
 use App\Models\TypeKit;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,11 @@ class InspectionController extends Controller
             'FINALIZADA' => 'FINALIZADA',
         ];
 
-        return view('admin.inspections.index', ['inspections' => $inspections, 'opcionesEstado' => $opcionesEstado]);
+        $inspectors = User::whereHas('role', function ($query) {
+            $query->where('nombre', 'INSPECTOR');
+        })->get();
+
+        return view('admin.inspections.index', ['inspections' => $inspections, 'opcionesEstado' => $opcionesEstado, 'inspectors' => $inspectors]);
     }
 
     public function store(Request $request) {
@@ -56,6 +61,23 @@ class InspectionController extends Controller
 
         $inspection->valor = $request->valor;
         $inspection->estado = 'COTIZADA';
+
+
+        $inspection->save();
+
+        return redirect()->route('inspections.index')->with('success', 'La inspección se actualizó con éxito');
+    } 
+
+    public function asignarInspector(Request $request, $id) {
+        $inspection = Inspection::find($id);
+
+
+        $request->validate([
+            'inspector_id' => 'required|numeric',
+        ]);
+
+        $inspection->inspector_id = $request->inspector_id;
+        $inspection->fecha_asignacion_inspector = Carbon::now()->toDateString();
 
 
         $inspection->save();

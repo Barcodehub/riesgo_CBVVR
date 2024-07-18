@@ -55,7 +55,9 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     ], ['except' => ['create', 'edit', 'show']]);
 
     Route::resource('roles', RoleController::class)->only(['index', 'destroy']);
-    Route::resource('inspections', InspectionController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('inspections', InspectionController::class)->only(['index', 'store', 'update', 'asignarInspector', 'destroy']);
+    Route::patch('asignarInspector/{id}', [InspectionController::class, 'asignarInspector'])->name('inspections.asignarInspector');
+
 });
 
 

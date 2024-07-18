@@ -49,7 +49,6 @@
                     <div class="d-flex justify-content-center gap-2">
                         <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{$company->id}}"> <i class="fa-solid fa-magnifying-glass-plus"></i></a>
                         <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{$company->id}}"> <i class="fa-solid fa-pen"></i></a>
-                        <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#inspectionModal{{$company->id}}"> <i class="fa-regular fa-square-check"></i></a>
                     </div>
                 </td>
             </tr>
@@ -393,60 +392,6 @@
 
                                 <input type="submit" value="Actualizar" class="btn btn-primary my-2" />
                             </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- MODAL INSPECCIÓN -->
-            <div class="modal fade" id="inspectionModal{{$company->id}}" tabindex="-1" role="dialog" aria-labelledby="inspectionModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            @if($company->inspections->isEmpty())
-                            <h5 class="modal-title" id="inspectionModalLabel">Crear Inspección</h5>
-                            @else
-                            <h5 class="modal-title" id="inspectionModalLabel">Ver Inspección</h5>
-                            @endif
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-                        </div>
-                        <div class="modal-body">
-
-                            @if($company->inspections->isEmpty())
-
-
-                            <form method="POST" action="{{ route('inspections.store') }}">
-                                @csrf
-
-                                <input type="hidden" name="company_id" value="{{ $company->id }}" id="company_id">
-
-                                <div class="mb-3 col">
-
-                                    <div class="mb-3">
-                                        <label for="inspector_id" class="form-label">Inspector</label>
-
-                                        <select class="form-select" name="inspector_id" id="inspector_id">
-                                            @foreach ($inspectors as $inspector)
-                                            <option value="{{ $inspector->id }}">{{$inspector->nombre}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <input type="submit" value="Crear Inspeccion" class="btn btn-primary my-2" />
-                                </div>
-                            </form>
-                            @else
-                            @foreach ($company->inspections as $inspection)
-
-                            <p>Inspector: {{ $inspection->user->nombre }} {{ $inspection->user->apellido }}</p>
-                            <p>Fecha Solicitud: {{ $inspection->fecha_solicitud }}</p>
-                            <p>Estado Actual: {{ $inspection->estado }}</p>
-
-                            @endforeach
-
-                            @endif
                         </div>
                     </div>
                 </div>

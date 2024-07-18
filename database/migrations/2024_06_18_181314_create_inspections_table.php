@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('inspections', function (Blueprint $table) {
             $table->id();
             $table->date('fecha_solicitud');
+            $table->date('fecha_asignacion_inspector')->nullable(true);
             $table->unsignedBigInteger('establecimiento_id');
             $table->foreign('establecimiento_id')->references('id')->on('companies')->onDelete('cascade');
-            $table->unsignedBigInteger('inspector_id');
+            $table->unsignedBigInteger('inspector_id')->nullable(true);
             $table->foreign('inspector_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('estado');
             $table->double('valor')->nullable(true);

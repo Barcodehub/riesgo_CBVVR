@@ -15,15 +15,24 @@
     </div>
 
     <div class="mb-3 row g-3">
-        <div class="col-6">
-            <label for="inspector" class="form-label">Inspector Asignado</label>
-            <input type="text" class="form-control" id="inspector" value="{{ $inspection->user->nombre . ' ' . $inspection->user->apellido }}" readonly>
-        </div>
+        @if ($inspection->user)
+            <div class="col-6">
+                <label for="inspector" class="form-label">Inspector Asignado</label>
+                <input type="text" class="form-control" id="inspector" value="{{ $inspection->user->nombre . ' ' . $inspection->user->apellido }}" readonly>
+            </div>
+            
+        @endif
 
         <div class="col-6">
             <label for="estado" class="form-label">Estado de la Inspección</label>
             <input type="text" class="form-control" id="estado" value="{{ $inspection->estado }}" readonly>
         </div>
+
+        @if ($inspection->estado == 'SOLICITADA')
+            <div>
+                Nota: Debe esperar mientras se asigna un inspector para continuar con el proceso
+            </div>
+        @endif
     </div>
 
 
@@ -32,8 +41,6 @@
         <label for="valor" class="form-label">Valor de la Inspección</label>
         <input type="text" class="form-control" id="valor" value="$ {{ $inspection->valor }}" readonly>
     </div>
-    @else
-    <h6>No tiene valor asignado</h6>
 
     @endif
 
@@ -42,7 +49,7 @@
     <h4 class="mt-5">Detalle del concepto: </h4>
 
     @if ($inspection->concept->isEmpty())
-    <h6>No tiene concepto asignado</h6>
+    <h6>No tiene concepto realizado</h6>
     @else
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalVerConcepto">Ver concepto <i class="fa-solid fa-magnifying-glass-plus"></i></button>
     <!-- MODAL VER DETALLE -->

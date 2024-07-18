@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Document;
+use App\Models\Inspection;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -115,6 +117,15 @@ class CompanyController extends Controller
         $validatedData['cliente_id'] = Auth::user()->id;
 
         $companyCreated = Company::create($validatedData);
+
+
+        $inspection = new Inspection();
+
+        $inspection->fecha_solicitud = Carbon::now()->toDateString();
+        $inspection->establecimiento_id = $companyCreated->id;
+        $inspection->estado = 'SOLICITADA';
+
+        $inspection->save();
 
 
         $request->validate([
