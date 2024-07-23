@@ -227,7 +227,7 @@
                                 </div>
 
                                 <div class="mb-3 row g-3">
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <p for="capacitacion" class="form-label">Capacitación</p>
                                         <div class="form-check form-check-inline">
                                             <input required class="form-check-input" type="radio" name="capacitacion" id="capacitacionSi" value="1">
@@ -241,7 +241,7 @@
                                             Complete este campo.
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <p for="capacitacion_primeros_auxilios" class="form-label">Capacitación de primeros auxilios</p>
                                         <div class="form-check form-check-inline">
                                             <input required class="form-check-input" type="radio" name="capacitacion_primeros_auxilios" id="capacitacion_primeros_auxiliosSi" value="1">
@@ -250,6 +250,21 @@
                                         <div class="form-check form-check-inline">
                                             <input required class="form-check-input" type="radio" name="capacitacion_primeros_auxilios" id="capacitacion_primeros_auxiliosNo" value="0">
                                             <label class="form-check-label" for="capacitacion_primeros_auxiliosNo">No</label>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Complete este campo.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <p for="favorable" class="form-label">Favorable: </p>
+                                        <div class="form-check form-check-inline">
+                                            <input required class="form-check-input" type="radio" name="favorable" id="favorableSi" value="1">
+                                            <label class="form-check-label" for="favorableSi">Si</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input required class="form-check-input" type="radio" name="favorable" id="favorableNo" value="0">
+                                            <label class="form-check-label" for="favorableNo">No</label>
                                         </div>
                                         <div class="invalid-feedback">
                                             Complete este campo.

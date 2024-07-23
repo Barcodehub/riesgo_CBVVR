@@ -42,6 +42,7 @@ class ConceptController extends Controller
             'tipo_camilla' => 'required',
             'inmovilizador_vertical' => 'required',
             'capacitacion_primeros_auxilios' => 'required|boolean',
+            'favorable' => 'required|boolean',
             'tipo_extintor' => 'nullable|array',
             'tipo_extintor.*' => 'integer|exists:type_extinguishers,id',
             'tipo_botiquin' => 'nullable|array',
