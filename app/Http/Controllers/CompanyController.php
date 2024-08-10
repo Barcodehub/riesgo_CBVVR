@@ -79,10 +79,12 @@ class CompanyController extends Controller
             if ($request->hasFile($input_name)) {
 
                 $file = $request->file($input_name);
+
+                $storage_path = 'documentos/empresa-' . $companyCreated->id;
                 
-                $file_name = $input_name . '-' . $companyCreated->id . "." . $file->extension();
+                $file_name = $input_name . "." . $file->extension();
                 
-                Storage::disk('public')->put('documentos/' . $file_name, file_get_contents($request->file($input_name)));
+                Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 
                 Document::create([
                     'tipo_documento' => $tipo_documento,
@@ -147,9 +149,11 @@ class CompanyController extends Controller
 
                 $file = $request->file($input_name);
                 
-                $file_name = $input_name . '-' . $companyCreated->id . "." . $file->extension();
+                $storage_path = 'documentos/empresa-' . $companyCreated->id;
                 
-                Storage::disk('public')->put('documentos/' . $file_name, file_get_contents($request->file($input_name)));
+                $file_name = $input_name . "." . $file->extension();
+                
+                Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 
                 Document::create([
                     'tipo_documento' => $tipo_documento,
@@ -195,20 +199,19 @@ class CompanyController extends Controller
         foreach ($documents as $tipo_documento => $input_name) {
             if ($request->hasFile($input_name)) {
 
-                $base_file_name = $input_name . '-' . $company->id;
-
-                $files = Storage::disk('public')->files('documentos');
+                $files = Storage::disk('public')->files('documentos/empresa-' . $company->id);
                 foreach ($files as $file) {
-                    if (preg_match("/^documentos\/" . preg_quote($base_file_name, '/') . "\..+$/", $file)) {
+                    if (preg_match("/^documentos\/empresa-" . $company->id . "\/" . preg_quote($input_name, '/') . "\..+$/", $file)) {
                         Storage::disk('public')->delete($file);
                     }
                 }
-
                 $file = $request->file($input_name);
 
-                $file_name = $base_file_name . "." . $file->extension();
-
-                Storage::disk('public')->put('documentos/' . $file_name, file_get_contents($request->file($input_name)));
+                $storage_path = 'documentos/empresa-' . $company->id;
+                
+                $file_name = $input_name . "." . $file->extension();
+                
+                Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 
                 Document::updateOrCreate(
                     [
@@ -257,20 +260,19 @@ class CompanyController extends Controller
         foreach ($documents as $tipo_documento => $input_name) {
             if ($request->hasFile($input_name)) {
 
-                $base_file_name = $input_name . '-' . $company->id;
-
-                $files = Storage::disk('public')->files('documentos');
+                $files = Storage::disk('public')->files('documentos/empresa-' . $company->id);
                 foreach ($files as $file) {
-                    if (preg_match("/^documentos\/" . preg_quote($base_file_name, '/') . "\..+$/", $file)) {
+                    if (preg_match("/^documentos\/empresa-" . $company->id . "\/" . preg_quote($input_name, '/') . "\..+$/", $file)) {
                         Storage::disk('public')->delete($file);
                     }
                 }
-
                 $file = $request->file($input_name);
 
-                $file_name = $base_file_name . "." . $file->extension();
-
-                Storage::disk('public')->put('documentos/' . $file_name, file_get_contents($request->file($input_name)));
+                $storage_path = 'documentos/empresa-' . $company->id;
+                
+                $file_name = $input_name . "." . $file->extension();
+                
+                Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 
                 Document::updateOrCreate(
                     [

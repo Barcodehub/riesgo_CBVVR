@@ -17,18 +17,11 @@ class InspectionController extends Controller
     public function index() {
         $inspections = Inspection::all();
 
-        $opcionesEstado = [
-            'SOLICITADA' => 'SOLICITADA',
-            'ASIGNADA' => 'ASIGNADA',
-            'COTIZADA' => 'COTIZADA',
-            'FINALIZADA' => 'FINALIZADA',
-        ];
-
         $inspectors = User::whereHas('role', function ($query) {
             $query->where('nombre', 'INSPECTOR');
         })->get();
 
-        return view('admin.inspections.index', ['inspections' => $inspections, 'opcionesEstado' => $opcionesEstado, 'inspectors' => $inspectors]);
+        return view('admin.inspections.index', ['inspections' => $inspections, 'inspectors' => $inspectors]);
     }
 
     public function store(Request $request) {
@@ -95,7 +88,7 @@ class InspectionController extends Controller
     }
 
     public function inspeccionesAsignadas() {
-        $estados = ['SOLICITADA'];
+        $estados = ['SOLICITADA', 'COTIZADA'];
         $inspector_id = Auth::user()->id;
 
         $inspections = $this->getInspectionsByStateAndInspector($estados, $inspector_id);
@@ -109,10 +102,11 @@ class InspectionController extends Controller
 
     public function inspeccionesRealizadas() {
 
-        $estados = ['REVISADA', 'COTIZADA', 'FINALIZADA'];
+        $estados = ['REVISADA', 'FINALIZADA'];
         $inspector_id = Auth::user()->id;
 
         $inspections = $this->getInspectionsByStateAndInspector($estados, $inspector_id);
+
 
         return view('inspector.inspecciones-realizadas.index', ['inspections' => $inspections]);
     }
@@ -133,7 +127,14 @@ class InspectionController extends Controller
 
         $inspections = Inspection::whereIn('estado', $estados)
                                 ->where('inspector_id', $inspector_id)
+                                ->with(['concept' => function ($query) {
+                                    $query->orderBy('fecha_concepto', 'desc');
+                                }])
                                 ->get();
+
+        foreach ($inspections as $inspection) {
+            $inspection->latest_concepto = $inspection->concept->first();
+        }
 
         return $inspections;
     }
@@ -147,8 +148,9 @@ class InspectionController extends Controller
 
         $concept = Concept::where('inspeccion_id', $inspection->id)->first();
 
-        
+        $fechaConcepto = Carbon::parse($concept->fecha_concepto);
+        $fechaMasUnAnio = $fechaConcepto->addYear();
 
-        return view('cliente.detalle-inspeccion', ['inspection' => $inspection, 'concept' => $concept]);
+        return view('cliente.detalle-inspeccion', ['inspection' => $inspection, 'concept' => $concept, 'fechaVencimiento' => $fechaMasUnAnio->format('Y-m-d')]);
     }
 }

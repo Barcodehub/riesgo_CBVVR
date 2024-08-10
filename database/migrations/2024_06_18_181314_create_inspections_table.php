@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('inspector_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('estado');
             $table->double('valor')->nullable(true);
+            $table->string('numero_certificado')->nullable(true);
             $table->timestamps();
         });
     }

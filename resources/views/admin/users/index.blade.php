@@ -64,7 +64,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Al eliminar el usuario <strong>{{ $user->nombre }}</strong> se eliminan todos los usuarios relacionados.
+                            Al eliminar el usuario <strong>{{ $user->nombre }}</strong> se eliminan todos los recursos relacionados.
                             ¿Está seguro que desea eliminar el usuario <strong>{{ $user->nombre }}</strong>?
                         </div>
                         <div class="modal-footer">

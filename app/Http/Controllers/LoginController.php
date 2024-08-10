@@ -13,15 +13,15 @@ class LoginController extends Controller
 {
 
     public function adminDashboard() {
-        return view('admin.dashboard');
+        return view('admin.dashboard.index');
     }
 
     public function inspectorDashboard() {
-        return view('inspector.dashboard');
+        return view('inspector.dashboard.index');
     }
 
     public function clienteDashboard() {
-        return view('cliente.dashboard');
+        return view('cliente.dashboard.index');
     }
 
     public function register(Request $request)
@@ -79,8 +79,6 @@ class LoginController extends Controller
                 return redirect()->intended(route('inspector.dashboard'));
             }
 
-
-            // return redirect()->intended(route('app'));
         } else {
             return redirect()->route('login')->withErrors([
                 'error' => 'Las credenciales proporcionadas son incorrectas.',
