@@ -27,44 +27,88 @@
 
         <div class="card row col-8 border p-4 mt-5 mx-auto">
             <h3>Formulario de registro</h3>
-            <form class="row g-3" method="POST" action="{{route('validar-registro')}}">
+
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <p class="m-0">{{ $errors->first() }}</p>
+            </div>
+            @endif
+
+            <form method="POST" action="{{route('validar-registro')}}" class="needs-validation" novalidate>
                 @csrf
-                <div class="col-md-6">
-                    <label for="inputNombre" class="form-label">Nombre *</label>
-                    <input type="text" class="form-control" id="inputNombre" name="nombre">
-                </div>
-                <div class="col-md-6">
-                    <label for="apellido" class="form-label">Apellido *</label>
-                    <input type="text" class="form-control" id="apellido" name="apellido">
-                </div>
 
-                <div class="col-md-6">
-                    <label for="documento" class="form-label">Número de documento *</label>
-                    <input type="text" class="form-control" id="documento" name="documento">
-                </div>
+                <div class="row g-3">
 
-                <div class="col-md-6">
-                    <label for="telefono" class="form-label">Teléfono *</label>
-                    <input type="text" class="form-control" id="telefono" name="telefono">
-                </div>
-
-                <div class="col-md-6">
-                    <label for="email" class="form-label">Email *</label>
-                    <input type="email" class="form-control" id="email" name="email">
-                </div>
-                <div class="col-md-6">
-                    <label for="password" class="form-label">Contraseña *</label>
-                    <input type="password" class="form-control" id="password" name="password">
-                </div>
-
-
-                <div>
-                    <p>¿Ya tienes cuenta? <a href="{{route('login')}}">Inicia sesión</a></p>
-                </div>
-                <div class="col-12">
+                    <div class="col-md-6">
+                        <label for="nombre" class="form-label">Nombre *</label>
+                        <input type="text" class="form-control" placeholder="Digite este campo" id="nombre" name="nombre" required>
+                        <div class="invalid-feedback">
+                            Complete este campo.
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="apellido" class="form-label">Apellido *</label>
+                        <input type="text" class="form-control" placeholder="Digite este campo" id="apellido" name="apellido" required>
+                        <div class="invalid-feedback">
+                            Complete este campo.
+                        </div>
+                    </div>
+    
+                    <div class="col-md-6">
+                        <label for="documento" class="form-label">Número de documento *</label>
+                        <input type="text" class="form-control" placeholder="Digite este campo" id="documento" name="documento" required>
+                        <div class="invalid-feedback">
+                            Complete este campo.
+                        </div>
+                    </div>
+    
+                    <div class="col-md-6">
+                        <label for="telefono" class="form-label">Teléfono *</label>
+                        <input type="text" class="form-control" placeholder="Digite este campo" id="telefono" name="telefono" required>
+                        <div class="invalid-feedback">
+                            Complete este campo.
+                        </div>
+                    </div>
+    
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email *</label>
+                        <input type="email" class="form-control" placeholder="Digite este campo" id="email" name="email" required>
+                        <div class="invalid-feedback">
+                            Complete este campo.
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="password" class="form-label">Contraseña *</label>
+                        <input type="password" class="form-control" placeholder="Digite este campo" id="password" name="password" required>
+                        <div class="invalid-feedback">
+                            Complete este campo.
+                        </div>
+                    </div>
+    
+    
+                    <div>
+                        <p>¿Ya tienes cuenta? <a href="{{route('login')}}">Inicia sesión</a></p>
+                    </div>
+    
                     <button type="submit" class="btn btn-primary">Registrarse</button>
                 </div>
             </form>
         </div>
     </div>
 </body>
+
+<script>
+    (() => {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
