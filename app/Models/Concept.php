@@ -10,7 +10,7 @@ class Concept extends Authenticatable
     use HasFactory;
 
     protected $fillable = ['fecha_concepto', 'carga_ocupacional_fija', 'carga_ocupacional_flotante', 'anios_contruccion', 'nrs10', 'sgsst', 'sist_automatico_incendios', 'observaciones_sist_incendios', 
-                        'descripcion_concepto', 'hidrante', 'tipo_hidrante', 'capacitacion', 'tipo_camilla', 'inmovilizador_vertical', 'capacitacion_primeros_auxilios', 'inspeccion_id'];
+                        'descripcion_concepto', 'hidrante', 'tipo_hidrante', 'capacitacion', 'tipo_camilla', 'inmovilizador_vertical', 'capacitacion_primeros_auxilios', 'inspeccion_id', 'favorable'];
 
     public function inspection()
     {

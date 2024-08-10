@@ -37,60 +37,24 @@
                 <td>{{$inspection->estado}}</td>
                 <td>
                     <div class="flex justify-between items-center gap-2">
-                        @if ($inspection->estado == 'SOLICITADA')
+                        @if ($inspection->estado == 'SOLICITADA' || $inspection->estado == 'COTIZADA')
                         <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#conceptoModal{{$inspection->id}}">Dar Concepto <i class="ps-2 fa-solid fa-plus"></i></a>
                         @endif
-                        <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{$inspection->id}}">Ver detalle <i class="ps-2 fa-solid fa-magnifying-glass-plus"></i></a>
                     </div>
                 </td>
             </tr>
-
-            <!-- MODAL REVISAR -->
-            <div class="modal fade" id="revisionModal{{$inspection->id}}" tabindex="-1" role="dialog" aria-labelledby="revisionModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="revisionModalLabel">Revisión</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-                        </div>
-                        <div class="modal-body">
-                            <form method="POST" action="{{ route('inspections.update', [$inspection->id]) }}">
-                                @method('PATCH')
-                                @csrf
-
-                                <div class="mb-3 col">
-                                    @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        @foreach ($errors->all() as $error)
-                                        <p class="m-0">{{ $error }}</p>
-                                        @endforeach
-                                    </div>
-                                    @endif
-
-                                    <div class="mb-3">
-                                        <label for="estado" class="form-label">Estado de la Inspección</label>
-
-                                    </div>
-
-                                    <input type="submit" value="Actualizar" class="btn btn-primary my-2" />
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- MODAL CREAR CONCEPTO -->
             <div class="modal fade" id="conceptoModal{{$inspection->id}}" tabindex="-1" role="dialog" aria-labelledby="conceptoModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="conceptoModalLabel">Crear Concepto</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <form method="POST" id="form{{$inspection->id}}" action="{{ route('inspector.store', [$inspection->id]) }}" class="needs-validation-inspection" novalidate>
 
-                        </div>
-                        <form method="POST" action="{{ route('inspector.store', [$inspection->id]) }}" class="needs-validation" novalidate>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="conceptoModalLabel">Crear Concepto</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                            </div>
                             <div class="modal-body">
                                 @csrf
 
@@ -277,7 +241,7 @@
                                     <h6>Tipos de extintor: </h6>
 
                                     @if ($tipos_extintor->isEmpty())
-                                    <h6>No hay extintores</h6>
+                                    <h6>No hay extintores parametrizados</h6>
                                     @else
 
                                     @foreach ($tipos_extintor as $tipo_extintor)
@@ -286,7 +250,7 @@
                                         <div class="form-check d-flex align-items-center gap-3">
 
                                             <div>
-                                                <input class="form-check-input" type="checkbox" name="tipo_extintor[]" value="{{ $tipo_extintor->id }}" id="tipo_extintor_{{ $tipo_extintor->id }}">
+                                                <input class="form-check-input" type="checkbox" name="tipo_extintor[]" value="{{ $tipo_extintor->id }}" id="tipo_extintor_{{ $tipo_extintor->id }}" onchange="toggleFieldsTipoExtintor('{{ $tipo_extintor->id }}')">
                                             </div>
                                             <div class="w-100">
                                                 <label class="form-check-label" for="tipo_extintor_{{ $tipo_extintor->id }}">
@@ -296,21 +260,14 @@
                                                 <div class="d-flex gap-3">
 
                                                     <div class="w-50">
-                                                        <label class="form-label" for="empresa_recarga_{{ $tipo_extintor->id }}">Empresa que recarga </label>
-
-                                                        <input type="text" required class="form-control" id="empresa_recarga_{{$tipo_extintor->id}}" name="empresa_recarga[{{ $tipo_extintor->id }}]" placeholder="Escriba el nombre de la empresa que recarga">
-                                                        <div class="invalid-feedback">
-                                                            Complete este campo.
-                                                        </div>
+                                                        <label class="form-label" for="empresa_recarga_tipo_extintor_{{ $tipo_extintor->id }}">Empresa que recarga </label>
+                                                        <input type="text" class="form-control" id="empresa_recarga_tipo_extintor_{{$tipo_extintor->id}}" name="empresa_recarga_tipo_extintor[{{ $tipo_extintor->id }}]" 
+                                                            disabled placeholder="Escriba el nombre de la empresa que recarga">
                                                     </div>
 
                                                     <div class="w-50">
-
-                                                        <label class="form-label" for="fecha_vencimiento_{{ $tipo_extintor->id }}">Fecha de vencimiento </label>
-                                                        <input type="date" required class="form-control" id="fecha_vencimiento_{{$tipo_extintor->id}}" name="fecha_vencimiento[{{ $tipo_extintor->id }}]">
-                                                        <div class="invalid-feedback">
-                                                            Complete este campo.
-                                                        </div>
+                                                        <label class="form-label" for="fecha_vencimiento_tipo_extintor_{{ $tipo_extintor->id }}">Fecha de vencimiento </label>
+                                                        <input type="date" class="form-control" id="fecha_vencimiento_tipo_extintor_{{$tipo_extintor->id}}" name="fecha_vencimiento_tipo_extintor[{{ $tipo_extintor->id }}]" disabled>
                                                     </div>
 
                                                 </div>
@@ -330,41 +287,34 @@
 
                                     <h6>Tipos de botiquín: </h6>
 
-                                    @if ($tipos_extintor->isEmpty())
-                                    <h6>No hay extintores</h6>
+                                    @if ($tipos_botiquin->isEmpty())
+                                    <h6>No hay botiquines parametrizados</h6>
                                     @else
 
-                                    @foreach ($tipos_extintor as $tipo_extintor)
+                                    @foreach ($tipos_botiquin as $tipo_botiquin)
                                     <div class="col-12">
 
                                         <div class="form-check d-flex align-items-center gap-3">
 
                                             <div>
-                                                <input class="form-check-input" type="checkbox" name="tipo_extintor[]" value="{{ $tipo_extintor->id }}" id="tipo_extintor_{{ $tipo_extintor->id }}">
+                                                <input class="form-check-input" type="checkbox" name="tipo_botiquin[]" value="{{ $tipo_botiquin->id }}" id="tipo_botiquin_{{ $tipo_botiquin->id }}" onchange="toggleFieldsTipoBotiquin('{{ $tipo_botiquin->id }}')">
                                             </div>
                                             <div class="w-100">
-                                                <label class="form-check-label" for="tipo_extintor_{{ $tipo_extintor->id }}">
-                                                    {{$tipo_extintor->descripcion}}
+                                                <label class="form-check-label" for="tipo_botiquin_{{ $tipo_botiquin->id }}">
+                                                    {{$tipo_botiquin->descripcion}}
                                                 </label>
 
                                                 <div class="d-flex gap-3">
 
                                                     <div class="w-50">
-                                                        <label class="form-label" for="empresa_recarga_{{ $tipo_extintor->id }}">Empresa que recarga </label>
-
-                                                        <input type="text" required class="form-control" id="empresa_recarga_{{$tipo_extintor->id}}" name="empresa_recarga[{{ $tipo_extintor->id }}]" placeholder="Escriba el nombre de la empresa que recarga">
-                                                        <div class="invalid-feedback">
-                                                            Complete este campo.
-                                                        </div>
+                                                        <label class="form-label" for="empresa_recarga_tipo_botiquin_{{ $tipo_botiquin->id }}">Empresa que recarga </label>
+                                                        <input type="text" class="form-control" id="empresa_recarga_tipo_botiquin_{{$tipo_botiquin->id}}" name="empresa_recarga_tipo_botiquin[{{ $tipo_botiquin->id }}]" 
+                                                            disabled placeholder="Escriba el nombre de la empresa que recarga">
                                                     </div>
 
                                                     <div class="w-50">
-
-                                                        <label class="form-label" for="fecha_vencimiento_{{ $tipo_extintor->id }}">Fecha de vencimiento </label>
-                                                        <input type="date" required class="form-control" id="fecha_vencimiento_{{$tipo_extintor->id}}" name="fecha_vencimiento[{{ $tipo_extintor->id }}]">
-                                                        <div class="invalid-feedback">
-                                                            Complete este campo.
-                                                        </div>
+                                                        <label class="form-label" for="fecha_vencimiento_tipo_botiquin_{{ $tipo_botiquin->id }}">Fecha de vencimiento </label>
+                                                        <input type="date" class="form-control" id="fecha_vencimiento_tipo_botiquin_{{$tipo_botiquin->id}}" name="fecha_vencimiento_tipo_botiquin[{{ $tipo_botiquin->id }}]" disabled>
                                                     </div>
 
                                                 </div>
@@ -377,14 +327,11 @@
                                     @endforeach
                                     @endif
 
-
                                 </div>
-
                             </div>
-
                             <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                 <input type="submit" value="Crear concepto" class="btn btn-primary my-2" />
-
                             </div>
                         </form>
                     </div>
@@ -399,10 +346,14 @@
 <script>
     (() => {
         'use strict'
-        const forms = document.querySelectorAll('.needs-validation')
+
+        const forms = document.querySelectorAll('.needs-validation-inspection');
+
+        console.log(forms)
 
         Array.from(forms).forEach(form => {
             form.addEventListener('submit', event => {
+                console.log(event)
                 if (!form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
@@ -412,5 +363,44 @@
         })
     })()
 </script>
+
+<script>
+function toggleFieldsTipoExtintor(tipoExtintorId) {
+    const checkbox = document.getElementById('tipo_extintor_' + tipoExtintorId);
+    const empresaRecargaField = document.getElementById('empresa_recarga_tipo_extintor_' + tipoExtintorId);
+    const fechaVencimientoField = document.getElementById('fecha_vencimiento_tipo_extintor_' + tipoExtintorId);
+
+    if (checkbox.checked) {
+        empresaRecargaField.removeAttribute('disabled');
+        empresaRecargaField.setAttribute('required', 'required');
+        fechaVencimientoField.removeAttribute('disabled');
+        fechaVencimientoField.setAttribute('required', 'required');
+    } else {
+        empresaRecargaField.setAttribute('disabled', 'disabled');
+        empresaRecargaField.removeAttribute('required');
+        fechaVencimientoField.setAttribute('disabled', 'disabled');
+        fechaVencimientoField.removeAttribute('required');
+    }
+}
+
+function toggleFieldsTipoBotiquin(tipoBotiquinId) {
+    const checkbox = document.getElementById('tipo_botiquin_' + tipoBotiquinId);
+    const empresaRecargaField = document.getElementById('empresa_recarga_tipo_botiquin_' + tipoBotiquinId);
+    const fechaVencimientoField = document.getElementById('fecha_vencimiento_tipo_botiquin_' + tipoBotiquinId);
+
+    if (checkbox.checked) {
+        empresaRecargaField.removeAttribute('disabled');
+        empresaRecargaField.setAttribute('required', 'required');
+        fechaVencimientoField.removeAttribute('disabled');
+        fechaVencimientoField.setAttribute('required', 'required');
+    } else {
+        empresaRecargaField.setAttribute('disabled', 'disabled');
+        empresaRecargaField.removeAttribute('required');
+        fechaVencimientoField.setAttribute('disabled', 'disabled');
+        fechaVencimientoField.removeAttribute('required');
+    }
+}
+</script>
+
 
 @endsection

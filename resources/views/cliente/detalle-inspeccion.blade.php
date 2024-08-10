@@ -3,7 +3,10 @@
 @section('content')
 
 <div class="w-full border p-4 m-4">
-    <div class="mb-3 row g-3">
+
+    <h2>Seguimiento de inspección</h2>
+
+    <div class="my-3 row g-3">
         <div class="col-6">
             <label for="establecimiento" class="form-label">Establecimiento </label>
             <input type="text" class="form-control" id="establecimiento" value="{{ $inspection->company->razon_social }}" readonly>
@@ -11,6 +14,16 @@
         <div class="col-6">
             <label for="telefono" class="form-label">Teléfono</label>
             <input type="text" class="form-control" id="telefono" value="{{ $inspection->company->telefono }}" readonly>
+        </div>
+    </div>
+    <div class="mb-3 row g-3">
+        <div class="col-6">
+            <label for="email" class="form-label">Email </label>
+            <input type="text" class="form-control" id="email" value="{{ $inspection->company->email }}" readonly>
+        </div>
+        <div class="col-6">
+            <label for="dirección" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="dirección" value="{{ $inspection->company->direccion }}" readonly>
         </div>
     </div>
 
@@ -198,6 +211,22 @@
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+
+                    <div class="mb-3 row g-3">
+                        <div class="col-6">
+                            <label for="concepto_favorable" class="form-label">Concepto favorable: </label>
+                            <input type="text" class="form-control" id="concepto_favorable" value="{{ $concept->favorable ? 'Si' : 'No' }}" readonly>
+                        </div>
+
+                        @if ($concept->favorable)
+                        
+                        <div class="col-6">
+                            <label for="fecha_vencimiento" class="form-label">Certificado hasta: </label>
+                            <input type="text" class="form-control" id="fecha_vencimiento" value="{{ $fechaVencimiento }}" readonly>
+                        </div>
+                        @endif
 
                     </div>
 

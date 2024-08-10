@@ -132,7 +132,7 @@
 
                 @if($document->tipo_documento == 'RUT')
                 <div class="p-2">
-                    <a href="{{ asset('storage/documentos/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
+                    <a href="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
                 </div>
                 @endif
                 @endforeach
@@ -149,7 +149,7 @@
 
                 @if($document->tipo_documento == 'CAMARA_COMERCIO')
                 <div class="p-2">
-                    <a href="{{ asset('storage/documentos/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
+                    <a href="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
                 </div>
                 @endif
                 @endforeach
@@ -166,7 +166,7 @@
 
                 @if($document->tipo_documento == 'CEDULA_REPRESENTANTE')
                 <div class="p-2">
-                    <a href="{{ asset('storage/documentos/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
+                    <a href="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
                 </div>
                 @endif
                 @endforeach
@@ -183,7 +183,7 @@
                 <div class="p-2">
 
                     <h6>{{ $document->tipo_documento }}</h6>
-                    <img src="{{ asset('storage/documentos/' . $document->archivo) }}" alt="Foto de la fachada" width="500" />
+                    <img src="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" alt="Foto de la fachada" width="500" />
                 </div>
                 @endif
                 @endforeach

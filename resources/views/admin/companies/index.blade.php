@@ -133,7 +133,7 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Inspector asignado:
+                                            Inspección:
                                         </button>
                                     </h2>
                                     <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionCompany">
@@ -146,8 +146,8 @@
 
                                             @foreach ($company->inspections as $inspection)
 
-                                            <p>Inspector: {{ $inspection->user->nombre }} {{ $inspection->user->apellido }}</p>
-                                            <p>Fecha Solicitud: {{ $inspection->fecha_solicitud }}</p>
+                                            <p>Inspector: {{ $inspection->user ? $inspection->user->nombre . ' ' . $inspection->user->apellido : 'No tiene inspector asignado' }}</p>
+                                            <p>Fecha Solicitud Inspección: {{ $inspection->fecha_solicitud }}</p>
                                             <p>Estado Actual: {{ $inspection->estado }}</p>
 
                                             @endforeach
@@ -176,11 +176,11 @@
 
                                                 @if($document->tipo_documento != 'FOTO_FACHADA')
                                                 <h6>{{ $document->tipo_documento }}</h6>
-                                                <a href="{{ asset('storage/documentos/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">Descargar</a>
+                                                <a href="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">Descargar</a>
                                                 @else
                                                 <div>
                                                     <h6>{{ $document->tipo_documento }}</h6>
-                                                    <img src="{{ asset('storage/documentos/' . $document->archivo) }}" alt="Foto de la fachada" width="500" />
+                                                    <img src="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" alt="Foto de la fachada" width="500" />
                                                 </div>
                                                 @endif
 
@@ -331,7 +331,7 @@
 
                                         @if($document->tipo_documento == 'RUT')
                                         <div class="p-2">
-                                            <a href="{{ asset('storage/documentos/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
+                                            <a href="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
                                         </div>
                                         @endif
                                         @endforeach
@@ -348,7 +348,7 @@
 
                                         @if($document->tipo_documento == 'CAMARA_COMERCIO')
                                         <div class="p-2">
-                                            <a href="{{ asset('storage/documentos/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
+                                            <a href="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
                                         </div>
                                         @endif
                                         @endforeach
@@ -365,7 +365,7 @@
 
                                         @if($document->tipo_documento == 'CEDULA_REPRESENTANTE')
                                         <div class="p-2">
-                                            <a href="{{ asset('storage/documentos/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
+                                            <a href="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">{{ $document->tipo_documento }}</a>
                                         </div>
                                         @endif
                                         @endforeach
@@ -382,7 +382,7 @@
                                         <div class="p-2">
 
                                             <h6>{{ $document->tipo_documento }}</h6>
-                                            <img src="{{ asset('storage/documentos/' . $document->archivo) }}" alt="Foto de la fachada" width="500" />
+                                            <img src="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" alt="Foto de la fachada" width="500" />
                                         </div>
                                         @endif
                                         @endforeach

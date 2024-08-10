@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('razon_social');
             $table->string('horario_funcionamiento');
-            $table->string('cedula_representante');
             $table->string('representante_legal');
+            $table->string('cedula_representante');
             $table->string('nit');
             $table->string('direccion');
             $table->string('telefono');
