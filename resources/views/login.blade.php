@@ -35,15 +35,21 @@
       </div>
       @endif
 
-      <form method="POST" action="{{ route('inicia-sesion') }}">
+      <form method="POST" action="{{ route('inicia-sesion') }}" class="needs-validation" novalidate>
         @csrf
         <div class="mb-3">
           <label for="email" class="form-label">Correo electrónico</label>
-          <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com">
+          <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" required> 
+          <div class="invalid-feedback">
+            Complete este campo.
+          </div>
         </div>
         <div class="mb-3">
           <label for="passsord" class="form-label">Contraseña</label>
-          <input type="password" class="form-control" id="passsord" name="password" placeholder="******">
+          <input type="password" class="form-control" id="passsord" name="password" placeholder="******" required>
+          <div class="invalid-feedback">
+            Complete este campo.
+          </div>
         </div>
         <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="remember" name="remember">
@@ -61,3 +67,19 @@
   </div>
 
 </body>
+
+<script>
+    (() => {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>

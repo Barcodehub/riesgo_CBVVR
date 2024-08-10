@@ -26,22 +26,6 @@ Route::get('/admin', [HomeController::class, 'index'])->name('home');
 Route::get('/inspector', [HomeController::class, 'index'])->name('home');
 Route::get('/cliente', [HomeController::class, 'index'])->name('home');
 
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/', function () {
-//         return view('app');
-//     })->name('app');
-
-//     Route::resource('roles', RoleController::class)->except(['create', 'edit', 'show']);
-    
-//     Route::resource('users', UserController::class)->except(['create', 'edit', 'show']);
-    
-//     Route::resource('documents', DocumentController::class)->except(['create', 'edit', 'show']);
-    
-//     Route::resource('companies', CompanyController::class)->except(['create', 'edit', 'show']);
-    
-//     Route::resource('inspections', InspectionController::class)->except(['create', 'edit', 'show']);
-// });
-
 
 Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('dashboard', [LoginController::class, 'adminDashboard'])->name('admin.dashboard');

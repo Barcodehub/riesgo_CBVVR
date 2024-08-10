@@ -35,20 +35,23 @@ class LoginController extends Controller
             $rol_cliente->save();
         }
 
-        $user = new User();
+        $validatedData = $request->validate([
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'documento' => 'required|unique:users',
+            'telefono' => 'required',
+            'disponibilidad' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
+        ]);
 
-        $user->nombre = $request->nombre;
-        $user->apellido = $request->apellido;
-        $user->documento = $request->documento;
-        $user->telefono = $request->telefono;
-        $user->disponibilidad = 1;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->rol_id = $rol_cliente->id;
+        $validatedData['disponibilidad'] = 1;
+        $validatedData['password'] = Hash::make($validatedData['password']);
+        $validatedData['rol_id'] = $rol_cliente->id;
 
-        $user->save();
+        User::create($validatedData);
 
-        Auth::login($user);
+        Auth::login($validatedData);
 
         return redirect()->route('login')->with('success', 'El usuario se creó con éxito');
     }
