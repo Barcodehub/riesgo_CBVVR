@@ -48,7 +48,7 @@
             <div class="modal fade" id="conceptoModal{{$inspection->id}}" tabindex="-1" role="dialog" aria-labelledby="conceptoModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
-                        <form method="POST" id="form{{$inspection->id}}" action="{{ route('inspector.store', [$inspection->id]) }}" class="needs-validation-inspection" novalidate>
+                        <form method="POST" id="form{{$inspection->id}}" action="{{ route('inspector.store', [$inspection->id]) }}" class="needs-validation" novalidate>
 
                             <div class="modal-header">
                                 <h5 class="modal-title" id="conceptoModalLabel">Crear Concepto</h5>
@@ -347,7 +347,7 @@
     (() => {
         'use strict'
 
-        const forms = document.querySelectorAll('.needs-validation-inspection');
+        const forms = document.querySelectorAll('.needs-validation');
 
         console.log(forms)
 
