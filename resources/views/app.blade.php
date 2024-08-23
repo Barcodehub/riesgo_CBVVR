@@ -17,15 +17,6 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!-- <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link active" href="{{ route('users.index') }}">Usuarios</a>
-                    <a class="nav-link" href="{{ route('companies.index') }}">Empresas</a>
-                    <a class="nav-link" href="{{ route('inspections.index') }}">Inspecciones</a>
-                    <a class="nav-link" href="{{ route('roles.index') }}">Roles</a>
-                    <a class="nav-link" href="{{ route('logout') }}">Cerrar sesión</a>
-                </div>
-            </div> -->
 
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">

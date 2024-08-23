@@ -50,7 +50,7 @@
                         <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#cotizarModal{{$inspection->id}}">Cotizar <i class="ps-2 fa-solid fa-pen"></i></a>
                         @endif
                         <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#asignarInspectorModal{{$inspection->id}}">Inspector <i class="fa-regular fa-square-check"></i></a>
-                        @if ($inspection->concept)
+                        @if ($inspection->concept->first())
                         <a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalVerConcepto{{$inspection->id}}">Concepto <i class="ps-2 fa-solid fa-magnifying-glass-plus"></i></a>
                         @endif
                     </div>
@@ -204,6 +204,8 @@
             </div>
 
             <!-- MODAL VER DETALLE -->
+            @if ($inspection->concept->first())
+
             <div class="modal fade" id="modalVerConcepto{{$inspection->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
@@ -213,6 +215,7 @@
                         </div>
                         <div class="modal-body">
 
+                            
                             <div class="mb-3 row g-3">
                                 <div class="col-4">
                                     <label for="fecha_concepto" class="form-label">Fecha concepto</label>
@@ -365,6 +368,9 @@
                     </div>
                 </div>
             </div>
+
+            @endif
+
 
             @endforeach
         </tbody>

@@ -148,9 +148,15 @@ class InspectionController extends Controller
 
         $concept = Concept::where('inspeccion_id', $inspection->id)->first();
 
-        $fechaConcepto = Carbon::parse($concept->fecha_concepto);
-        $fechaMasUnAnio = $fechaConcepto->addYear();
+        $fechaConcepto = null;
+        $fechaMasUnAnio = null;
 
-        return view('cliente.detalle-inspeccion', ['inspection' => $inspection, 'concept' => $concept, 'fechaVencimiento' => $fechaMasUnAnio->format('Y-m-d')]);
+        if($concept) {
+            $fechaConcepto = Carbon::parse($concept->fecha_concepto);
+            $fechaMasUnAnio = $fechaConcepto->addYear()->format('Y-m-d');
+        }
+
+
+        return view('cliente.detalle-inspeccion', ['inspection' => $inspection, 'concept' => $concept, 'fechaVencimiento' => $fechaMasUnAnio]);
     }
 }

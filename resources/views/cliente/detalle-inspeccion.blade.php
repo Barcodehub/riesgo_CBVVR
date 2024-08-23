@@ -49,19 +49,27 @@
     </div>
 
 
-    @if ($inspection->valor)
-    <div class="mb-3">
-        <label for="valor" class="form-label">Valor de la Inspección</label>
-        <input type="text" class="form-control" id="valor" value="$ {{ $inspection->valor }}" readonly>
+    <div class="mb-3 row g-3">
+
+        @if ($inspection->valor)
+        <div class="col-6">
+            <label for="valor" class="form-label">Valor de la Inspección</label>
+            <input type="text" class="form-control" id="valor" value="$ {{ $inspection->valor }}" readonly>
+        </div>
+        @endif
+
+        @if ($concept && $concept->favorable)       
+        <div class="col-6">
+            <label for="fecha_vencimiento" class="form-label">Certificado hasta: </label>
+            <input type="text" class="form-control" id="fecha_vencimiento" value="{{ $fechaVencimiento }}" readonly>
+        </div>
+        @endif
     </div>
-
-    @endif
-
 
 
     <h4 class="mt-5">Detalle del concepto: </h4>
 
-    @if ($inspection->concept->isEmpty())
+    @if (!$concept)
     <h6>No tiene concepto realizado</h6>
     @else
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalVerConcepto">Ver concepto <i class="fa-solid fa-magnifying-glass-plus"></i></button>

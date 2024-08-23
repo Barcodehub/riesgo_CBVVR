@@ -40,7 +40,6 @@ class LoginController extends Controller
             'apellido' => 'required',
             'documento' => 'required|unique:users',
             'telefono' => 'required',
-            'disponibilidad' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
         ]);
@@ -49,9 +48,9 @@ class LoginController extends Controller
         $validatedData['password'] = Hash::make($validatedData['password']);
         $validatedData['rol_id'] = $rol_cliente->id;
 
-        User::create($validatedData);
+        $userCreated = User::create($validatedData);
 
-        Auth::login($validatedData);
+        Auth::login($userCreated);
 
         return redirect()->route('login')->with('success', 'El usuario se creó con éxito');
     }
@@ -75,6 +74,13 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
+
+            if($user->disponibilidad == 0) {
+                Auth::logout();
+                return redirect()->route('login')->withErrors([
+                    'error' => 'El usuario se encuentra deshabilitado.',
+                ]);
+            }
 
             if ($user->role->nombre == 'ADMINISTRADOR') {
                 return redirect()->intended(route('admin.dashboard'));

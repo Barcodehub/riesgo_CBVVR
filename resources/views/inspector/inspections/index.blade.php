@@ -260,13 +260,13 @@
                                                 <div class="d-flex gap-3">
 
                                                     <div class="w-50">
-                                                        <label class="form-label" for="empresa_recarga_tipo_extintor_{{ $tipo_extintor->id }}">Empresa que recarga </label>
+                                                        <label class="form-label" for="empresa_recarga_tipo_extintor_{{ $tipo_extintor->id }}">Empresa que recarga *</label>
                                                         <input type="text" class="form-control" id="empresa_recarga_tipo_extintor_{{$tipo_extintor->id}}" name="empresa_recarga_tipo_extintor[{{ $tipo_extintor->id }}]" 
                                                             disabled placeholder="Escriba el nombre de la empresa que recarga">
                                                     </div>
 
                                                     <div class="w-50">
-                                                        <label class="form-label" for="fecha_vencimiento_tipo_extintor_{{ $tipo_extintor->id }}">Fecha de vencimiento </label>
+                                                        <label class="form-label" for="fecha_vencimiento_tipo_extintor_{{ $tipo_extintor->id }}">Fecha de vencimiento *</label>
                                                         <input type="date" class="form-control" id="fecha_vencimiento_tipo_extintor_{{$tipo_extintor->id}}" name="fecha_vencimiento_tipo_extintor[{{ $tipo_extintor->id }}]" disabled>
                                                     </div>
 
@@ -307,13 +307,13 @@
                                                 <div class="d-flex gap-3">
 
                                                     <div class="w-50">
-                                                        <label class="form-label" for="empresa_recarga_tipo_botiquin_{{ $tipo_botiquin->id }}">Empresa que recarga </label>
+                                                        <label class="form-label" for="empresa_recarga_tipo_botiquin_{{ $tipo_botiquin->id }}">Empresa que recarga *</label>
                                                         <input type="text" class="form-control" id="empresa_recarga_tipo_botiquin_{{$tipo_botiquin->id}}" name="empresa_recarga_tipo_botiquin[{{ $tipo_botiquin->id }}]" 
                                                             disabled placeholder="Escriba el nombre de la empresa que recarga">
                                                     </div>
 
                                                     <div class="w-50">
-                                                        <label class="form-label" for="fecha_vencimiento_tipo_botiquin_{{ $tipo_botiquin->id }}">Fecha de vencimiento </label>
+                                                        <label class="form-label" for="fecha_vencimiento_tipo_botiquin_{{ $tipo_botiquin->id }}">Fecha de vencimiento *</label>
                                                         <input type="date" class="form-control" id="fecha_vencimiento_tipo_botiquin_{{$tipo_botiquin->id}}" name="fecha_vencimiento_tipo_botiquin[{{ $tipo_botiquin->id }}]" disabled>
                                                     </div>
 

@@ -51,7 +51,7 @@
                 <td>
                     <div class="flex justify-between items-center gap-2">
                         <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal{{$user->id}}">Editar</a>
-                        <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{$user->id}}">Eliminar</a>
+                        <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{$user->id}}">Cambiar Estado</a>
                     </div>
                 </td>
             </tr>
@@ -60,19 +60,18 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Eliminar user</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Cambiar disponibilidad</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Al eliminar el usuario <strong>{{ $user->nombre }}</strong> se eliminan todos los recursos relacionados.
-                            ¿Está seguro que desea eliminar el usuario <strong>{{ $user->nombre }}</strong>?
+                            ¿Está seguro que desea cambiar la disponibilidad al usuario <strong>{{ $user->nombre }}</strong>?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, cancelar</button>
-                            <form action="{{ route('users.destroy', [$user->id]) }}" method="POST">
-                                @method('DELETE')
+                            <form action="{{ route('users.changeState', [$user->id]) }}" method="POST">
+                                @method('PATCH')
                                 @csrf
-                                <button type="submit" class="btn btn-primary">Sí, eliminar el usuario</button>
+                                <button type="submit" class="btn btn-primary">Aceptar</button>
                             </form>
 
                         </div>

@@ -38,6 +38,8 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
         'companies' => CompanyController::class,
     ], ['except' => ['create', 'edit', 'show']]);
 
+    Route::patch('changeState/{id}', [UserController::class, 'changeState'])->name('users.changeState');
+
     Route::resource('roles', RoleController::class)->only(['index', 'destroy']);
     Route::resource('inspections', InspectionController::class)->only(['index', 'store', 'update', 'asignarInspector', 'destroy']);
     Route::patch('asignarInspector/{id}', [InspectionController::class, 'asignarInspector'])->name('inspections.asignarInspector');
@@ -62,5 +64,4 @@ Route::prefix('cliente')->middleware(['cliente'])->group(function () {
     Route::get('detalleInspeccion', [InspectionController::class, 'inspeccionByEmpresa'])->name('cliente.detalleInspeccion');
     Route::post('storeCliente', [CompanyController::class, 'storeCliente'])->name('cliente.storeCliente');
     Route::patch('updateCliente/{id}', [CompanyController::class, 'updateCliente'])->name('cliente.updateCliente');
-    // Route::resource('companies', [CompanyController::class], ['except' => ['create', 'edit', 'show']]);
 });
