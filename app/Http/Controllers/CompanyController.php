@@ -18,26 +18,13 @@ class CompanyController extends Controller
     {
         $companies = Company::all();
 
-        $opcionesPisos = [
-            '1' => '1',
-            '2' => '2',
-            '3' => '3',
-            '4' => '4',
-            '5' => '5',
-            '6' => '6',
-            '7' => '7',
-            '8' => '8',
-            '9' => '9',
-            '10' => '10',
-        ];
-
         $inspectors = User::whereHas('role', function ($query) {
             $query->where('nombre', 'INSPECTOR');
         })->get();
 
 
 
-        return view('admin.companies.index', ['companies' => $companies, 'opcionesPisos' => $opcionesPisos, 'inspectors' => $inspectors]);
+        return view('admin.companies.index', ['companies' => $companies, 'inspectors' => $inspectors]);
     }
 
     public function store(Request $request)
@@ -45,23 +32,22 @@ class CompanyController extends Controller
 
         $validatedData = $request->validate([
             'razon_social' => 'required',
+            'nombre_establecimiento' => 'required',
             'representante_legal' => 'required',
             'horario_funcionamiento' => 'required',
             'cedula_representante' => 'required',
             'nit' => 'required',
             'direccion' => 'required',
+            'barrio' => 'required',
             'telefono' => 'required',
             'email' => 'required',
             'actividad_comercial' => 'required',
-            'ancho_dimensiones' => 'required',
-            'largo_dimensiones' => 'required',
-            'num_pisos' => 'required'
         ]);
 
         $companyCreated = Company::create($validatedData);
 
 
-        $request->validate([
+      /* $request->validate([
             'rut' => 'required|mimes:pdf',
             'camara_comercio' => 'required|mimes:pdf',
             'cedula' => 'required|mimes:pdf',
@@ -74,6 +60,7 @@ class CompanyController extends Controller
             'CEDULA_REPRESENTANTE' => 'cedula',
             'FOTO_FACHADA' => 'fachada'
         ];
+    
 
         foreach ($documents as $tipo_documento => $input_name) {
             if ($request->hasFile($input_name)) {
@@ -81,9 +68,9 @@ class CompanyController extends Controller
                 $file = $request->file($input_name);
 
                 $storage_path = 'documentos/empresa-' . $companyCreated->id;
-                
+
                 $file_name = $input_name . "." . $file->extension();
-                
+
                 Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 
                 Document::create([
@@ -96,24 +83,24 @@ class CompanyController extends Controller
 
 
         return redirect()->route('companies.index')->with('success', 'La empresa se creó con éxito');
+        */
     }
-
+    
     public function storeCliente(Request $request)
     {
 
         $validatedData = $request->validate([
             'razon_social' => 'required',
+            'nombre_establecimiento' => 'required',
             'representante_legal' => 'required',
             'horario_funcionamiento' => 'required',
             'cedula_representante' => 'required',
             'nit' => 'required',
             'direccion' => 'required',
+            'barrio' => 'required',
             'telefono' => 'required',
             'email' => 'required',
             'actividad_comercial' => 'required',
-            'ancho_dimensiones' => 'required',
-            'largo_dimensiones' => 'required',
-            'num_pisos' => 'required'
         ]);
 
         $validatedData['cliente_id'] = Auth::user()->id;
@@ -129,7 +116,7 @@ class CompanyController extends Controller
 
         $inspection->save();
 
-
+        /*
         $request->validate([
             'rut' => 'required|mimes:pdf',
             'camara_comercio' => 'required|mimes:pdf',
@@ -148,11 +135,11 @@ class CompanyController extends Controller
             if ($request->hasFile($input_name)) {
 
                 $file = $request->file($input_name);
-                
+
                 $storage_path = 'documentos/empresa-' . $companyCreated->id;
-                
+
                 $file_name = $input_name . "." . $file->extension();
-                
+
                 Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 
                 Document::create([
@@ -165,6 +152,7 @@ class CompanyController extends Controller
 
 
         return redirect()->route('cliente.datosEmpresa')->with('success', 'La empresa se creó con éxito');
+        */
     }
 
 
@@ -174,21 +162,20 @@ class CompanyController extends Controller
 
         $validatedData = $request->validate([
             'razon_social' => 'required',
+            'nombre_establecimiento' => 'required',
             'representante_legal' => 'required',
             'horario_funcionamiento' => 'required',
             'cedula_representante' => 'required',
             'nit' => 'required',
             'direccion' => 'required',
+            'barrio' => 'required',
             'telefono' => 'required',
             'email' => 'required',
             'actividad_comercial' => 'required',
-            'ancho_dimensiones' => 'required',
-            'largo_dimensiones' => 'required',
-            'num_pisos' => 'required'
         ]);
 
         $company->update($validatedData);
-
+        /*
         $documents = [
             'RUT' => 'rut',
             'CAMARA_COMERCIO' => 'camara_comercio',
@@ -208,9 +195,9 @@ class CompanyController extends Controller
                 $file = $request->file($input_name);
 
                 $storage_path = 'documentos/empresa-' . $company->id;
-                
+
                 $file_name = $input_name . "." . $file->extension();
-                
+
                 Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 
                 Document::updateOrCreate(
@@ -226,6 +213,7 @@ class CompanyController extends Controller
         }
 
         return redirect()->route('cliente.datosEmpresa')->with('success', 'La empresa se actualizó con éxito');
+        */
     }
 
     public function update(Request $request, $id)
@@ -235,21 +223,20 @@ class CompanyController extends Controller
 
         $validatedData = $request->validate([
             'razon_social' => 'required',
+            'nombre_establecimiento' => 'required',
             'representante_legal' => 'required',
             'horario_funcionamiento' => 'required',
             'cedula_representante' => 'required',
             'nit' => 'required',
             'direccion' => 'required',
+            'barrio' => 'required',
             'telefono' => 'required',
             'email' => 'required',
             'actividad_comercial' => 'required',
-            'ancho_dimensiones' => 'required',
-            'largo_dimensiones' => 'required',
-            'num_pisos' => 'required'
         ]);
 
         $company->update($validatedData);
-
+        /*
         $documents = [
             'RUT' => 'rut',
             'CAMARA_COMERCIO' => 'camara_comercio',
@@ -269,9 +256,9 @@ class CompanyController extends Controller
                 $file = $request->file($input_name);
 
                 $storage_path = 'documentos/empresa-' . $company->id;
-                
+
                 $file_name = $input_name . "." . $file->extension();
-                
+
                 Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 
                 Document::updateOrCreate(
@@ -287,6 +274,7 @@ class CompanyController extends Controller
         }
 
         return redirect()->route('companies.index')->with('success', 'La empresa se actualizó con éxito');
+        */
     }
 
     public function destroy($id)
@@ -301,16 +289,23 @@ class CompanyController extends Controller
     public function datosEmpresa()
     {
 
-        $user = auth()->user();
+        $user = Auth::user();
 
         $opcionesPisos = [
-            '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', 
-            '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10',
+            '1' => '1',
+            '2' => '2',
+            '3' => '3',
+            '4' => '4',
+            '5' => '5',
+            '6' => '6',
+            '7' => '7',
+            '8' => '8',
+            '9' => '9',
+            '10' => '10',
         ];
 
         $company = Company::where('cliente_id', $user->id)->first();
 
         return view('cliente.detalle-company', ['company' => $company, 'opcionesPisos' => $opcionesPisos]);
     }
-
 }

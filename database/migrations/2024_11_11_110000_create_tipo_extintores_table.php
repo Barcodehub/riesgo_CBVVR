@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('type_extinguishers', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion')->unique();
+            $table->string('nombre');
+            $table->string('contenido')->unique();
             $table->timestamps();
         });
     }

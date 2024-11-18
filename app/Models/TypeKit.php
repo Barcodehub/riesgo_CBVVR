@@ -12,9 +12,9 @@ class TypeKit extends Authenticatable
     protected $fillable = ['descripcion'];
 
 
-    public function tipo_botiquines_concepto()
+    public function primeros_auxilios()
     {
-        return $this->hasMany('App\Models\TipoBotiquinConcepto', 'id', 'id');
+        return $this->hasMany('App\Models\botiquin_primeros_auxilios', 'id_botiquin', 'id');
     }
 
 }

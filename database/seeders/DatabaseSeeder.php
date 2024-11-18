@@ -26,8 +26,10 @@ class DatabaseSeeder extends Seeder
             'apellido' => 'Uno',
             'documento' => '12345678',
             'telefono' => '12345678',
+            'telefono2' => '87654122',
             'disponibilidad' => true,
             'email' => 'anderson07rolon@gmail.com',
+            'email2' => 'anderson07rolon@ufps.edu.co',
             'password' => bcrypt('1234'),
             'rol_id' => 1
         ]);
@@ -37,8 +39,10 @@ class DatabaseSeeder extends Seeder
             'apellido' => 'Uno',
             'documento' => '12345679',
             'telefono' => '12345679',
+            'telefono2' => '9856123',
             'disponibilidad' => true,
             'email' => 'inspector@gmail.com',
+            'email2' => 'inspector@ufps.com',
             'password' => bcrypt('1234'),
             'rol_id' => 2
         ]);
@@ -48,8 +52,10 @@ class DatabaseSeeder extends Seeder
             'apellido' => 'Uno',
             'documento' => '12345673',
             'telefono' => '12345673',
+            'telefono2' => '37654321',
             'disponibilidad' => true,
             'email' => 'cliente@gmail.com',
+            'email2' => 'cliente@ufps.com',
             'password' => bcrypt('1234'),
             'rol_id' => 3
         ]);

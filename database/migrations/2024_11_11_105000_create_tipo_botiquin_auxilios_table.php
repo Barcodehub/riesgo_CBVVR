@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipo_botiquin_conceptos', function (Blueprint $table) {
+        Schema::create('tipo_botiquin_Auxilios', function (Blueprint $table) {
             $table->id();
-            $table->string('empresa_recarga');
-            $table->date('fecha_vencimiento');
+            $table->integer('cantidad');
             $table->unsignedBigInteger('tipo_botiquin_id');
-            $table->foreign('tipo_botiquin_id')->references('id')->on('type_kits')->onDelete('cascade');
-            $table->unsignedBigInteger('concepto_id');
-            $table->foreign('concepto_id')->references('id')->on('concepts')->onDelete('cascade');
+            $table->foreign('tipo_botiquin_id')->references('id')->on('type_kits')->onDelete('restrict');
+            $table->unsignedBigInteger('id_primeros_auxilios');
+            $table->foreign('id_primeros_auxilios')->references('id')->on('primeros_auxilios')->onDelete('restrict');
             $table->timestamps();
         });
     }

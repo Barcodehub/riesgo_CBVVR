@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipo_extintor_conceptos', function (Blueprint $table) {
+        Schema::create('tipo_extintor_equipo', function (Blueprint $table) {
             $table->id();
             $table->string('empresa_recarga');
+            $table->date('fecha_recarga');
             $table->date('fecha_vencimiento');
+            $table->integer('cantidad');
             $table->unsignedBigInteger('tipo_extintor_id');
-            $table->foreign('tipo_extintor_id')->references('id')->on('type_extinguishers')->onDelete('cascade');
-            $table->unsignedBigInteger('concepto_id');
-            $table->foreign('concepto_id')->references('id')->on('concepts')->onDelete('cascade');
+            $table->foreign('tipo_extintor_id')->references('id')->on('type_extinguishers')->onDelete('restrict');
+            $table->unsignedBigInteger('id_equipo_contra_incendio');
+            $table->foreign('id_equipo_contra_incendio')->references('id')->on('equipo_contra_incendio')->onDelete('restrict');
             $table->timestamps();
         });
     }

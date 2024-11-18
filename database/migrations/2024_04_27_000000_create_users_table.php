@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('apellido');
             $table->string('documento')->unique();
             $table->string('telefono');
+            $table->string('telefono2');
             $table->boolean('disponibilidad');
             $table->string('email')->unique();
+            $table->string('email2')->unique();
             $table->string('password');
             $table->unsignedBigInteger('rol_id');
             $table->foreign('rol_id')->references('id')->on('roles')->onDelete('cascade');

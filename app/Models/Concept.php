@@ -9,8 +9,23 @@ class Concept extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['fecha_concepto', 'carga_ocupacional_fija', 'carga_ocupacional_flotante', 'anios_contruccion', 'nrs10', 'sgsst', 'sist_automatico_incendios', 'observaciones_sist_incendios', 
-                        'descripcion_concepto', 'hidrante', 'tipo_hidrante', 'capacitacion', 'tipo_camilla', 'inmovilizador_vertical', 'capacitacion_primeros_auxilios', 'inspeccion_id', 'favorable'];
+    ////Agregar las demas foraneas
+    protected $fillable = [
+        'fecha_concepto',
+        'inspeccion_id',
+        'favorable',
+        'recomendaciones',
+        'id_info_establecimiento',
+        'id_construccion',
+        'id_imagen', ///viene de la tabla archivos
+        'id_sistema_electrico',
+        'id_sistema_iluminacion',
+        'id_ruta',
+        'id_otros',
+        'id_almacenamiento',
+        'id_equipo',
+        'id_auxilios'
+    ];
 
     public function inspection()
     {
@@ -26,4 +41,48 @@ class Concept extends Authenticatable
     {
         return $this->hasMany('App\Models\TipoBotiquinConcepto', 'concepto_id', 'id');
     }
+
+    public function infoestablecimiento() 
+    {
+        return $this->hasOne('App\Models\establecimiento', 'id' , 'id_info_establecimiento');
+    }
+
+    public function construccion()
+    {
+        return $this->hasOne('App\Models\construccion', 'id', 'id_construccion');
+    }
+
+    public function  archivos()
+    {
+        return $this->hasMany('App\Models\Archivos', 'id', 'id_imagen');
+    }
+
+    public function sistema_electrico(){
+        return $this->hasOne('App\Models\Sistema_electrico', 'id' ,'id_sistema_electrico');
+    }
+
+    public function sistema_iluminacion(){
+        return $this->hasOne('App\Models\Sistema_iluminacion', 'id' ,'id_sistema_iluminacion');
+    }
+     
+    public function ruta_evacuacion(){
+        return $this->hasOne('App\Models\Ruta_evacuacion', 'id' ,'id_ruta');
+    }
+
+    public function otras_condiciones(){
+        return $this->hasOne('App\Models\Otras_condiciones', 'id' ,'id_otros');
+    }
+
+    public function almacenamiento(){
+        return $this->hasOne('App\Models\Almacenamiento', 'id_almacenamiento' ,'id');
+    }
+    
+    public function equipo_incendio(){
+        return $this->hasOne('App\Models\Equipo_incendio', 'id' ,'id_equipo');
+    }
+
+    public function primeros_auxilios(){
+        return $this->hasOne('App\Models\Primeros_auxilios', 'id' ,'id_auxilios');
+    }
+     
 }

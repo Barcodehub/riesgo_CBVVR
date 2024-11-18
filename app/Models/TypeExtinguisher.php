@@ -9,12 +9,12 @@ class TypeExtinguisher extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['descripcion'];
+    protected $fillable = ['nombre', 'contenido'];
 
 
-    public function tipo_extintores_concepto()
+    public function extintor_sistema_incendio()
     {
-        return $this->hasMany('App\Models\TipoExtintorConcepto', 'id', 'id');
+        return $this->hasMany('App\Models\Extintor_sistema_incendios', 'id_tipo_extintor', 'id');
     }
 
 }
