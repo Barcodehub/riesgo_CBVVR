@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nombre_establecimiento');
             $table->string('horario_funcionamiento');
             $table->string('representante_legal');
-            $table->string('cedula_representante')->unique();
+            $table->string('cedula_representante');
             $table->string('nit')->unique();
             $table->string('direccion');
             $table->string('barrio');

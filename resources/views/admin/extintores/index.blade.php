@@ -21,7 +21,8 @@
         <thead class="table-dark">
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Descripción</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Contenido</th>
                 <th scope="col">Acciones</th>
             </tr>
         </thead>
@@ -36,7 +37,8 @@
             @foreach ($extintores as $extintor)
             <tr>
                 <td>{{$extintor->id}}</td>
-                <td>{{$extintor->descripcion}}</td>
+                <td>{{$extintor->nombre}}</td>
+                <td>{{$extintor->contenido}}</td>
                 <td>
                     <div class="flex justify-between items-center gap-2">
                         <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{$extintor->id}}">Editar</a>
@@ -85,11 +87,18 @@
 
                                 <div class="mb-3 col">
 
-                                    <label for="descripcion" class="form-label">Descripción *</label>
-                                    <input type="text" class="form-control mb-2" name="descripcion" placeholder="Escriba la descripción" value="{{ $extintor->descripcion }}" required>
+                                    <label for="nombre" class="form-label">Nombre *</label>
+                                    <input type="text" class="form-control mb-2" name="nombre" placeholder="Escriba el nombre" value="{{ $extintor->nombre }}" required>
                                     <div class="invalid-feedback">
                                         Complete este campo.
                                     </div>
+
+                                    <label for="contenido" class="form-label">Contenido *</label>
+                                    <input type="text" class="form-control mb-2" name="contenido" placeholder="Escriba la descripción" value="{{ $extintor->contenido }}" required>
+                                    <div class="invalid-feedback">
+                                        Complete este campo.
+                                    </div>
+
 
                                     <input type="submit" value="Actualizar" class="btn btn-primary my-2" />
                                 </div>
@@ -116,9 +125,18 @@
             <div class="modal-body">
                 <form action="{{ route('extintores.store') }}" method="POST" class="needs-validation" novalidate>
                     @csrf
+
                     <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripción *</label>
-                        <input type="text" class="form-control" id="descripcion" name="descripcion" required>
+                        <label for="nombre" class="form-label">Nombre *</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        <div class="invalid-feedback">
+                            Complete este campo.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="contenido" class="form-label">Contenido *</label>
+                        <input type="text" class="form-control" id="contenido" name="contenido" required>
                         <div class="invalid-feedback">
                             Complete este campo.
                         </div>

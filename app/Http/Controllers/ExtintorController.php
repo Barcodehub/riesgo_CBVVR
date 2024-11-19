@@ -10,24 +10,28 @@ use Illuminate\Validation\Rule;
 class ExtintorController extends Controller
 {
 
-    public function index() {
+    public function index()
+    {
         $extintores = TypeExtinguisher::all();
 
         return view('admin.extintores.index', ['extintores' => $extintores]);
     }
 
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $validatedData = $request->validate([
-            'descripcion' => [
+            'nombre' => 'required|string|max:255',
+            'contenido' => [
                 'required',
-                'unique:type_extinguishers,descripcion'
+                'unique:type_extinguishers,contenido',
             ],
         ], [
-            'descripcion.unique' => 'El tipo de extintor ya existe.',
+            'contenido.unique' => 'El tipo de extintor ya existe.',
+            'nombre.required' => 'El campo nombre es obligatorio.',
         ]);
 
-        $validatedData['descripcion'] = strtoupper($validatedData['descripcion']);
+        $validatedData['contenido'] = strtoupper($validatedData['contenido']);
 
         TypeExtinguisher::create($validatedData);
 
@@ -35,33 +39,35 @@ class ExtintorController extends Controller
     }
 
 
-    public function update(Request $request, $id) {
-        $extintor = TypeExtinguisher::findOrFail($id);
 
-        $request->validate([
-            'descripcion' => [
+    public function update(Request $request, $id)
+    {
+        $extintor = TypeExtinguisher::findOrFail($id);
+        $validatedData = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'contenido' => [
                 'required',
-                Rule::unique('type_extinguishers', 'descripcion')->ignore($extintor->id)
+                Rule::unique('type_extinguishers', 'contenido')->ignore($extintor->id),
             ],
         ], [
-            'descripcion.unique' => 'El tipo de extintor ya existe.',
+            'nombre.required' => 'El campo nombre es obligatorio.',
+            'contenido.unique' => 'El tipo de extintor ya existe.',
         ]);
 
-        $descripcion = strtoupper($request->input('descripcion'));
+        $validatedData['contenido'] = strtoupper($validatedData['contenido']);
 
-        $extintor->descripcion = $descripcion;
-
-        $extintor->save();
+        $extintor->update($validatedData);
 
         return redirect()->route('extintores.index')->with('success', 'El tipo de extintor se actualizó con éxito');
-    } 
+    }
 
-    public function destroy($id) {
+
+    public function destroy($id)
+    {
         $rol = TypeExtinguisher::find($id);
 
         $rol->delete();
-        
-        return redirect()->route('extintores.index')->with('success', 'El tipo de extintor se eliminó con éxito');
 
+        return redirect()->route('extintores.index')->with('success', 'El tipo de extintor se eliminó con éxito');
     }
 }

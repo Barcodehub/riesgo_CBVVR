@@ -22,8 +22,6 @@ class CompanyController extends Controller
             $query->where('nombre', 'INSPECTOR');
         })->get();
 
-
-
         return view('admin.companies.index', ['companies' => $companies, 'inspectors' => $inspectors]);
     }
 
@@ -115,7 +113,7 @@ class CompanyController extends Controller
 
         $inspection->save();
 
-        
+
         $request->validate([
             'rut' => 'required|mimes:pdf',
             'camara_comercio' => 'required|mimes:pdf',
@@ -149,7 +147,7 @@ class CompanyController extends Controller
             }
         }
 
-        
+
         return redirect()->route('cliente.datosEmpresa')->with('success', 'La empresa se creó con éxito');
     }
 
@@ -173,7 +171,7 @@ class CompanyController extends Controller
         ]);
 
         $company->update($validatedData);
-        
+
         $documents = [
             'RUT' => 'rut',
             'CAMARA_COMERCIO' => 'camara_comercio',
@@ -209,7 +207,7 @@ class CompanyController extends Controller
                 );
             }
         }
-        
+
         return redirect()->route('cliente.datosEmpresa')->with('success', 'La empresa se actualizó con éxito');
     }
 
@@ -233,7 +231,7 @@ class CompanyController extends Controller
         ]);
 
         $company->update($validatedData);
-        
+
         $documents = [
             'RUT' => 'rut',
             'CAMARA_COMERCIO' => 'camara_comercio',
@@ -269,7 +267,7 @@ class CompanyController extends Controller
                 );
             }
         }
-        
+
         return redirect()->route('companies.index')->with('success', 'La empresa se actualizó con éxito');
     }
 
@@ -284,11 +282,13 @@ class CompanyController extends Controller
 
     public function datosEmpresa()
     {
-
         $user = Auth::user();
 
-        $company = Company::where('cliente_id', $user->id)->first();
+        $companies = Company::where('cliente_id', $user->id)->get();
 
-        return view('cliente.detalle-company', ['company' => $company]);
+        return view('cliente.detalle-company', [
+            'companies' => $companies,
+            'clientName' => $user->nombre
+        ]);
     }
 }
