@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class establecimiento extends Authenticatable
+class Establecimiento extends Authenticatable
 {
     use HasFactory;
+
+    protected $table = 'info_establecimiento';
 
     protected $filable = ['num_pisos' , 'ancho_dimensiones' , 'largo_dimensiones' , 'carga_ocupacional_fija' , 'carga_ocupacional_flotante' , 'id_empresa'];
 

@@ -104,7 +104,7 @@ class CompanyController extends Controller
 
         $companyCreated = Company::create($validatedData);
 
-
+        /*
         $inspection = new Inspection();
 
         $inspection->fecha_solicitud = Carbon::now()->toDateString();
@@ -112,7 +112,7 @@ class CompanyController extends Controller
         $inspection->estado = 'SOLICITADA';
 
         $inspection->save();
-
+        */
 
         $request->validate([
             'rut' => 'required|mimes:pdf',

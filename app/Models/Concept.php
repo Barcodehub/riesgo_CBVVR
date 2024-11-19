@@ -44,7 +44,7 @@ class Concept extends Authenticatable
 
     public function infoestablecimiento() 
     {
-        return $this->hasOne('App\Models\establecimiento', 'id' , 'id_info_establecimiento');
+        return $this->hasOne('App\Models\Establecimiento', 'id' , 'id_info_establecimiento');
     }
 
     public function construccion()

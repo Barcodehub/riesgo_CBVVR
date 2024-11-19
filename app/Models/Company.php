@@ -43,6 +43,6 @@ class Company extends Authenticatable
 
     public function info_establecimiento()
     {
-        return $this->hasMany('App\Models\establecimiento', 'id_empresa', 'id');
+        return $this->hasMany('App\Models\Establecimiento', 'id_empresa', 'id');
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\KitController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EstablecimientoController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -43,7 +44,7 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::resource('roles', RoleController::class)->only(['index', 'destroy']);
     Route::resource('inspections', InspectionController::class)->only(['index', 'store', 'update', 'asignarInspector', 'destroy']);
     Route::patch('asignarInspector/{id}', [InspectionController::class, 'asignarInspector'])->name('inspections.asignarInspector');
-
+    Route::post('establecimiento/{id}', [EstablecimientoController::class, 'store'])->name('establecimiento.store');
 });
 
 
@@ -54,14 +55,14 @@ Route::prefix('inspector')->middleware(['inspector'])->group(function () {
 
     Route::post('store/{id}', [ConceptController::class, 'store'])->name('inspector.store');
     Route::patch('finalizar/{id}', [InspectionController::class, 'finalizar'])->name('inspector.finalizar');
-
-    
 });
 
 Route::prefix('cliente')->middleware(['cliente'])->group(function () {
     Route::get('dashboard', [LoginController::class, 'clienteDashboard'])->name('cliente.dashboard');
     Route::get('datosEmpresa', [CompanyController::class, 'datosEmpresa'])->name('cliente.datosEmpresa');
     Route::get('detalleInspeccion', [InspectionController::class, 'showInspections'])->name('cliente.detalleInspeccion');
+    Route::post('inspeccion', [InspectionController::class, 'store'])->name('cliente.storeInspeccion');
     Route::post('storeCliente', [CompanyController::class, 'storeCliente'])->name('cliente.storeCliente');
     Route::patch('updateCliente/{id}', [CompanyController::class, 'updateCliente'])->name('cliente.updateCliente');
+    Route::post('establecimiento/{id}', [EstablecimientoController::class, 'storeCliente'])->name('cliente.storeEstablecimiento');
 });

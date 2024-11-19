@@ -29,7 +29,6 @@ class InspectionController extends Controller
     {
 
         $request->validate([
-            'inspector_id' => 'required',
             'company_id' => 'required'
         ]);
 
@@ -37,13 +36,15 @@ class InspectionController extends Controller
 
         $inspection->fecha_solicitud = Carbon::now()->toDateString();
         $inspection->establecimiento_id = $request->company_id;
-        $inspection->inspector_id = $request->inspector_id;
+        $inspection->inspector_id = null;
         $inspection->estado = 'SOLICITADA';
 
         $inspection->save();
 
-        return redirect()->route('companies.index')->with('success', 'La inspección se creó con éxito');
+        return redirect()->route('cliente.datosEmpresa')->with('success', 'La inspección se creó con éxito');
     }
+
+    
 
 
     public function update(Request $request, $id)
