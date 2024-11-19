@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('tipo_documento');
             $table->string('archivo');
             $table->unsignedBigInteger('empresa_id');
-            $table->foreign('empresa_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreign('empresa_id')->references('id')->on('companies')->onDelete('restrict');
             $table->timestamps();
         });
     }

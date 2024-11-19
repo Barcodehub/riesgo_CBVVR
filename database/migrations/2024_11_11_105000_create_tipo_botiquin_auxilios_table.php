@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipo_botiquin_conceptos');
+        Schema::dropIfExists('tipo_botiquin_Auxilios');
     }
 };

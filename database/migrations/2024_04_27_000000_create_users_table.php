@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('email2')->unique();
             $table->string('password');
             $table->unsignedBigInteger('rol_id');
-            $table->foreign('rol_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->foreign('rol_id')->references('id')->on('roles')->onDelete('restrict');
             $table->rememberToken();
             $table->timestamps();
         });

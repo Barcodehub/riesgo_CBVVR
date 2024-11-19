@@ -47,7 +47,7 @@ class CompanyController extends Controller
         $companyCreated = Company::create($validatedData);
 
 
-      /* $request->validate([
+        $request->validate([
             'rut' => 'required|mimes:pdf',
             'camara_comercio' => 'required|mimes:pdf',
             'cedula' => 'required|mimes:pdf',
@@ -60,7 +60,7 @@ class CompanyController extends Controller
             'CEDULA_REPRESENTANTE' => 'cedula',
             'FOTO_FACHADA' => 'fachada'
         ];
-    
+
 
         foreach ($documents as $tipo_documento => $input_name) {
             if ($request->hasFile($input_name)) {
@@ -83,9 +83,8 @@ class CompanyController extends Controller
 
 
         return redirect()->route('companies.index')->with('success', 'La empresa se creó con éxito');
-        */
     }
-    
+
     public function storeCliente(Request $request)
     {
 
@@ -116,7 +115,7 @@ class CompanyController extends Controller
 
         $inspection->save();
 
-        /*
+        
         $request->validate([
             'rut' => 'required|mimes:pdf',
             'camara_comercio' => 'required|mimes:pdf',
@@ -150,9 +149,8 @@ class CompanyController extends Controller
             }
         }
 
-
+        
         return redirect()->route('cliente.datosEmpresa')->with('success', 'La empresa se creó con éxito');
-        */
     }
 
 
@@ -175,7 +173,7 @@ class CompanyController extends Controller
         ]);
 
         $company->update($validatedData);
-        /*
+        
         $documents = [
             'RUT' => 'rut',
             'CAMARA_COMERCIO' => 'camara_comercio',
@@ -211,9 +209,8 @@ class CompanyController extends Controller
                 );
             }
         }
-
+        
         return redirect()->route('cliente.datosEmpresa')->with('success', 'La empresa se actualizó con éxito');
-        */
     }
 
     public function update(Request $request, $id)
@@ -236,7 +233,7 @@ class CompanyController extends Controller
         ]);
 
         $company->update($validatedData);
-        /*
+        
         $documents = [
             'RUT' => 'rut',
             'CAMARA_COMERCIO' => 'camara_comercio',
@@ -272,9 +269,8 @@ class CompanyController extends Controller
                 );
             }
         }
-
+        
         return redirect()->route('companies.index')->with('success', 'La empresa se actualizó con éxito');
-        */
     }
 
     public function destroy($id)
@@ -291,21 +287,8 @@ class CompanyController extends Controller
 
         $user = Auth::user();
 
-        $opcionesPisos = [
-            '1' => '1',
-            '2' => '2',
-            '3' => '3',
-            '4' => '4',
-            '5' => '5',
-            '6' => '6',
-            '7' => '7',
-            '8' => '8',
-            '9' => '9',
-            '10' => '10',
-        ];
-
         $company = Company::where('cliente_id', $user->id)->first();
 
-        return view('cliente.detalle-company', ['company' => $company, 'opcionesPisos' => $opcionesPisos]);
+        return view('cliente.detalle-company', ['company' => $company]);
     }
 }

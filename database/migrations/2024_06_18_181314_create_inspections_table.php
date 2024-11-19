@@ -16,9 +16,9 @@ return new class extends Migration
             $table->date('fecha_solicitud');
             $table->date('fecha_asignacion_inspector')->nullable(true);
             $table->unsignedBigInteger('establecimiento_id');
-            $table->foreign('establecimiento_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreign('establecimiento_id')->references('id')->on('companies')->onDelete('restrict');
             $table->unsignedBigInteger('inspector_id')->nullable(true);
-            $table->foreign('inspector_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('inspector_id')->references('id')->on('users')->onDelete('restrict');
             $table->string('estado');
             $table->double('valor')->nullable(true);
             $table->string('numero_certificado')->nullable(true);

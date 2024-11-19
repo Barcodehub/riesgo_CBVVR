@@ -168,41 +168,45 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{--
-                                
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            Documentos cargados:
-                                        </button>
-                                    </h2>
-                                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionCompany">
-                                        <div class="accordion-body">
-                                            @if ($company->documents->isEmpty())
-                                            <h6 class="mt-4">No tiene documentos cargados</h6>
-                                            @else
 
-                                            @foreach ($company->documents as $document)
-                                            <div class="d-flex justify-content-between">
 
-                                                @if ($document->tipo_documento != 'FOTO_FACHADA')
-                                                <h6>{{ $document->tipo_documento }}</h6>
-                                                <a href="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" target="_blank" download="{{ $document->archivo }}">Descargar</a>
-                                                @else
-                                                <div>
-                                                    <h6>{{ $document->tipo_documento }}</h6>
-                                                    <img src="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}" alt="Foto de la fachada" width="500" />
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                    aria-expanded="false" aria-controls="collapseTwo">
+                                                    Documentos cargados:
+                                                </button>
+                                            </h2>
+                                            <div id="collapseTwo" class="accordion-collapse collapse"
+                                                data-bs-parent="#accordionCompany">
+                                                <div class="accordion-body">
+                                                    @if ($company->documents->isEmpty())
+                                                        <h6 class="mt-4">No tiene documentos cargados</h6>
+                                                    @else
+                                                        @foreach ($company->documents as $document)
+                                                            <div class="d-flex justify-content-between">
+
+                                                                @if ($document->tipo_documento != 'FOTO_FACHADA')
+                                                                    <h6>{{ $document->tipo_documento }}</h6>
+                                                                    <a href="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}"
+                                                                        target="_blank"
+                                                                        download="{{ $document->archivo }}">Descargar {{ $document->tipo_documento }}</a>
+                                                                @else
+                                                                    <div>
+                                                                        <h6>{{ $document->tipo_documento }}</h6>
+                                                                        <img src="{{ asset('storage/documentos/empresa-' . $company->id . '/' . $document->archivo) }}"
+                                                                            alt="Foto de la fachada" width="500" />
+                                                                    </div>
+                                                                @endif
+
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
                                                 </div>
-                                                @endif
-
                                             </div>
-                                            @endforeach
-
-                                            @endif
                                         </div>
-                                    </div>
-                                </div>
-                            --}}
+
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -227,7 +231,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <form method="POST" action="{{ route('companies.update', [$company->id]) }}"
-                                        enctype="multipart/form-data" class="needs-validation-update" novalidate>
+                                        enctype="multipart/form-data" class="needs-validation" novalidate>
                                         @method('PATCH')
                                         @csrf
 
@@ -348,7 +352,7 @@
                                                 </div>
                                             </div>
 
-                                            {{-- <div class="mb-3">
+                                            <div class="mb-3">
                                                 <label for="rut" class="form-label">Copia del RUT, vigencia no
                                                     superior los treinta (30) días *</label>
                                                 <input class="form-control" type="file" id="rut" accept=".pdf"
@@ -369,9 +373,9 @@
 
                                             </div>
 
-                                            --}}
+                                            
 
-                                            {{-- }}
+                                            
                                             <div class="mb-3">
                                                 <label for="camara_comercio" class="form-label">Copia del certificado de
                                                     existencia y representación Legal (Cámara de comercio), vigencia no
@@ -392,8 +396,8 @@
                                                     @endif
                                                 @endforeach
                                             </div>
-                                            --}}
-                                            {{--
+                                            
+                                            
                                             <div class="mb-3">
                                                 <label for="cedula" class="form-label">Copia de la cédula de ciudadanía
                                                     del representante legal *</label>
@@ -413,8 +417,8 @@
                                                     @endif
                                                 @endforeach
                                             </div>
-                                            --}}
-                                            {{--
+                                            
+                                            
                                             <div class="mb-5">
                                                 <label for="fachada" class="form-label">Fotografía de la fachada del
                                                     establecimiento a inspeccionar *</label>
@@ -435,7 +439,7 @@
                                                     @endif
                                                 @endforeach
                                             </div>
-                                            --}}
+                                            
                                         </div>
 
 
@@ -577,7 +581,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{--
+
                         <div class="mb-3">
                             <label for="rut" class="form-label">Copia del RUT, vigencia no superior los treinta (30)
                                 días *</label>
@@ -617,7 +621,7 @@
                             <div class="invalid-feedback">
                                 Complete este campo.
                             </div>
-                        </div>--}}
+                        </div>
 
 
                         <button type="submit" class="btn btn-primary">Guardar</button>

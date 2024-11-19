@@ -20,6 +20,7 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
+       
         $validated = $request->validated();
 
         $user = User::create([
@@ -27,8 +28,10 @@ class UserController extends Controller
             'apellido' => $validated['apellido'] ?? null,
             'documento' => $validated['documento'],
             'telefono' => $validated['telefono'],
+            'telefono2' => $validated['telefono2'],
             'disponibilidad' => $request->disponibilidad == 'on' ? 1 : 0,
             'email' => $validated['email'],
+            'email2' => $validated['email2'],
             'password' => Hash::make($validated['password']),
             'rol_id' => $validated['rol_id'],
         ]);
@@ -39,14 +42,17 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        
         $user = User::find($id);
 
         $user->nombre = $request->nombre;
         $user->apellido = $request->apellido;
         $user->documento = $request->documento;
         $user->telefono = $request->telefono;
+        $user->telefono2 = $request->telefono2;
         $user->disponibilidad = $request->disponibilidad == 'on' ? 1 : 0;
         $user->email = $request->email;
+        $user->email2 = $request->email2;
 
         if ($request->password != null) {
             $user->password = Hash::make($request->password);

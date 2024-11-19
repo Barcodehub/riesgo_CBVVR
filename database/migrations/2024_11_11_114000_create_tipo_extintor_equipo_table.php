@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipo_extintor_conceptos');
+        Schema::dropIfExists('tipo_extintor_equipo');
     }
 };
