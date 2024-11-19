@@ -44,7 +44,7 @@ class InspectionController extends Controller
         return redirect()->route('cliente.datosEmpresa')->with('success', 'La inspección se creó con éxito');
     }
 
-    
+
 
 
     public function update(Request $request, $id)
@@ -53,16 +53,16 @@ class InspectionController extends Controller
 
 
         $request->validate([
-            'valor' => 'required|numeric|gt:1000',
+            'valor_cotizacion' => 'required|numeric|gt:1000',
         ]);
 
-        $inspection->valor = $request->valor;
+        $inspection->valor = $request->valor_cotizacion;
         $inspection->estado = 'COTIZADA';
 
 
         $inspection->save();
 
-        return redirect()->route('inspections.index')->with('success', 'La inspección se actualizó con éxito');
+        return redirect()->route('inspections.index')->with('success', 'La inspección se cotizó con éxito');
     }
 
     public function asignarInspector(Request $request, $id)

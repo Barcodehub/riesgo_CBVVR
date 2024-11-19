@@ -33,7 +33,7 @@
             <tr>
                 <td>{{$inspection->id}}</td>
                 <td>{{$inspection->company->razon_social}}</td>
-                
+
                 <td>
                     @if ($inspection->user)
                     {{$inspection->user->nombre}} {{$inspection->user->apellido}}
@@ -113,31 +113,110 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="cotizarModalLabel">Cotizar Inspección</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
                         </div>
                         <div class="modal-body">
                             <form method="POST" action="{{ route('inspections.update', [$inspection->id]) }}" class="needs-validation" novalidate>
-                                @method('PATCH')
                                 @csrf
+                                @method('PUT')
 
-                                <div class="mb-3 col">
-
-                                    <div class="mb-3">
-                                        <label for="valor" class="form-label">Valor de la inspección: </label>
-
-                                        <input class="form-control" type="number" min="1000" name="valor" id="valor" placeholder="Digite el valor" required>
-                                        <div class="invalid-feedback">
-                                            El valor debe ser mayor a 1000.
-                                        </div>
+                                <!-- Información del establecimiento (solo lectura) -->
+                                <h5>Información del Establecimiento</h5>
+                                @if ($inspection->company && $inspection->company->info_establecimiento)
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="num_pisos_{{ $inspection->id }}" class="form-label">Número de Pisos:</label>
+                                        <input type="text" id="num_pisos_{{ $inspection->id }}" class="form-control" value="{{ $inspection->company->info_establecimiento->first()->num_pisos }}" readonly>
                                     </div>
-
+                                    <div class="col-md-6 mb-3">
+                                        <label for="ancho__{{ $inspection->id }}" class="form-label">Ancho:</label>
+                                        <input type="text" id="ancho_{{ $inspection->id }}" class="form-control" value="{{ $inspection->company->info_establecimiento->first()->ancho_dimensiones }}" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="largo_{{ $inspection->id }}" class="form-label">Largo:</label>
+                                        <input type="text" id="largo_{{ $inspection->id }}" class="form-control" value="{{ $inspection->company->info_establecimiento->first()->largo_dimensiones }}" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="carga_ocupacional_fija_{{ $inspection->id }}" class="form-label">Carga Ocupacional Fija:</label>
+                                        <input type="text" id="carga_ocupacional_fij_{{ $inspection->id }}a" class="form-control" value="{{ $inspection->company->info_establecimiento->first()->carga_ocupacional_fija }}" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="carga_ocupacional_flotante_{{ $inspection->id }}" class="form-label">Carga Ocupacional Flotante:</label>
+                                        <input type="text" id="carga_ocupacional_flotante_{{ $inspection->id }}" class="form-control" value="{{ $inspection->company->info_establecimiento->first()->carga_ocupacional_flotante }}" readonly>
+                                    </div>
                                 </div>
-                                <input type="submit" value="Guardar" class="btn btn-primary my-2" />
+                                @else
+                                <p>No hay información del establecimiento disponible para esta inspección.</p>
+                                @endif
+
+                                <!-- Select para tipo de inspección -->
+                                <div class="mb-3">
+                                    <label for="tipo_inspeccion_{{ $inspection->id }}" class="form-label">Tipo de Inspección:</label>
+                                    <select id="tipo_inspeccion_{{ $inspection->id }}" name="tipo_inspeccion" class="form-select" required onchange="calcularCosto('{{ $inspection->id }}')">
+                                        <option value="" disabled selected>Seleccione el tipo de inspección</option>
+                                        <option value="leve">Leve</option>
+                                        <option value="moderado">Moderado</option>
+                                        <option value="ordinario">Ordinario</option>
+                                        <option value="extra">Extra</option>
+                                        <option value="condicion_especial">Condición Especial</option>
+                                    </select>
+                                </div>
+
+                                <!-- Input para valor de la cotización -->
+                                <div class="mb-3">
+                                    <label for="valor_cotizacion_{{ $inspection->id }}" class="form-label">Valor de la Cotización:</label>
+                                    <input type="number" id="valor_cotizacion_{{ $inspection->id }}" name="valor_cotizacion" class="form-control" required>
+                                </div>
+
+                                <!-- Botón para enviar -->
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Crear Cotización</button>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <script>
+                function calcularCosto(inspeccionId) {
+                    // Obtén los valores necesarios (ancho, largo, pisos, tipo de inspección)
+                    const ancho = parseFloat(document.getElementById(`ancho_${inspeccionId}`).value);
+                    const largo = parseFloat(document.getElementById(`largo_${inspeccionId}`).value);
+                    const pisos = parseInt(document.getElementById(`num_pisos_${inspeccionId}`).value, 10);
+                    const tipo = document.getElementById(`tipo_inspeccion_${inspeccionId}`).value;
+
+                    if (isNaN(ancho) || isNaN(largo) || isNaN(pisos)) {
+                        alert("Por favor, verifica los datos del establecimiento.");
+                        return;
+                    }
+
+                    // Calcula el área total
+                    const areaTotal = ancho * largo * pisos;
+
+                    // Define los rangos de área y los costos según la tabla
+                    const rangosArea = [10, 100, 1000, 20000, Infinity];
+                    const costos = {
+                        "leve": [72358, 133864, 260491, 530027, 2111061],
+                        "moderado": [423298, 569824, 770619, 1040155, 2532551],
+                        "ordinario": [772427, 1041964, 1407375, 1899412, 2583201],
+                        "extra": [1121558, 1514103, 2044129, 2760480, 3712095],
+                        "condicion_especial": [1821627, 2458383, 3319450, 4480804, 6049178]
+                    };
+
+                    // Determina el rango de área
+                    let costo = 0;
+                    for (let i = 0; i < rangosArea.length; i++) {
+                        if (areaTotal <= rangosArea[i]) {
+                            costo = costos[tipo][i];
+                            break;
+                        }
+                    }
+
+                    // Asigna el costo calculado al input de valor de cotización
+                    document.getElementById(`valor_cotizacion_${inspeccionId}`).value = costo;
+                }
+            </script>
+
 
             <!-- MODAL ASIGNAR INSPECTOR -->
             <div class="modal fade" id="asignarInspectorModal{{$inspection->id}}" tabindex="-1" role="dialog" aria-labelledby="asignarInspectorModalLabel" aria-hidden="true">
@@ -166,12 +245,12 @@
                         </div>
 
                         @else
-                            
+
                         <div class="modal-body">
 
                             <form method="POST" action="{{ route('inspections.asignarInspector', [$inspection->id]) }}" class="needs-validation" novalidate>
                                 @method('PATCH')
-                                
+
                                 @csrf
 
                                 <div class="mb-3 col">
@@ -194,7 +273,7 @@
                                     <input type="submit" value="Asignar" class="btn btn-primary my-2" />
                                 </div>
                             </form>
-                            
+
 
                         </div>
 
@@ -215,7 +294,7 @@
                         </div>
                         <div class="modal-body">
 
-                            
+
                             <div class="mb-3 row g-3">
                                 <div class="col-4">
                                     <label for="fecha_concepto" class="form-label">Fecha concepto</label>
