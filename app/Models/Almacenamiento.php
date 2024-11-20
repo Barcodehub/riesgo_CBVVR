@@ -9,6 +9,8 @@ class Almacenamiento extends Authenticatable
 {
     use HasFactory;
 
+    protected $table ='almacenamiento_combustibles';
+
     protected $fillable = [
         'material_solido_ordinario',
         'zona_almacenamiento_1',

@@ -9,6 +9,8 @@ class Equipo_incendio extends Authenticatable
 {
     use HasFactory;
 
+    protected $table = 'equipo_contra_incendio';
+
     protected $fillable = [
         'sistema_automatico',
         'tipo_sistema',

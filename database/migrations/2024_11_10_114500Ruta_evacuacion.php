@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('escaleras');
             $table->boolean('señalizadas');
             $table->boolean('barandas');
-            $table->boolean('condicion_escaleras');
+            $table->string('condicion_escaleras');
             $table->string('condicion_señalizadas');
             $table->string('condicion_barandas');
             $table->string('condicion_antideslizante');

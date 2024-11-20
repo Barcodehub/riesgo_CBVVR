@@ -10,6 +10,7 @@ class Concept extends Authenticatable
     use HasFactory;
 
     ////Agregar las demas foraneas
+
     protected $fillable = [
         'fecha_concepto',
         'inspeccion_id',
@@ -17,7 +18,7 @@ class Concept extends Authenticatable
         'recomendaciones',
         'id_info_establecimiento',
         'id_construccion',
-        'id_imagen', ///viene de la tabla archivos
+        'id_imagen',///falta
         'id_sistema_electrico',
         'id_sistema_iluminacion',
         'id_ruta',

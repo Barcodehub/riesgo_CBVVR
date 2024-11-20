@@ -9,6 +9,8 @@ class botiquin_primeros_auxilios extends Authenticatable
 {
     use HasFactory;
 
+    protected $table = 'tipo_botiquin_Auxilios';
+    
     protected $fillable = ['cantidad', 'id_botiquin', 'id_primeros_auxilios'];
 
 
