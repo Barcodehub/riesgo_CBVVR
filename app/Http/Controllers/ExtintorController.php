@@ -22,12 +22,9 @@ class ExtintorController extends Controller
     {
         $validatedData = $request->validate([
             'nombre' => 'required|string|max:255',
-            'contenido' => [
-                'required',
-                'unique:type_extinguishers,contenido',
-            ],
+            'contenido' =>'required|string|max:255'
         ], [
-            'contenido.unique' => 'El tipo de extintor ya existe.',
+            'contenido.required' => 'Debe ingresar el contenido (ml) del extintor.',
             'nombre.required' => 'El campo nombre es obligatorio.',
         ]);
 

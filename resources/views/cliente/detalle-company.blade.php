@@ -57,11 +57,12 @@
                         <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#infoEstablecimientoModal{{ $company->id }}">
                             <i class="fa-solid fa-square-plus"></i>
                         </a>
-                        @endif
-                        @if ($company->inspections->isEmpty())
+                        @else
+                        @if($company->inspections->isEmpty())
                         <a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#solicitarInspeccionModal{{ $company->id }}">
                             <i class="fa-solid fa-check-to-slot">‌</i>
                         </a>
+                        @endif
                         @endif
                     </div>
                 </td>
@@ -84,7 +85,7 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <form action="{{ route('cliente.storeInspeccion') }}" method="POST">
                                 @csrf
-                                
+
                                 <input type="hidden" name="company_id" value="{{ $company->id }}">
                                 <button type="submit" class="btn btn-primary">Solicitar Inspección</button>
                             </form>
