@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('construccion', function (Blueprint $table) {
             $table->id();
-            $table->date('anio_construccion');
+            $table->string('anio_construccion');
             $table->boolean('nrs');
             $table->boolean('sst');
             $table->unsignedBigInteger('id_info_establecimiento');

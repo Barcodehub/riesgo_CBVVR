@@ -1,0 +1,14 @@
+/* Cambiar color de las letras a negro */
+.modal-custom .nav-link {
+    color: black !important;
+}
+
+/* Cuando la pestaña está seleccionada (activa), ponerla en negrita */
+.modal-custom .nav-link.active {
+    font-weight: bold;
+}
+
+/* Si quieres cambiar el color cuando una pestaña está activa, puedes hacerlo también */
+.modal-custom .nav-link.active {
+    color: #000 !important; /* Negro */
+}

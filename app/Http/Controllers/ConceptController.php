@@ -31,6 +31,23 @@ class ConceptController extends Controller
         return view('admin.concepts.index', ['concepts' => $concepts]);
     }
 
+    public function getExtinguishers()
+    {
+        // Obtener todos los tipos de extintores
+        $extinguishers = TypeExtinguisher::all();
+
+        // Devolver los tipos de extintores como JSON
+        return response()->json($extinguishers);
+    }
+
+    public function getBotiquines()
+    {
+        // Obtener todos los tipos de extintores
+        $botiquines = TypeKit::all();
+
+        // Devolver los tipos de extintores como JSON
+        return response()->json($botiquines);
+    }
 
     public function store(Request $request, $inspection_id)
     {
