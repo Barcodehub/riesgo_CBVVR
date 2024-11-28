@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('tipo_archivo');
             $table->string('url');
+            $table->unsignedBigInteger('id_concepto');
+            $table->foreign('id_concepto')->references('id')->on('concepts')->onDelete('restrict');
             $table->timestamps();
         });
     }

@@ -55,7 +55,7 @@ Route::prefix('inspector')->middleware(['inspector'])->group(function () {
     // Ruta para obtener los tipos de extintores (para llenar el select en el modal)
     Route::get('inspector/getExtinguishers', [ConceptController::class, 'getExtinguishers'])->name('inspector.getExtinguishers');
     Route::get('inspector/getBotiquines', [ConceptController::class, 'getBotiquines'])->name('inspector.getBotiquines');
-    Route::post('store/{id}', [ConceptController::class, 'store'])->name('inspector.store');
+    Route::post('inspecciones/{inspection}/store', [ConceptController::class, 'store'])->name('inspector.store');
     Route::patch('finalizar/{id}', [InspectionController::class, 'finalizar'])->name('inspector.finalizar');
 });
 

@@ -7,7 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Sistema_iluminacion extends Authenticatable
 {
+    protected $table = 'sistema_iluminacion';
     use HasFactory;
+
 
     protected $fillable = ['sistema_iluminacion',
         'fecha_ultima_prueba',

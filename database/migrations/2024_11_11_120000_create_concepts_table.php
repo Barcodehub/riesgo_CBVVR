@@ -25,8 +25,6 @@ return new class extends Migration
             $table->foreign('id_info_establecimiento')->references('id')->on('info_establecimiento')->onDelete('restrict');
             $table->unsignedBigInteger('id_construccion');
             $table->foreign('id_construccion')->references('id')->on('construccion')->onDelete('restrict');
-            $table->unsignedBigInteger('id_imagen');
-            $table->foreign('id_imagen')->references('id')->on('archivos')->onDelete('restrict');
             $table->unsignedBigInteger('id_sistema_electrico');
             $table->foreign('id_sistema_electrico')->references('id')->on('sistema_electrico')->onDelete('restrict');
             $table->unsignedBigInteger('id_sistema_iluminacion');
@@ -34,9 +32,13 @@ return new class extends Migration
             $table->unsignedBigInteger('id_ruta');
             $table->foreign('id_ruta')->references('id')->on('ruta_evacuacion')->onDelete('restrict');
             $table->unsignedBigInteger('id_otros');
-            $table->foreign('id_otros')->references('id')->on('otras_condicones')->onDelete('restrict'); 
+            $table->foreign('id_otros')->references('id')->on('otras_condiciones')->onDelete('restrict');
             $table->unsignedBigInteger('id_almacenamiento');
-            $table->foreign('id_almacenamiento')->references('id')->on('almacenamiento_combustibles')->onDelete('restrict'); 
+            $table->foreign('id_almacenamiento')->references('id')->on('almacenamiento_combustibles')->onDelete('restrict');
+            $table->unsignedBigInteger('id_equipo');
+            $table->foreign('id_equipo')->references('id')->on('equipo_contra_incendio')->onDelete('restrict');
+            $table->unsignedBigInteger('id_auxilios');
+            $table->foreign('id_auxilios')->references('id')->on('primeros_auxilios')->onDelete('restrict');
             ////Falta la foranea a imagenes y demas foraneas
         });
     }

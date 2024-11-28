@@ -1,14 +1,22 @@
-/* Cambiar color de las letras a negro */
+/* Color del texto de las pestañas */
 .modal-custom .nav-link {
     color: black !important;
+    background-color: #f8f9fa; /* Fondo claro para todas las pestañas */
+    border: 1px solid #ddd; /* Bordes sutiles */
+    margin-right: 2px; /* Espacio entre pestañas */
+    border-radius: 4px; /* Bordes redondeados */
 }
 
-/* Cuando la pestaña está seleccionada (activa), ponerla en negrita */
+/* Color y estilo para la pestaña activa */
 .modal-custom .nav-link.active {
     font-weight: bold;
+    color: rgb(8, 8, 8) !important; /* Texto blanco */
+    background-color: #aaa8a8; /* Fondo azul para pestaña activa */
+    border-color: #aaa8a8; /* Mismo color que el fondo */
 }
 
-/* Si quieres cambiar el color cuando una pestaña está activa, puedes hacerlo también */
-.modal-custom .nav-link.active {
-    color: #000 !important; /* Negro */
+/* Cambiar fondo al pasar el cursor */
+.modal-custom .nav-link:hover {
+    background-color: #00000000; /* Fondo más oscuro al pasar */
+    border-color: #000000; /* Resaltar bordes */
 }

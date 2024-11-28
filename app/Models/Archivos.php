@@ -9,10 +9,10 @@ class Archivos extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['tipo_archivo' , 'url'];
+    protected $fillable = ['tipo_archivo' , 'url' , 'id_concepto'];
 
     public function concept()
     {
-        return $this->hasOne('App\Models\Concept' , 'id_imagen' , 'id');
+        return $this->hasOne('App\Models\Concept' , 'id' , 'id_concepto');
     }
 }

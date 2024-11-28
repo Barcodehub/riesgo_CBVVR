@@ -9,6 +9,8 @@ class construccion extends Authenticatable
 {
     use HasFactory;
 
+    protected $table = 'construccion';
+
     protected $fillable = ['anio_construccion' , 'nrs' , 'sst' , 'id_info_establecimiento' ];
 
     public function infoEstablecimiento(){

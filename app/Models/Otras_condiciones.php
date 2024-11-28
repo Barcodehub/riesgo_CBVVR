@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Otras_condiciones extends Authenticatable
+
 {
+    protected $table="otras_condiciones";
+    
     use HasFactory;
 
     protected $fillable = [

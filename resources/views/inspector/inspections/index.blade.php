@@ -56,8 +56,8 @@
                 aria-labelledby="conceptModalLabel" aria-hidden="true" data-inspection-id="{{ $inspection->id }}" data-url="{{ route('inspector.getExtinguishers') }}" data-link="{{ route('inspector.getBotiquines') }}">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
-                        <form method="POST" id="form{{$inspection->id}}" action="{{ route('inspector.store', [$inspection->id]) }}" class="needs-validation" novalidate>
-
+                        <form method="POST" action="{{ route('inspector.store', ['inspection' => $inspection->id]) }}" class="needs-validation"  enctype="multipart/form-data" novalidate>
+                            @csrf
                             <div class="modal-header">
                                 <h5 class="modal-title" id="conceptModalLabel">Registrar Concepto</h5>
                             </div>
@@ -78,13 +78,19 @@
                                             <button class="nav-link" id="tab-auxilios{{$inspection->id}}" data-bs-toggle="tab" data-bs-target="#section-auxilios{{$inspection->id}}" type="button" role="tab" aria-controls="section-auxilios{{$inspection->id}}" aria-selected="false">Equipos de Primeros Auxilios</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="tab-rutas{{$inspection->id}}" data-bs-toggle="tab" data-bs-target="#section-rutas{{$inspection->id}}" type="button" role="tab" aria-controls="section-rutas{{$inspection->id}}" aria-selected="false">Rutas y Senderos de Evacuación</button>
+                                            <button class="nav-link" id="tab-rutas{{$inspection->id}}" data-bs-toggle="tab" data-bs-target="#section-rutas{{$inspection->id}}" type="button" role="tab" aria-controls="section-rutas{{$inspection->id}}" aria-selected="false">Rutas y Senderos Evacuación</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="tab-iluminacion{{$inspection->id}}" data-bs-toggle="tab" data-bs-target="#section-iluminacion{{$inspection->id}}" type="button" role="tab" aria-controls="section-iluminacion{{$inspection->id}}" aria-selected="false">Sistema de Iluminación de Emergencia</button>
+                                            <button class="nav-link" id="tab-iluminacion{{$inspection->id}}" data-bs-toggle="tab" data-bs-target="#section-iluminacion{{$inspection->id}}" type="button" role="tab" aria-controls="section-iluminacion{{$inspection->id}}" aria-selected="false">Sistema Iluminación Emergencia</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="tab-electrico{{$inspection->id}}" data-bs-toggle="tab" data-bs-target="#section-electrico{{$inspection->id}}" type="button" role="tab" aria-controls="section-electrico{{$inspection->id}}" aria-selected="false">Condiciones del Sistema Eléctrico</button>
+                                            <button class="nav-link" id="tab-electrico{{$inspection->id}}" data-bs-toggle="tab" data-bs-target="#section-electrico{{$inspection->id}}" type="button" role="tab" aria-controls="section-electrico{{$inspection->id}}" aria-selected="false">Condiciones Sistema Eléctrico</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="tab-combustible{{$inspection->id}}" data-bs-toggle="tab" data-bs-target="#section-combustible{{$inspection->id}}" type="button" role="tab" aria-controls="section-combustible{{$inspection->id}}" aria-selected="false">Almacenamiento Combustibles</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="tab-otros{{$inspection->id}}" data-bs-toggle="tab" data-bs-target="#section-otros{{$inspection->id}}" type="button" role="tab" aria-controls="section-otros{{$inspection->id}}" aria-selected="false">Otros</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -163,6 +169,7 @@
                                         </div>
                                     </div>
 
+
                                     <!-- Sección 2: Características de la Construcción -->
                                     <div class="tab-pane fade" id="section-construccion{{$inspection->id}}" role="tabpanel" aria-labelledby="tab-construccion{{$inspection->id}}">
                                         <br>
@@ -170,20 +177,20 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>Año de Construcción:</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" name="anio_construcción_{{$inspection->id}}" id="anio_construccion_{{$inspection->id}}" class="form-control">
                                             </div>
                                             <br>
                                             <div class="col-md-6">
                                                 <label>¿Se aplicó la NRS10 apartados J y K?:</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="nrs" id="nrs1" value="1">
+                                                        <input class="form-check-input" type="radio" name="nrs_{{$inspection->id}}" id="nrs1_{{$inspection->id}}" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="nrs" id="nrs2" value="0">
+                                                        <input class="form-check-input" type="radio" name="nrs_{{$inspection->id}}" id="nrs2_{{$inspection->id}}" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
@@ -196,19 +203,19 @@
                                                 <label>¿La empresa aplica el Sistema de Gestión de la Seguridad y Salud en el trabajo? :</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="sst" id="sst1" value="1">
+                                                        <input class="form-check-input" type="radio" name="sst_{{$inspection->id}}" id="sst1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="sst" id="sst2" value="0">
+                                                        <input class="form-check-input" type="radio" name="sst_{{$inspection->id}}" id="sst2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="sst" id="sst3" value="null">
+                                                        <input class="form-check-input" type="radio" name="sst_{{$inspection->id}}" id="sst3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -227,19 +234,19 @@
                                                 <label>Sistema Automático:</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="sistema_automatico" id="sistema_automatico_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="sistema_automatico_{{$inspection->id}}" id="sistema_automatico_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="sistema_automatico" id="sistema_automatico_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="sistema_automatico_{{$inspection->id}}" id="sistema_automatico_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="sistema_automatico" id="sistema_automatico_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="sistema_automatico_{{$inspection->id}}" id="sistema_automatico_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -247,16 +254,16 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                            </div>
-                                            <br>
-                                            <div class="col-md-6">
                                                 <label>Tipo De Sistema Automático:</label>
-                                                <input type="text" name="tipo_sistema" id="tipo_sistema" class="form-control">
+                                                <input type="text" name="tipo_sistema_{{$inspection->id}}" id="tipo_sistema" class="form-control">
                                             </div>
+
                                             <div class="col-md-6">
                                                 <label>Observaciones Sistema Automático: </label>
-                                                <textarea class="form-control" name="observaciones_S_A" id="observaciones_S_A" rows="3"></textarea>
+                                                <textarea class="form-control" name="observaciones_S_A_{{$inspection->id}}" id="observaciones_S_A" rows="3"></textarea>
                                             </div>
+
+                                            <br>
                                         </div>
                                         <br>
                                         <div class="row">
@@ -264,50 +271,82 @@
                                                 <label>Red Contra Incendios:</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="red_incendios" id="red_incendios_1" value="1">
-                                                        <label class="form-check-label" for="flexRadioDefault1">
-                                                            Si
+                                                        <input class="form-check-input" type="radio" name="red_incendios_{{$inspection->id}}" id="red_incendios_1_{{$inspection->id}}" value="1">
+                                                        <label class="form-check-label" for="red_incendios_1_{{$inspection->id}}">
+                                                            Sí
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="red_incendios" id="red_incendios_2" value="0">
-                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                        <input class="form-check-input" type="radio" name="red_incendios_{{$inspection->id}}" id="red_incendios_2_{{$inspection->id}}" value="0">
+                                                        <label class="form-check-label" for="red_incendios_2_{{$inspection->id}}">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="red_incendios" id="red_incendios_3" value="null">
-                                                        <label class="form-check-label" for="flexRadioDefault3">
+                                                        <input class="form-check-input" type="radio" name="red_incendios_{{$inspection->id}}" id="red_incendios_3_{{$inspection->id}}" value="null">
+                                                        <label class="form-check-label" for="red_incendios_3_{{$inspection->id}}">
                                                             No Aplica
                                                         </label>
                                                     </div>
+
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
+                                                <label>Hidrantes:</label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="hidrantes_{{$inspection->id}}" id="hidrantes_{{$inspection->id}}" value="1">
+                                                        <label class="form-check-label" for="red_incendios_1_{{$inspection->id}}">
+                                                            Sí
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="hidrantes_{{$inspection->id}}" id="hidrantes_{{$inspection->id}}" value="0">
+                                                        <label class="form-check-label" for="red_incendios_2_{{$inspection->id}}">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="hidrantes_{{$inspection->id}}" id="hidrantes_{{$inspection->id}}" value="null">
+                                                        <label class="form-check-label" for="red_incendios_3_{{$inspection->id}}">
+                                                            No Aplica
+                                                        </label>
+                                                    </div>
+
+                                                </div>
                                             </div>
+
                                             <div class="col-md-6">
-                                                <label>Tipo De Red Contra Incendios:</label>
-                                                <input type="text" name="tipo_red" id="tipo_red" class="form-control">
+                                                <label>Distancia :</label>
+                                                <input type="number" name="distancia_hidrante_{{$inspection->id}}" id="distancia_hidrante_{{$inspection->id}}" class="form-control">
                                             </div>
+
                                             <div class="col-md-6">
-                                                <label>Observaciones de Red Contra Incendio: </label>
-                                                <textarea class="form-control" name="observaciones_red" id="observaciones_red" rows="3"></textarea>
+                                                <label>Tipo De Hidrantes :</label>
+                                                <input type="text" name="tipo_hidrante_{{$inspection->id}}" id="tipo_hidrante_{{$inspection->id}}" class="form-control">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Observaciones de Red Contra Incendio e Hidrantes:</label>
+                                                <textarea class="form-control" name="observaciones_red_{{$inspection->id}}" id="observaciones_red_{{$inspection->id}}" rows="3"></textarea>
                                             </div>
                                         </div>
                                         <br>
+
                                         <h5 class="mt-3">Extintores</h5>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>¿El personal ha recibido capacitación en prevención de incendios y manejo de extintores?</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="capacitacion" id="capacitacion_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="capacitacion_{{$inspection->id}}" id="capacitacion_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="capacitacion" id="capacitacion_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="capacitacion_{{$inspection->id}}" id="capacitacion_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
@@ -316,7 +355,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Observaciones de los Extintores: </label>
-                                                <textarea class="form-control" name="observaciones_extintores" id="observaciones_extintores" rows="3"></textarea>
+                                                <textarea class="form-control" name="observaciones_extintores_{{$inspection->id}}" id="observaciones_extintores_{{$inspection->id}}" rows="3"></textarea>
                                             </div>
                                         </div>
                                         <!------Extintores dinamicos------->
@@ -329,7 +368,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <label for="tipo_{{$inspection->id}}">Tipo de Extintor:</label>
-                                                                    <select class="form-select" id="tipo_{{$inspection->id}}" name="tipo_{{$inspection->id}}">
+                                                                    <select class="form-select" id="tipo_{{$inspection->id}}" name="tipo_{{$inspection->id}}_1">
                                                                         <!-- Los tipos de extintores se llenarán dinámicamente -->
                                                                     </select>
                                                                 </div>
@@ -362,11 +401,7 @@
                                                 <button type="button" class="btn btn-outline-primary mt-3" id="add-extintor-{{$inspection->id}}">Añadir Extintor</button>
                                             </div>
                                         </div>
-
-
                                         <br>
-
-
                                         <!-----Hasta Aqui los campos dinamicos--->
                                     </div>
 
@@ -378,13 +413,13 @@
                                                 <label>Botiquín:</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="botiquin" id="botiquin_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="botiquin_{{$inspection->id}}" id="botiquin_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="botiquin" id="botiquin_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="botiquin_{{$inspection->id}}" id="botiquin_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
@@ -394,7 +429,7 @@
                                             <div class="col-md-6">
                                                 <label>Observaciones Botiquin:</label>
                                                 <div>
-                                                    <textarea class="form-control" name="observaciones_botiquin" id="observaciones_botiquin" rows="3"></textarea>
+                                                    <textarea class="form-control" name="observaciones_botiquin_{{$inspection->id}}" id="observaciones_botiquin_{{$inspection->id}}" rows="3"></textarea>
                                                 </div>
                                             </div>
                                             <!------ Botiquines dinámicos------>
@@ -432,19 +467,19 @@
                                                 <label>¿Dispone de camilla para transporte de lesionados?</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="camilla" id="camilla_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="camilla_{{$inspection->id}}" id="camilla_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="camilla" id="camilla_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="camilla_{{$inspection->id}}" id="camilla_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="camilla" id="camilla_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="camilla_{{$inspection->id}}" id="camilla_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -453,25 +488,25 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Tipo Camilla :</label>
-                                                <input type="text" name="tipo_camilla" id="tipo_camilla" class="form-control">
+                                                <input type="text" name="tipo_camilla_{{$inspection->id}}" id="tipo_camilla" class="form-control">
                                             </div>
                                             <div class="col-md-6">
                                                 <label>¿Dispone de inmovilizadores cervicales?</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cervicales" id="cervicales_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="cervicales_{{$inspection->id}}" id="cervicales_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cervicales" id="cervicales_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="cervicales_{{$inspection->id}}" id="cervicales_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cervicales" id="cervicales_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="cervicales_{{$inspection->id}}" id="cervicales_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -480,25 +515,25 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Tipo Inmovilizador cervicales :</label>
-                                                <input type="text" name="tipo_cervicales" id="tipo_camilla" class="form-control">
+                                                <input type="text" name="tipo_cervicales_{{$inspection->id}}" id="tipo_camilla" class="form-control">
                                             </div>
                                             <div class="col-md-6">
                                                 <label>¿Dispone de inmovilizadores de extremidades?</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="extremidades" id="extremidades_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="extremidades_{{$inspection->id}}" id="extremidades_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="extremidades" id="extremidades_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="extremidades_{{$inspection->id}}" id="extremidades_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="extremidades" id="extremidades_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="extremidades_{{$inspection->id}}" id="extremidades_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -507,25 +542,25 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Tipo Inmovilizador extremidades :</label>
-                                                <input type="text" name="tipo_extremidades" id="tipo_camilla" class="form-control">
+                                                <input type="text" name="tipo_extremidades_{{$inspection->id}}" id="tipo_camilla" class="form-control">
                                             </div>
                                             <div class="col-md-6">
                                                 <label>¿El personal tiene capacitación en atención de primeros auxilios?</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="capacitacion_PA" id="capacitacion_PA_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="capacitacion_PA_{{$inspection->id}}" id="capacitacion_PA_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="capacitacion_PA" id="capacitacion_PA_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="capacitacion_PA_{{$inspection->id}}" id="capacitacion_PA_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="capacitacion_PA" id="capacitacion_PA_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="capacitacion_PA_{{$inspection->id}}" id="capacitacion_PA_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -534,11 +569,11 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Tipo de Capacitación :</label>
-                                                <input type="text" name="tipo_capacitacion_PA" id="tipo_camilla" class="form-control">
+                                                <input type="text" name="tipo_capacitacion_PA_{{$inspection->id}}" id="tipo_camilla" class="form-control">
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Observaciones :</label>
-                                                <textarea class="form-control" name="observaciones_equipo_lesionados" id="observaciones_equipo_lesionados" rows="3"></textarea>
+                                                <textarea class="form-control" name="observaciones_equipo_lesionados_{{$inspection->id}}" id="observaciones_equipo_lesionados" rows="3"></textarea>
                                             </div>
 
                                         </div>
@@ -552,19 +587,19 @@
                                                 <label>Rutas de Evacuación:</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="ruta" id="ruta_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="ruta_{{$inspection->id}}" id="ruta_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="ruta" id="ruta_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="ruta_{{$inspection->id}}" id="ruta_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="ruta" id="ruta_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="ruta_{{$inspection->id}}" id="ruta_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -575,19 +610,19 @@
                                                 <label>Salidas de Emergencia:</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="salida" id="salida_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="salida_{{$inspection->id}}" id="salida_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="salida" id="salida_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="salida_{{$inspection->id}}" id="salida_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="salida" id="salida_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="salida_{{$inspection->id}}" id="salida_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -596,7 +631,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Observaciones :</label>
-                                                <textarea class="form-control" name="observaciones_salida_emergencia" id="observaciones_salida_emergencia" rows="3"></textarea>
+                                                <textarea class="form-control" name="observaciones_salida_emergencia_{{$inspection->id}}" id="observaciones_salida_emergencia" rows="3"></textarea>
                                             </div>
                                         </div>
                                         <br>
@@ -606,19 +641,19 @@
                                                 <label>¿Dispone de escaleras?</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="escaleras" id="escaleras_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="escaleras_{{$inspection->id}}" id="escaleras_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="escaleras" id="escaleras_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="escaleras_{{$inspection->id}}" id="escaleras_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="escaleras" id="escaleras_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="escaleras_{{$inspection->id}}" id="escaleras_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -627,25 +662,30 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Condición de las Escaleras :</label>
-                                                <input type="text" name="condicion_escaleras" id="condicion_escaleras" class="form-control">
+                                                <select name="condicion_escaleras_{{$inspection->id}}" id="condicion_escaleras" class="form-select">
+                                                    <option value="bueno">Bueno</option>
+                                                    <option value="regular">Regular</option>
+                                                    <option value="malo">Malo</option>
+                                                </select>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <label>¿Se encuentran señalizadas??</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="señalizadas" id="señalizadas_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="señalizadas_{{$inspection->id}}" id="señalizadas_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="señalizadas" id="señalizadas_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="señalizadas_{{$inspection->id}}" id="señalizadas_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="señalizadas" id="señalizadas_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="señalizadas_{{$inspection->id}}" id="señalizadas_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -654,25 +694,29 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Condición de la Señalización :</label>
-                                                <input type="text" name="condicion_señales" id="condicion_señales" class="form-control">
+                                                <select name="condicion_señalizacion_{{$inspection->id}}" id="condicion_señalizacion" class="form-select">
+                                                    <option value="bueno">Bueno</option>
+                                                    <option value="regular">Regular</option>
+                                                    <option value="malo">Malo</option>
+                                                </select>
                                             </div>
                                             <div class="col-md-6">
                                                 <label>¿Disponen de barandas?</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="barandas" id="barandas_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="barandas_{{$inspection->id}}" id="barandas_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="barandas" id="barandas_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="barandas_{{$inspection->id}}" id="barandas_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="barandas" id="barandas_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="barandas_{{$inspection->id}}" id="barandas_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -681,25 +725,29 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Condición de las Barandas:</label>
-                                                <input type="text" name="condicion_barandas" id="condicion_barandas" class="form-control">
+                                                <select name="condicion_barandas_{{$inspection->id}}" id="condicion_barandas_{{$inspection->id}}" class="form-select">
+                                                    <option value="bueno">Bueno</option>
+                                                    <option value="regular">Regular</option>
+                                                    <option value="malo">Malo</option>
+                                                </select>
                                             </div>
                                             <div class="col-md-6">
                                                 <label>¿Poseen cinta antideslizante?</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="antideslizante" id="antideslizante_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="antideslizante_{{$inspection->id}}" id="antideslizante_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="antideslizante" id="antideslizante_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="antideslizante_{{$inspection->id}}" id="antideslizante_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="antideslizante" id="antideslizante_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="antideslizante_{{$inspection->id}}" id="antideslizante_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -708,11 +756,15 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Condición de los Antideslizantes :</label>
-                                                <input type="text" name="condicion_antideslizante" id="condicion_antideslizante" class="form-control">
+                                                <select name="condicion_antideslizantes_{{$inspection->id}}" id="condicion_antideslizantes" class="form-select">
+                                                    <option value="bueno">Bueno</option>
+                                                    <option value="regular">Regular</option>
+                                                    <option value="malo">Malo</option>
+                                                </select>
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Observaciones :</label>
-                                                <textarea class="form-control" name="observaciones_antideslizante" id="observaciones_antideslizante" rows="3"></textarea>
+                                                <textarea class="form-control" name="observaciones_antideslizante_{{$inspection->id}}" id="observaciones_antideslizante" rows="3"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -725,19 +777,19 @@
                                                 <label>¿Poseen sistema de iluminación de emergencias?</label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="iluminacion_emergencia" id="iluminacion_emergencia_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="iluminacion_emergencia_{{$inspection->id}}" id="iluminacion_emergencia_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="iluminacion_emergencia" id="iluminacion_emergencia_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="iluminacion_emergencia_{{$inspection->id}}" id="iluminacion_emergencia_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="iluminacion_emergencia" id="iluminacion_emergencia_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="iluminacion_emergencia_{{$inspection->id}}" id="iluminacion_emergencia_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -746,15 +798,15 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Fecha de última prueba:</label>
-                                                <input type="date" class="form-control" id="fecha_ultima_prueba" name="fecha_ultima_prueba">
+                                                <input type="date" class="form-control" id="fecha_ultima_prueba_{{$inspection->id}}" name="fecha_ultima_prueba_{{$inspection->id}}">
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Observaciones :</label>
-                                                <textarea class="form-control" name="observaciones_iluminacion_emergencia" id="observaciones_iluminiacion_emergencia" rows="3"></textarea>
+                                                <textarea class="form-control" name="observaciones_iluminacion_emergencia_{{$inspection->id}}" id="observaciones_iluminiacion_emergencia" rows="3"></textarea>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-------Condicones del Sistema Electrico----------------------------->
+                                    <!----Sección 7: Condicones del Sistema Electrico----------------------------->
                                     <div class="tab-pane fade" id="section-electrico{{$inspection->id}}" role="tabpanel" aria-labelledby="tab-electrico{{$inspection->id}}">
                                         <br>
                                         <h5 class="mt-3">Condiciones del Sistema Eléctrico</h5>
@@ -763,19 +815,19 @@
                                                 <label>Dispone de caja de distribución con breker: </label>
                                                 <div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="breker" id="breker_1" value="1">
+                                                        <input class="form-check-input" type="radio" name="breker_{{$inspection->id}}" id="breker_1" value="1">
                                                         <label class="form-check-label" for="flexRadioDefault1">
                                                             Si
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="breker" id="breker_2" value="0">
+                                                        <input class="form-check-input" type="radio" name="breker_{{$inspection->id}}" id="breker_2" value="0">
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                             No
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="breker" id="breker_3" value="null">
+                                                        <input class="form-check-input" type="radio" name="breker_{{$inspection->id}}" id="breker_3" value="null">
                                                         <label class="form-check-label" for="flexRadioDefault3">
                                                             No Aplica
                                                         </label>
@@ -783,24 +835,429 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label>¿Se encuentran identificados? :</label>
-                                                <textarea class="form-control" name="identificacion_de_breker" id="observaciones_iluminiacion_emergencia" rows="3"></textarea>
+                                                <label>¿Se Encuentra Identificados? :</label>
+                                                <input type="text" name="identificados_{{$inspection->id}}" id="identificados" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>El sistema de cableado se encuentra protegido y sin empalme visibles: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="empalme_{{$inspection->id}}" id="empalme_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="empalme_{{$inspection->id}}" id="empalme_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Los tomas corrientes presentan evidencias de corto circuito: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="toma_corriente_{{$inspection->id}}" id="toma_corriente_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="toma_corriente_{{$inspection->id}}" id="toma_corriente_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Los tomas corrientes presentan sobrecarga: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="sobrecarga_{{$inspection->id}}" id="sobrecarga_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="sobrecarga_{{$inspection->id}}" id="sobrecarga_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Se Encuentra Identificado El Voltaje </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="voltaje_{{$inspection->id}}" id="voltaje_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="voltaje_{{$inspection->id}}" id="voltaje_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="voltaje_{{$inspection->id}}" id="voltaje_3" value="null">
+                                                        <label class="form-check-label" for="flexRadioDefault3">
+                                                            No Aplica
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Los cajetines se encuentran con su tapa y asegurados : </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="cajetines_{{$inspection->id}}" id="cajetines_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="cajetines_{{$inspection->id}}" id="cajetines_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Dispone De Botón De Parada De Emergencia: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="boton_{{$inspection->id}}" id="boton_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="boton_{{$inspection->id}}" id="boton_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Se Relizan Mantenimiento Preventivos a Los Equipos Electrónicos: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="mantenimiento_{{$inspection->id}}" id="mantenimiento_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="mantenimiento_{{$inspection->id}}" id="mantenimiento_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Periodicidad de los Mantenimintos :</label>
+                                                <input type="text" name="periodicidad_{{$inspection->id}}" id="periodicidad" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Los Arreglos y Mantenimientos Eléctricos lo Hacen Personal Idoneo: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="personal_idoneo_{{$inspection->id}}" id="personal_idoneo_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="personal_idoneo_{{$inspection->id}}" id="personal_idoneo_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Observaciones :</label>
+                                                <textarea class="form-control" name="observaciones_sistema_electrico_{{$inspection->id}}" id="observaciones_sistema_electrico" rows="3"></textarea>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                    <!----Sección 8: Almacenamiento de Combustible----------------------------->
+                                    <div class="tab-pane fade" id="section-combustible{{$inspection->id}}" role="tabpanel" aria-labelledby="tab-combustible{{$inspection->id}}">
+                                        <br>
+                                        <h5 class="mt-3">Almacenamiento De Combustible</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Material Sólido Ordinario: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="material_solido_{{$inspection->id}}" id="material_solido_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="material_solido_{{$inspection->id}}" id="material_solido_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
 
+                                            <div class="col-md-6">
+                                                <label>Zona de Almacenamiento Retirada de Fuentes de Calor: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="Almacenamiento_solidos_{{$inspection->id}}" id="Almacenamiento_solidos_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="Almacenamiento_solidos_{{$inspection->id}}" id="Almacenamiento_solidos_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                            <!-- Footer del Modal -->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-primary">Guardar</button>
-                            </div>
+                                            <div class="col-md-6">
+                                                <label>Observaciones :</label>
+                                                <textarea class="form-control" name="observaciones_solidos_{{$inspection->id}}" id="observaciones_solidos" rows="3"></textarea>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Cantidad:</label>
+                                                <input type="number" class="form-control" id="cantidad_solidos_{{$inspection->id}}" name="cantidad_solidos_{{$inspection->id}}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Material liquido inflamable (derivados del petróleo) : </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="material_liquido_{{$inspection->id}}" id="material_liquido_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="material_liquido_{{$inspection->id}}" id="material_liquido_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Zona de Almacenamiento Retirada de Fuentes de Calor: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="Almacenamiento_liquidos_{{$inspection->id}}" id="Almacenamiento_liquidos_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="Almacenamiento_liquidos_{{$inspection->id}}" id="Almacenamiento_liquidos_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Observaciones :</label>
+                                                <textarea class="form-control" name="observaciones_liquidos_{{$inspection->id}}" id="observaciones_liquidos" rows="3"></textarea>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Cantidad:</label>
+                                                <input type="number" class="form-control" id="cantidad_liquidos" name="cantidad_liquidos_{{$inspection->id}}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Material gaseoso inflamable : </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="material_gaseoso_{{$inspection->id}}" id="material_gaseoso_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="material_gaseoso_{{$inspection->id}}" id="material_gaseoso_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Zona de Almacenamiento Retirada de Fuentes de Calor: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="Almacenamiento_gaseoso_{{$inspection->id}}" id="Almacenamiento_gaseoso_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="Almacenamiento_gaseoso_{{$inspection->id}}" id="Almacenamiento_gaseoso_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Observaciones :</label>
+                                                <textarea class="form-control" name="observaciones_gaseoso_{{$inspection->id}}" id="observaciones_gaseoso" rows="3"></textarea>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Cantidad:</label>
+                                                <input type="number" class="form-control" id="cantidad_gaseoso" name="cantidad_gaseoso_{{$inspection->id}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Otros Químicos Almacenados: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="quimico_{{$inspection->id}}" id="quimico_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="quimico_{{$inspection->id}}" id="quimico_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Zona de Almacenamiento Retirada de Fuentes de Calor: </label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="Almacenamiento_quimico_{{$inspection->id}}" id="Almacenamiento_quimico_1" value="1">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Si
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="Almacenamiento_quimico_{{$inspection->id}}" id="Almacenamiento_quimico_2" value="0">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Observaciones :</label>
+                                                <textarea class="form-control" name="observaciones_quimico_{{$inspection->id}}" id="observaciones_quimico" rows="3"></textarea>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Cantidad:</label>
+                                                <input type="number" class="form-control" id="cantidad_quimico_{{$inspection->id}}" name="cantidad_quimico_{{$inspection->id}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!----Sección 9: Otras condiciones de riesgo----------->
+                                    <div class="tab-pane fade" id="section-otros{{$inspection->id}}" role="tabpanel" aria-labelledby="tab-otros{{$inspection->id}}">
+                                        <br>
+                                        <h5 class="mt-3">Otras Condiciones Que Se Pueden Convertir De Riesgo Para Los Ocupantes</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Condición de riesgo:</label>
+                                                <input type="text" name="otra_condicion_riesgo_{{$inspection->id}}" id="otra_condicion_riesgo_{{$inspection->id}}" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Observaciones :</label>
+                                                <textarea class="form-control" name="observaciones_otros_{{$inspection->id}}" id="observaciones_otros_{{$inspection->id}}" rows="3"></textarea>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Recomendaciones :</label>
+                                                <textarea class="form-control" name="recomendaciones_otros_{{$inspection->id}}" id="recomendaciones_otros_{{$inspection->id}}" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <h5 class="mt-3">Condición General del Concepto: </h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-5">
+                                                    <label for="photos">Selecciona fotos de Evidencia:</label>
+                                                    <input type="file" class="form-control" id="photos" name="photos_{{$inspection->id}}[]" accept="image/*" multiple>
+                                                    <div id="preview"></div>
+                                                    <div class="invalid-feedback">
+                                                        Complete este campo.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>¿Favorable?</label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="favorable_{{$inspection->id}}" id="favorable_si_{{$inspection->id}}" value="1">
+                                                        <label class="form-check-label" for="favorable_si_{{$inspection->id}}">
+                                                            Sí
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="favorable_{{$inspection->id}}" id="favorable_no_{{$inspection->id}}" value="0">
+                                                        <label class="form-check-label" for="favorable_no_{{$inspection->id}}">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer del Modal -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                    </div>
+                                </div><!---Div que cierra el modal body-->
                         </form>
-                    </div>
-                </div>
-            </div>
+                    </div><!--- div que cierra el modal content-->
+                </div> <!-- div modal dialog--->
+            </div><!--div que cierra el modal-->
+
+
 
 
 
@@ -813,6 +1270,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/extintores.js') }}"></script>
 <script src="{{ asset('js/botiquines.js') }}"></script>
+<script src="{{ asset('js/imagenes.js') }}"></script>
 <script>
 
 </script>

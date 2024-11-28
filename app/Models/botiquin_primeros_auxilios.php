@@ -11,12 +11,12 @@ class botiquin_primeros_auxilios extends Authenticatable
 
     protected $table = 'tipo_botiquin_Auxilios';
     
-    protected $fillable = ['cantidad', 'id_botiquin', 'id_primeros_auxilios'];
+    protected $fillable = ['cantidad', 'tipo_botiquin_id', 'id_primeros_auxilios'];
 
 
     public function tipo_botiquin()
     {
-        return $this->hasOne('App\Models\TypeKit', 'id', 'id_botiquin');
+        return $this->hasOne('App\Models\TypeKit', 'id', 'tipo_botiquin_id');
     }
 
     public function primeros_auxilios()

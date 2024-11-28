@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Ruta_evacuacion extends Authenticatable
 {
+    protected $table = 'ruta_evacuacion';
     use HasFactory;
 
     protected $fillable = [

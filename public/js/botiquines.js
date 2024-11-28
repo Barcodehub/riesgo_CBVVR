@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 field.id = `${originalId}_${inspection}_${botiquinCounter}`;
                 field.name = `${originalId}_${inspection}_${botiquinCounter}`;
                 field.value = ""; // Limpiar el valor del nuevo campo
+
+                console.log(`ID: ${field.id}, NAME: ${field.name}`);
+
             });
 
             // Crear el botón de eliminación solo en el nuevo botiquín

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use App\Models\Concept;
 use App\Models\Inspection;
 use App\Models\TypeExtinguisher;
@@ -51,146 +54,249 @@ class ConceptController extends Controller
 
     public function store(Request $request, $inspection_id)
     {
-
+        //dd($request->all());
         $inspection = Inspection::findOrFail($inspection_id);
-
+        $input_name = "photos_{$inspection_id}";
 
         $validatedData = $request->validate([
-            ///Validaciones del concepto
-            'favorable' => 'required|boolean',
-            'recomendaciones' => 'nullable|string',
-
+            
             ////INFORMACION DEL ESTABLECIMIENTO SE CARGA DIRECTAMENTE CON LA INFORMACION ANTES REGISTRADA//////
 
             ////CARACTERISTICAS DE LA CONSTRUCCION////
 
-            'construccion.anio_construccion' => 'required|date',
-            'construccion.nrs' => 'boolean',
-            'construccion.sst' => 'required|boolean',
-            'construccion.id_info_establecimiento' => 'required',
+            "anio_construcción_{$inspection_id}" => 'required|integer|min:1800|max:' . date('Y'),
+            "nrs_{$inspection_id}" => 'required|in:1,0',
+            "sst_{$inspection_id}" => 'required|in:1,0,null',
 
             ////EQUIPOS PARA EXTINCION DE INCENDIOS//////
+            "sistema_automatico_{$inspection_id}" => 'required|in:1,0,null',
+            "tipo_sistema_{$inspection_id}" => 'nullable|string|max:255',
+            "observaciones_S_A_{$inspection_id}" => 'string|nullable|max:500',
+            "red_incendios_{$inspection_id}" => 'required|in:1,0,null',
+            "hidrantes_{$inspection_id}" => 'required|in:1,0,null',
+            "tipo_hidrante_{$inspection_id}" => 'required|string|max:255',
+            "distancia_hidrante_{$inspection_id}" => 'required|numeric',
+            "observaciones_red_{$inspection_id}" => 'string|nullable|max:500',
+            "capacitacion_{$inspection_id}" => 'required|in:1,0,null',
+            "observaciones_extintores_{$inspection_id}" => 'string|nullable|max:500',
 
-            'equipo_contra_incendio.sistema_automatico' => 'required|boolean',
-            'equipo_contra_incendio.tipo_sistema' => 'required|string',
-            'equipo_contra_incendio.observaciones_sa' => 'string|nullable',
-            'equipo_contra_incendio.red_contra_incendios' => 'boolean',
-            'equipo_contra_incendio.hidrantes' => 'boolean',
-            'equipo_contra_incendio.tipo_hidrante' => 'string|nullable',
-            'equipo_contra_incendio.distancia' => 'required|numeric',
-            'equipo_contra_incendio.observaciones_hyr' => 'String|nullable',
-            'equipo_contra_incendio.extintores' => 'required|boolean',
-            'equipo_contra_incendio.capacitacion' => 'required|boolean',
-            'equipo_contra_incendio.observaciones' => 'String|nullable',
-
-            /////TIPO DE EXTINTOR EQUIPO DE EXTINCION /////
-
-            'tipo_extintor_equipo' => 'nullable|array|min:1',
-            'tipo_extintor_equipo.*.tipo_extintor_id' => 'required|exists:type_extinguishers,id',
-            'tipo_extintor_equipo.*.empresa_recarga' => 'required|string|max:255',
-            'tipo_extintor_equipo.*.fecha_recarga' => 'required|date',
-            'tipo_extintor_equipo.*.fecha_vencimiento' => 'required|date|after:tipo_extintor_equipo.*.fecha_recarga',
-            'tipo_extintor_equipo.*.cantidad' => 'required|integer|min:1',
 
             ///////PRIMEROS AUXILIOS/////////
-
-            'primeros_auxilios.camilla' => 'required|boolean',
-            'primeros_auxilios.inmovilizador_cervical' => 'required|booleanl',
-            'primeros_auxilios.inmovilizador_extremidades' => 'required|boolean',
-            'primeros_auxilios.capacitacion_primeros_auxilios' => 'required|boolean',
-            'primeros_auxilios.tipo_camilla' => 'required|string|max:255',
-            'primeros_auxilios.tipo_inm_cervical' => 'required|string|max:255',
-            'primeros_auxilios.tipo_inm_extremidades' => 'required|string|max:255',
-            'primeros_auxilios.tipo_capacitacion' => 'required|string|max:255',
-            'primeros_auxilios.observaciones' => 'required|string|max:255',
-
-            ///////BOTIQUIN_PRIMEROS_AUXILIOS/////
-
-            'tipo_botiquin_Auxilios' => 'nullable|array|min:1',
-            'tipo_botiquin_Auxilios.*.tipo_botiquin_id' => 'integer|exists:type_kits,id',
-            'tipo_botiquin_Auxilios.*.cantidad' => 'nullable|integer|min:1',
+            "botiquin_{$inspection_id}" => 'required|in:1,0,null',
+            "observaciones_botiquin_{$inspection_id}" => 'string|nullable|max:500',
+            "camilla_{$inspection_id}" => 'required|in:1,0,null',
+            "tipo_camilla_{$inspection_id}" => 'required|string|max:255',
+            "cervicales_{$inspection_id}" => 'required|in:1,0,null',
+            "tipo_cervicales_{$inspection_id}" => 'required|string|max:255',
+            "extremidades_{$inspection_id}" => 'required|in:1,0,null',
+            "tipo_extremidades_{$inspection_id}" => 'required|string|max:255',
+            "capacitacion_PA_{$inspection_id}" => 'required|in:1,0,null',
+            "tipo_capacitacion_PA_{$inspection_id}" => 'required|string|max:255',
+            "observaciones_equipo_lesionados_{$inspection_id}" => 'string|nullable|max:500',
 
             //////RUTAS DE EVACUACION////////////////
 
-            'ruta_evacuacion.ruta_evacuacion' => 'required|boolean',
-            'ruta_evacuacion.salidas_emergencia' => 'required|boolean',
-            'ruta_evacuacion.observaciones' => 'required|string|max:255',
-            'ruta_evacuacion.escaleras' => 'required|boolean',
-            'ruta_evacuacion.señalizadas' => 'required|boolean',
-            'ruta_evacuacion.barandas' => 'required|boolean',
-            'ruta_evacuacion.condicion_escaleras' => 'required|string|max:255',
-            'ruta_evacuacion.condicion_señalizadas' => 'required|string|max:255',
-            'ruta_evacuacion.condicion_barandas' => 'required|string|max:255',
-            'ruta_evacuacion.condicion_antideslizante' => 'required|string|max:255',
-            'ruta_evacuacion.observaciones_escaleras' => 'required|string|max:255',
+            "ruta_{$inspection_id}" => 'required|in:1,0,null',
+            "salida_{$inspection_id}" => 'required|in:1,0,null',
+            "observaciones_salida_emergencia_{$inspection_id}" => 'string|nullable|max:500',
+            "escaleras_{$inspection_id}" => 'required|in:1,0,null',
+            "condicion_escaleras_{$inspection_id}" => 'required|in:bueno,regular,malo',
+            "señalizadas_{$inspection_id}" => 'required|in:1,0,null',
+            "condicion_señalizacion_{$inspection_id}" => 'required|in:bueno,regular,malo',
+            "barandas_{$inspection_id}" => 'required|in:1,0,null',
+            "condicion_barandas_{$inspection_id}" => 'required|in:bueno,regular,malo',
+            "antideslizante_{$inspection_id}" => 'required|in:1,0,null',
+            "condicion_antideslizantes_{$inspection_id}" => 'required|in:bueno,regular,malo',
+            "observaciones_antideslizante_{$inspection_id}" => 'string|nullable|max:500',
 
 
             //////////SISTEMA DE ILUMINACION DE EMERGENCIA///////
-            'sistema_iluminacion.sistema_iluminacion' => 'required|boolean',
-            'sistema_iluminacion.fecha_ultima_prueba' => 'required|date',
-            'sistema_iluminacion.observaciones' => 'required|string|max:255',
+            "iluminacion_emergencia_{$inspection_id}" => 'required|in:1,0,null',
+            "fecha_ultima_prueba_{$inspection_id}" => 'required|date|before_or_equal:today',
+            "observaciones_iluminacion_emergencia_{$inspection_id}" => 'string|nullable|max:500',
 
             //////////CONDICIONES DEL SISTEMA ELECTRICO////////
 
-            'sistema_electrico.caja_distribucion_breker' => 'required|boolean',
-            'sistema_electrico.encuentra_identificados' => 'required|boolean',
-            'sistema_electrico.sistema_cableado_protegido' => 'required|boolean',
-            'sistema_electrico.toma_corriente_corto' => 'required|boolean',
-            'sistema_electrico.toma_corriente_sobrecarga' => 'required|boolean',
-            'sistema_electrico.identificacion_voltaje' => 'required|boolea',
-            'sistema_electrico.cajetines_asegurados' => 'required|boolean',
-            'sistema_electrico.boton_emergencia' => 'required|boolean',
-            'sistema_electrico.mantenimiento_preventivo' => 'required|boolean',
-            'sistema_electrico.periodicidad' => 'required|string|max:255',
-            'sistema_electrico.personal_idoneo' => 'required|boolean',
-            'sistema_electrico.observaciones' => 'required|string|max:255',
+            "breker_{$inspection_id}" => 'required|in:1,0,null',
+            "identificados_{$inspection_id}" => 'required|string|max:255',
+            "empalme_{$inspection_id}" => 'required|in:1,0',
+            "toma_corriente_{$inspection_id}" => 'required|in:1,0',
+            "sobrecarga_{$inspection->id}" =>  'required|in:1,0',
+            "voltaje_{$inspection_id}" => 'required|in:1,0,null',
+            "cajetines_{$inspection_id}" => 'required|in:1,0',
+            "boton_{$inspection_id}" => 'required|in:1,0',
+            "mantenimiento_{$inspection_id}" => 'required|in:1,0',
+            "periodicidad_{$inspection_id}" => 'required|string|max:255',
+            "personal_idoneo_{$inspection_id}" => 'required|in:1,0',
+            "observaciones_sistema_electrico_{$inspection_id}" => 'string|nullable|max:500',
 
             /////////ALMACENAMIENTO DE COMBUSTIBLE//////////
 
-            'almacenamiento_combustibles.material_solido_ordinario' => 'required|boolean',
-            'almacenamiento_combustibles.zona_almacenamiento_1' => 'required|boolean',
-            'almacenamiento_combustibles.observaciones_1' => 'required|string|max:255',
-            'equipo_contra_incendio.cantidad_1' => 'required|numeric',
-            'almacenamiento_combustibles.material_liquido_inflamable' => 'required|boolean',
-            'almacenamiento_combustibles.zona_almacenamiento_2' => 'required|boolean',
-            'almacenamiento_combustibles.observaciones_2' => 'required|string|max:255',
-            'equipo_contra_incendio.cantidad_2' => 'required|numeric',
-            'almacenamiento_combustibles.material_gaseoso_inflamable' => 'required|boolean',
-            'almacenamiento_combustibles.zona_almacenamiento_3' => 'required|boolean',
-            'almacenamiento_combustibles.observaciones_3' => 'required|string|max:255',
-            'equipo_contra_incendio.cantidad_3' => 'required|numeric',
-            'almacenamiento_combustibles.otros_quimicos' => 'required|boolean',
-            'almacenamiento_combustibles.zona_almacenamiento_4' => 'required|boolean',
-            'almacenamiento_combustibles.observaciones_4' => 'required|string|max:255',
-            'equipo_contra_incendio.cantidad_4' => 'required|numeric',
+            "material_solido_{$inspection_id}" => 'required|in:1,0',
+            "Almacenamiento_solidos_{$inspection_id}" => 'required|in:1,0',
+            "observaciones_solidos_{$inspection_id}" => 'string|nullable|max:500',
+            "cantidad_solidos_{$inspection_id}" => 'required|numeric',
+            "material_liquido_{$inspection_id}" => 'required|in:1,0',
+            "Almacenamiento_liquidos_{$inspection_id}" => 'required|in:1,0',
+            "observaciones_liquidos_{$inspection_id}" => 'string|nullable|max:500',
+            "cantidad_liquidos_{$inspection_id}" => 'required|numeric',
+            "material_gaseoso_{$inspection_id}" => 'required|in:1,0',
+            "Almacenamiento_gaseoso_{$inspection_id}" => 'required|in:1,0',
+            "observaciones_gaseoso_{$inspection_id}" => 'string|nullable|max:500',
+            "cantidad_gaseoso_{$inspection_id}" => 'required|numeric',
+            "quimico_{$inspection_id}" => 'required|in:1,0',
+            "Almacenamiento_quimico_{$inspection_id}" => 'required|in:1,0',
+            "observaciones_quimico_{$inspection_id}" => 'string|nullable|max:500',
+            "cantidad_quimico_{$inspection_id}" => 'required|numeric',
 
             ////////OTRAS CONDICIONES DE RIESGO///////////
 
-            'otras_condiciones.condicion' => 'required|string|max:500',
-            'otras_condiciones.observacion' => 'required|string|max:500',
+            "otra_condicion_riesgo_{$inspection_id}" => 'required|string|max:255',
+            "observaciones_otros_{$inspection_id}" => 'required|string|max:500',
+            "recomendaciones_otros_{$inspection_id}" => 'required|string|max:500',
+
+             ///Validaciones del concepto
+             "favorable_{$inspection_id}" => 'required|in:1,0',
+             "{$input_name}.*" => 'image|mimes:jpeg,png,jpg,gif|max:2048',
 
         ]);
+
+
+        //////////Validacion de campos dinamicos del formulario//////
+
+        ///1. Tipo de sistema automatico://////
+        $sistemaAutomatico = $request->input("sistema_automatico_{$inspection_id}");
+        if ($sistemaAutomatico === 'null') {
+            $validatedData["tipo_sistema_{$inspection_id}"] = null;
+        }
+        ///2. Tipo de Red
+
+        $redIncendios = $request->input("red_incendios_{$inspection_id}");
+        if ($redIncendios === 'null') {
+            $validatedData["tipo_red_{$inspection_id}"] = null; // Forzar el valor de tipo_red a null
+        }
+
+        ///3. Tipo de extintores
+        $data = $request->all();
+        $extintores = [];
+
+        // Agrupar datos dinámicos de extintores por índice
+        foreach ($data as $key => $value) {
+            if (preg_match("/^(tipo|empresa|recarga|vencimiento|cantidad)_(\d+)_(\d+)$/", $key, $matches)) {
+                $field = $matches[1]; // 'tipo', 'empresa', etc.
+                $inspectionIdInput = $matches[2]; // ID de la inspección
+                $extintorIndex = $matches[3]; // Índice del extintor
+
+                // Ignorar datos de otras inspecciones
+                if ($inspectionIdInput != $inspection_id) {
+                    continue;
+                }
+
+                $extintores[$extintorIndex][$field] = $value;
+            }
+        }
+
+        // Depuración para verificar estructura
+        //dd($extintores);
+
+        // Validar cada extintor
+        $validatedExtintores = [];
+        foreach ($extintores as $index => $extintor) {
+            if (!isset($extintor['tipo'])) {
+                return redirect()->back()->withErrors(["tipo_{$index}" => "El campo tipo es obligatorio para el extintor {$index}."])->withInput();
+            }
+
+            $validator = Validator::make($extintor, [
+                'tipo' => 'required|string|max:255',
+                'empresa' => 'required|string|max:255',
+                'recarga' => 'required|date',
+                'vencimiento' => 'required|date|after:recarga',
+                'cantidad' => 'required|integer|min:1',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $validatedExtintores[] = [
+                'tipo_extintor_id' => $validator->validated()['tipo'], // Renombrar clave según columna de la BD
+                'empresa_recarga' => $validator->validated()['empresa'],
+                'fecha_recarga' => $validator->validated()['recarga'],
+                'fecha_vencimiento' => $validator->validated()['vencimiento'],
+                'cantidad' => $validator->validated()['cantidad'],
+            ];
+        }
+
+
+
+        ////4. Validacion de botiquines///////
+
+        // Manejo y validación de botiquines dinámicos
+        $data = $request->all(); // Obtener todos los datos enviados
+        $botiquines = [];
+
+        // Agrupar datos dinámicos de botiquines por índice
+        foreach ($data as $key => $value) {
+            if (preg_match("/^(kit|cantidad)_(\d+)_(\d+)$/", $key, $matches)) {
+                $field = $matches[1]; // 'kit' o 'cantidad'
+                $inspectionIdInput = $matches[2]; // ID de la inspección
+                $botiquinIndex = $matches[3]; // Índice del botiquín
+
+                // Ignorar datos que no pertenezcan a esta inspección
+                if ($inspectionIdInput != $inspection_id) {
+                    continue;
+                }
+
+                // Agrupar los datos del botiquín
+                $botiquines[$botiquinIndex][$field] = $value;
+            }
+        }
+
+        // Validar los botiquines dinámicos
+        $validatedBotiquines = [];
+        foreach ($botiquines as $index => $botiquin) {
+            $validator = Validator::make($botiquin, [
+                'kit' => 'required|string|max:255',
+                'cantidad' => 'required|integer|min:1',
+            ], [
+                'kit.required' => "El tipo de botiquín es obligatorio (botiquín {$index}).",
+                'cantidad.required' => "La cantidad es obligatoria (botiquín {$index}).",
+                'cantidad.min' => "La cantidad debe ser al menos 1 (botiquín {$index}).",
+            ]);
+
+            // Si falla la validación, retorna errores
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            // Almacenar botiquines validados
+            $validatedBotiquines[] = $validator->validated();
+        }
+
+
+
+        /////////////Fin validaciones dinamicas////////////////////
 
         ////Crear el equipo contra incendios
         $equipoContraIncendios = Equipo_incendio::create([
-            'sistema_automatico' => $validatedData['equipo_contra_incendio']['sistema_automatico'],
-            'tipo_sistema' => $validatedData['equipo_contra_incendio']['tipo_sistema'],
-            'observaciones_sa' => $validatedData['equipo_contra_incendio']['observaciones_sa'],
-            'red_contra_incendios' => $validatedData['equipo_contra_incendio']['red_contra_incendios'],
-            'hidrantes' => $validatedData['equipo_contra_incendio']['hidrantes'],
-            'tipo_hidrante' => $validatedData['equipo_contra_incendio']['tipo_hidrante'],
-            'distancia' => $validatedData['equipo_contra_incendio']['distancia'],
-            'observaciones_hyr' => $validatedData['equipo_contra_incendio']['observaciones_hyr'],
-            'extintores' => $validatedData['equipo_contra_incendio']['extintores'],
-            'capacitacion' => $validatedData['equipo_contra_incendio']['capacitacion'],
-            'observaciones' => $validatedData['equipo_contra_incendio']['observaciones'],
+            'sistema_automatico' => $validatedData["sistema_automatico_{$inspection_id}"],
+            'tipo_sistema' => $validatedData["tipo_sistema_{$inspection_id}"],
+            'observaciones_sa' => $validatedData["observaciones_S_A_{$inspection_id}"],
+            'red_contra_incendios' => $validatedData["red_incendios_{$inspection_id}"],
+            'hidrantes' => $validatedData["hidrantes_{$inspection_id}"],
+            'tipo_hidrante' => $validatedData["tipo_hidrante_{$inspection_id}"],
+            'distancia' => $validatedData["distancia_hidrante_{$inspection_id}"],
+            'observaciones_hyr' => $validatedData["observaciones_red_{$inspection_id}"],
+            'capacitacion' => $validatedData["capacitacion_{$inspection_id}"],
+            'observaciones' => $validatedData["observaciones_extintores_{$inspection_id}"],
         ]);
 
+
         ///Crea informacion de los extintores presentes en el sistema de incendios
-        if (!empty($validatedData['tipo_extintor_equipo'])) {
-            foreach ($validatedData['tipo_extintor_equipo'] as $extintor) {
+        if (!empty($validatedExtintores)) {
+            foreach ($validatedExtintores as $extintor) {
                 Extintor_sistema_incendios::create([
-                    'equipo_id' => $equipoContraIncendios->id, // Relacionar con el equipo
+                    'id_equipo_contra_incendio' => $equipoContraIncendios->id, // Relacionar con el equipo
                     'tipo_extintor_id' => $extintor['tipo_extintor_id'],
                     'empresa_recarga' => $extintor['empresa_recarga'],
                     'fecha_recarga' => $extintor['fecha_recarga'],
@@ -203,25 +309,28 @@ class ConceptController extends Controller
         /////////Crear primeros auxilios
 
         $primerosAuxilios = Primeros_auxilios::create([
-            'camilla' => $validatedData['primeros_auxilios']['camilla'],
-            'inmovilizador_cervical' => $validatedData['primeros_auxilios']['inmovilizador_cervical'],
-            'inmovilizador_extremidades' => $validatedData['primeros_auxilios']['inmovilizador_extremidades'],
-            'capacitacion_primeros_auxilios' => $validatedData['primeros_auxilios']['capacitacion_primeros_auxilios'],
-            'tipo_camilla' => $validatedData['primeros_auxilios']['tipo_camilla'],
-            'tipo_inm_cervical' => $validatedData['primeros_auxilios']['tipo_inm_cervical'],
-            'tipo_inm_extremidades' => $validatedData['primeros_auxilios']['tipo_inm_extremidades'],
-            'tipo_capacitacion' => $validatedData['primeros_auxilios']['tipo_capacitacion'],
-            'observaciones' => $validatedData['primeros_auxilios']['observaciones'],
+            'botiquin' => $validatedData["botiquin_{$inspection_id}"],
+            'observaciones_botiquin' => $validatedData["observaciones_botiquin_{$inspection_id}"],
+            'camilla' => $validatedData["camilla_{$inspection_id}"],
+            'tipo_camilla' => $validatedData["tipo_camilla_{$inspection_id}"],
+            'inmovilizador_cervical' => $validatedData["cervicales_{$inspection_id}"],
+            'tipo_inm_cervical' => $validatedData["tipo_cervicales_{$inspection_id}"],
+            'inmovilizador_extremidades' => $validatedData["extremidades_{$inspection_id}"],
+            'tipo_inm_extremidades' => $validatedData["tipo_extremidades_{$inspection_id}"],
+            'capacitacion_primeros_auxilios' => $validatedData["capacitacion_PA_{$inspection_id}"],
+            'tipo_capacitacion' => $validatedData["tipo_capacitacion_PA_{$inspection_id}"],
+            'observaciones' => $validatedData["observaciones_equipo_lesionados_{$inspection_id}"],
         ]);
+
 
         /////////Crea la informacion de los botiquines presentes en el primeros auxilios
 
-        if (!empty($validatedData['tipo_botiquin_Auxilios'])) {
-            foreach ($validatedData['tipo_botiquin_Auxilios'] as $botiquin) {
-                botiquin_primeros_auxilios::create([
-                    'primeros_auxilios_id' => $primerosAuxilios->id, // Relacionar con primeros auxilios
-                    'tipo_botiquin_id' => $botiquin['tipo_botiquin_id'],
-                    'cantidad' => $botiquin['cantidad'],
+        if (!empty($validatedBotiquines)) {
+            foreach ($validatedBotiquines as $botiquin) {
+                Botiquin_primeros_auxilios::create([
+                    'id_primeros_auxilios' => $primerosAuxilios->id, // Relacionar con primeros auxilios
+                    'tipo_botiquin_id' =>  $botiquin['kit'], // Suponiendo que 'kit' es el ID del tipo de botiquín
+                    'cantidad' =>  $botiquin['cantidad'],
                 ]);
             }
         }
@@ -229,93 +338,100 @@ class ConceptController extends Controller
         //////////Crear contruccion
 
         $construccion = Construccion::create([
-            'anio_construccion' => $validatedData['construccion']['anio_construccion'],
-            'nrs' => $validatedData['construccion']['nrs'] ?? false, // Default a false si no está presente
-            'sst' => $validatedData['construccion']['sst'],
-            'id_info_establecimiento' => $validatedData['construccion']['id_info_establecimiento'],
+            'anio_construccion' => $validatedData["anio_construcción_{$inspection_id}"],
+            'nrs' => $validatedData["nrs_{$inspection_id}"], // Se usa el valor validado directamente
+            'sst' => $validatedData["sst_{$inspection_id}"], // Se permite null según la validación
+            'id_info_establecimiento' => $inspection->company->info_establecimiento->first()->id, // Valor por defecto si no está presente
         ]);
+
 
         ////////Crear ruta de evacuacion//////
 
         $rutaEvacuacion = Ruta_evacuacion::create([
-            'ruta_evacuacion' => $validatedData['ruta_evacuacion']['ruta_evacuacion'],
-            'salidas_emergencia' => $validatedData['ruta_evacuacion']['salidas_emergencia'],
-            'observaciones' => $validatedData['ruta_evacuacion']['observaciones'],
-            'escaleras' => $validatedData['ruta_evacuacion']['escaleras'],
-            'señalizadas' => $validatedData['ruta_evacuacion']['señalizadas'],
-            'barandas' => $validatedData['ruta_evacuacion']['barandas'],
-            'condicion_escaleras' => $validatedData['ruta_evacuacion']['condicion_escaleras'],
-            'condicion_señalizadas' => $validatedData['ruta_evacuacion']['condicion_señalizadas'],
-            'condicion_barandas' => $validatedData['ruta_evacuacion']['condicion_barandas'],
-            'condicion_antideslizante' => $validatedData['ruta_evacuacion']['condicion_antideslizante'],
-            'observaciones_escaleras' => $validatedData['ruta_evacuacion']['observaciones_escaleras'],
+            'ruta_evacuacion' => $validatedData["ruta_{$inspection_id}"],
+            'salidas_emergencia' => $validatedData["salida_{$inspection_id}"],
+            'observaciones' => $validatedData["observaciones_salida_emergencia_{$inspection_id}"] ?? null,
+            'escaleras' => $validatedData["escaleras_{$inspection_id}"],
+            'señalizadas' => $validatedData["señalizadas_{$inspection_id}"],
+            'barandas' => $validatedData["barandas_{$inspection_id}"],
+            'condicion_escaleras' => $validatedData["condicion_escaleras_{$inspection_id}"],
+            'condicion_señalizadas' => $validatedData["condicion_señalizacion_{$inspection_id}"],
+            'condicion_barandas' => $validatedData["condicion_barandas_{$inspection_id}"],
+            'condicion_antideslizante' => $validatedData["condicion_antideslizantes_{$inspection_id}"],
+            'observaciones_escaleras' => $validatedData["observaciones_antideslizante_{$inspection_id}"] ?? null,
         ]);
+
 
         ///////crear sistema de iluminacion////////
         $sistemaIluminacion = Sistema_iluminacion::create([
-            'sistema_iluminacion' => $validatedData['sistema_iluminacion']['sistema_iluminacion'],
-            'fecha_ultima_prueba' => $validatedData['sistema_iluminacion']['fecha_ultima_prueba'],
-            'observaciones' => $validatedData['sistema_iluminacion']['observaciones'],
+            'sistema_iluminacion' => $validatedData["iluminacion_emergencia_{$inspection_id}"],
+            'fecha_ultima_prueba' => $validatedData["fecha_ultima_prueba_{$inspection_id}"],
+            'observaciones' => $validatedData["observaciones_iluminacion_emergencia_{$inspection_id}"] ?? null, // Manejo de campo nullable
         ]);
+
 
         ///////crear sistema electrico//////////
 
-        $sistemaElectrico = sistema_electrico::create([
-            'caja_distribucion_breker' => $validatedData['sistema_electrico']['caja_distribucion_breker'],
-            'encuentra_identificados' => $validatedData['sistema_electrico']['encuentra_identificados'],
-            'sistema_cableado_protegido' => $validatedData['sistema_electrico']['sistema_cableado_protegido'],
-            'toma_corriente_corto' => $validatedData['sistema_electrico']['toma_corriente_corto'],
-            'toma_corriente_sobrecarga' => $validatedData['sistema_electrico']['toma_corriente_sobrecarga'],
-            'identificacion_voltaje' => $validatedData['sistema_electrico']['identificacion_voltaje'],
-            'cajetines_asegurados' => $validatedData['sistema_electrico']['cajetines_asegurados'],
-            'boton_emergencia' => $validatedData['sistema_electrico']['boton_emergencia'],
-            'mantenimiento_preventivo' => $validatedData['sistema_electrico']['mantenimiento_preventivo'],
-            'periodicidad' => $validatedData['sistema_electrico']['periodicidad'],
-            'personal_idoneo' => $validatedData['sistema_electrico']['personal_idoneo'],
-            'observaciones' => $validatedData['sistema_electrico']['observaciones'],
+        $sistemaElectrico = Sistema_electrico::create([
+            'caja_distribucion_breker' => $validatedData["breker_{$inspection_id}"],
+            'encuentra_identificados' => $validatedData["identificados_{$inspection_id}"],
+            'sistema_cableado_protegido' => $validatedData["empalme_{$inspection_id}"],
+            'toma_corriente_corto' => $validatedData["toma_corriente_{$inspection_id}"],
+            'toma_corriente_sobrecarga' => $validatedData["sobrecarga_{$inspection_id}"],
+            'identificacion_voltaje' => $validatedData["voltaje_{$inspection_id}"],
+            'cajetines_asegurados' => $validatedData["cajetines_{$inspection_id}"],
+            'boton_emergencia' => $validatedData["boton_{$inspection_id}"],
+            'mantenimiento_preventivo' => $validatedData["mantenimiento_{$inspection_id}"],
+            'periodicidad' => $validatedData["periodicidad_{$inspection_id}"],
+            'personal_idoneo' => $validatedData["personal_idoneo_{$inspection_id}"],
+            'observaciones' => $validatedData["observaciones_sistema_electrico_{$inspection_id}"] ?? null, // Manejo de campo opcional
         ]);
+
 
         /////////  Almacenamiento de combustible
 
         $almacenamientoCombustibles = Almacenamiento::create([
             // Material sólido ordinario
-            'material_solido_ordinario' => $validatedData['almacenamiento_combustibles']['material_solido_ordinario'],
-            'zona_almacenamiento_1' => $validatedData['almacenamiento_combustibles']['zona_almacenamiento_1'],
-            'observaciones_1' => $validatedData['almacenamiento_combustibles']['observaciones_1'],
-            'cantidad_1' => $validatedData['almacenamiento_combustibles']['cantidad_1'],
+            'material_solido_ordinario' => $validatedData["material_solido_{$inspection_id}"],
+            'zona_almacenamiento_1' => $validatedData["Almacenamiento_solidos_{$inspection_id}"],
+            'observaciones_1' => $validatedData["observaciones_solidos_{$inspection_id}"] ?? null,
+            'cantidad_1' => $validatedData["cantidad_solidos_{$inspection_id}"],
 
             // Material líquido inflamable
-            'material_liquido_inflamable' => $validatedData['almacenamiento_combustibles']['material_liquido_inflamable'],
-            'zona_almacenamiento_2' => $validatedData['almacenamiento_combustibles']['zona_almacenamiento_2'],
-            'observaciones_2' => $validatedData['almacenamiento_combustibles']['observaciones_2'],
-            'cantidad_2' => $validatedData['almacenamiento_combustibles']['cantidad_2'],
+            'material_liquido_inflamable' => $validatedData["material_liquido_{$inspection_id}"],
+            'zona_almacenamiento_2' => $validatedData["Almacenamiento_liquidos_{$inspection_id}"],
+            'observaciones_2' => $validatedData["observaciones_liquidos_{$inspection_id}"] ?? null,
+            'cantidad_2' => $validatedData["cantidad_liquidos_{$inspection_id}"],
 
             // Material gaseoso inflamable
-            'material_gaseoso_inflamable' => $validatedData['almacenamiento_combustibles']['material_gaseoso_inflamable'],
-            'zona_almacenamiento_3' => $validatedData['almacenamiento_combustibles']['zona_almacenamiento_3'],
-            'observaciones_3' => $validatedData['almacenamiento_combustibles']['observaciones_3'],
-            'cantidad_3' => $validatedData['almacenamiento_combustibles']['cantidad_3'],
+            'material_gaseoso_inflamable' => $validatedData["material_gaseoso_{$inspection_id}"],
+            'zona_almacenamiento_3' => $validatedData["Almacenamiento_gaseoso_{$inspection_id}"],
+            'observaciones_3' => $validatedData["observaciones_gaseoso_{$inspection_id}"] ?? null,
+            'cantidad_3' => $validatedData["cantidad_gaseoso_{$inspection_id}"],
 
             // Otros químicos
-            'otros_quimicos' => $validatedData['almacenamiento_combustibles']['otros_quimicos'],
-            'zona_almacenamiento_4' => $validatedData['almacenamiento_combustibles']['zona_almacenamiento_4'],
-            'observaciones_4' => $validatedData['almacenamiento_combustibles']['observaciones_4'],
-            'cantidad_4' => $validatedData['almacenamiento_combustibles']['cantidad_4'],
+            'otros_quimicos' => $validatedData["quimico_{$inspection_id}"],
+            'zona_almacenamiento_4' => $validatedData["Almacenamiento_quimico_{$inspection_id}"],
+            'observaciones_4' => $validatedData["observaciones_quimico_{$inspection_id}"] ?? null,
+            'cantidad_4' => $validatedData["cantidad_quimico_{$inspection_id}"],
         ]);
+
 
 
         /////// Crear otras condiciones/////
 
         $otrasCondiciones = Otras_Condiciones::create([
-            'condicion' => $validatedData['otras_condiciones']['condicion'],
-            'observacion' => $validatedData['otras_condiciones']['observacion'],
+            'condicion' => $validatedData["otra_condicion_riesgo_{$inspection_id}"],
+            'observacion' => $validatedData["observaciones_otros_{$inspection_id}"],
+            'recomendaciones' => $validatedData["recomendaciones_otros_{$inspection_id}"], // Agregar el campo 'recomendaciones' si corresponde a la base de datos
         ]);
+
 
 
         ///////////CREAR EL CONCEPTO////////////
         $inspection->estado = 'REVISADA';
 
-        if ($validatedData['favorable'] == 1) {
+        if ($validatedData["favorable_{$inspection_id}"] == 1) {
             $inspection->estado = 'FINALIZADA';
         }
 
@@ -326,9 +442,9 @@ class ConceptController extends Controller
         // Asignar los datos del concepto
         $concepto->fecha_concepto = Carbon::now()->toDateString();
         $concepto->inspeccion_id = $inspection->id;  // El ID de la inspección
-        $concepto->favorable = $validatedData['favorable'];
-        $concepto->recomendaciones = $validatedData['recomendaciones'] ?? '';
-        $concepto->id_info_establecimiento = $inspection->company->info_establecimiento->id;
+        $concepto->favorable = $validatedData["favorable_{$inspection_id}"];
+        $concepto->recomendaciones = $validatedData["recomendaciones_otros_{$inspection_id}"] ?? '';
+        $concepto->id_info_establecimiento = $inspection->company->info_establecimiento->first()->id;
         $concepto->id_auxilios = $primerosAuxilios->id;
         $concepto->id_equipo = $equipoContraIncendios->id;
         $concepto->id_construccion = $construccion->id;
@@ -337,16 +453,36 @@ class ConceptController extends Controller
         $concepto->id_sistema_electrico = $sistemaElectrico->id;
         $concepto->id_almacenamiento = $almacenamientoCombustibles->id;
         $concepto->id_otros = $otrasCondiciones->id;
-        $concepto->id_imagen = $validatedData['id_imagen'] ?? null;
-
+        
         $concepto->save();
+
+        /////Guardar las imágenes
+
+        if ($request->hasFile($input_name)) {
+            foreach ($request->file($input_name) as $photo) {
+                // Ruta de almacenamiento
+                $empresaFolder = "public/documentos/empresa-{$inspection -> Company -> first() -> id}";
+                $conceptFolder = "{$empresaFolder}/concepto-{$concepto -> id}";
+    
+                // Crear las carpetas si no existen
+                if (!Storage::exists($conceptFolder)) {
+                    Storage::makeDirectory($conceptFolder);
+                }
+    
+                // Guardar el archivo con un nombre único
+                $filename = Str::random(20) . '.' . $photo->getClientOriginalExtension();
+                $path = $photo->storeAs($conceptFolder, $filename);
+    
+                // Registrar el archivo en la base de datos
+                $archivo = Archivos::create([
+                    'tipo_archivo' => 'imagen de concepto',
+                    'url' => str_replace('public/', 'storage/', $path),
+                    'id_concepto' => $concepto -> id
+                ]); 
+            }
 
         return redirect()->route('inspector.inspeccionesAsignadas')->with('success', 'El concepto se creó con éxito');
     }
 
-    public function destroy($id)
-    {
-        //TODO
-
-    }
+}
 }
