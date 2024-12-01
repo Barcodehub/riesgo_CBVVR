@@ -354,6 +354,7 @@ class ConceptController extends Controller
             'escaleras' => $validatedData["escaleras_{$inspection_id}"],
             'señalizadas' => $validatedData["señalizadas_{$inspection_id}"],
             'barandas' => $validatedData["barandas_{$inspection_id}"],
+            'antideslizante' => $validatedData["antideslizante_{$inspection_id}"],
             'condicion_escaleras' => $validatedData["condicion_escaleras_{$inspection_id}"],
             'condicion_señalizadas' => $validatedData["condicion_señalizacion_{$inspection_id}"],
             'condicion_barandas' => $validatedData["condicion_barandas_{$inspection_id}"],

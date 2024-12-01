@@ -17,6 +17,7 @@ class Ruta_evacuacion extends Authenticatable
         'escaleras',
         'señalizadas',
         'barandas',
+        'antideslizante',
         'condicion_escaleras',
         'condicion_señalizadas',
         'condicion_barandas',

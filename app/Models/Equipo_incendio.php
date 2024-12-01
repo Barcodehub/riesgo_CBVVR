@@ -31,9 +31,9 @@ class Equipo_incendio extends Authenticatable
         return $this->hasOne('App\Models\Concept', 'id_equipo', 'id');
     }
 
-    public function extinror_sistema_incendio()
+    public function extintor_sistema_incendio()
     {
         ////modelo///////////////// clave primaria del modelo///////clave foranea en la tabla actual
-        return $this->hasOne('App\Models\Extintor_sistema_incendio', 'id_equipo', 'id');
+        return $this->hasMany('App\Models\Extintor_sistema_incendios', 'id_equipo_contra_incendio', 'id');
     }
 }

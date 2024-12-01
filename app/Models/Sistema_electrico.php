@@ -10,18 +10,20 @@ class sistema_electrico extends Authenticatable
     protected $table = 'sistema_electrico';
     use HasFactory;
 
-    protected $fillable = ['caja_distribucion_breker' , 
-                        'encuentra_identificados' , 
-                        'sistema_cableado_protegido',
-                        'toma_corriente_corto',
-                        'toma_corriente_sobrecarga',
-                        'identificacion_voltaje',
-                        'cajetines_asegurados',
-                        'boton_emergencia',
-                        'mantenimiento_preventivo',
-                        'periodicidad',
-                        'personal_idoneo',
-                        'observaciones'];
+    protected $fillable = [
+        'caja_distribucion_breker',
+        'encuentra_identificados',
+        'sistema_cableado_protegido',
+        'toma_corriente_corto',
+        'toma_corriente_sobrecarga',
+        'identificacion_voltaje',
+        'cajetines_asegurados',
+        'boton_emergencia',
+        'mantenimiento_preventivo',
+        'periodicidad',
+        'personal_idoneo',
+        'observaciones'
+    ];
 
 
     public function concept()

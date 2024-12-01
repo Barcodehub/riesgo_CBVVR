@@ -67,7 +67,7 @@ class CompanyController extends Controller
 
                 $storage_path = 'documentos/empresa-' . $companyCreated->id;
 
-                $file_name = $input_name . "." . $file->extension();
+                $file_name = $input_name . '_' . now()->format('Ymd_His') . '.' . $file->extension();
 
                 Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 
@@ -135,7 +135,7 @@ class CompanyController extends Controller
 
                 $storage_path = 'documentos/empresa-' . $companyCreated->id;
 
-                $file_name = $input_name . "." . $file->extension();
+                $file_name = $input_name . '_' . now()->format('Ymd_His') . '.' . $file->extension();
 
                 Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 
@@ -192,7 +192,7 @@ class CompanyController extends Controller
 
                 $storage_path = 'documentos/empresa-' . $company->id;
 
-                $file_name = $input_name . "." . $file->extension();
+                $file_name = $input_name . '_' . now()->format('Ymd_His') . '.' . $file->extension();
 
                 Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 
@@ -252,7 +252,7 @@ class CompanyController extends Controller
 
                 $storage_path = 'documentos/empresa-' . $company->id;
 
-                $file_name = $input_name . "." . $file->extension();
+                $file_name = $input_name . '_' . now()->format('Ymd_His') . '.' . $file->extension();
 
                 Storage::disk('public')->put($storage_path . '/' . $file_name, file_get_contents($request->file($input_name)));
 

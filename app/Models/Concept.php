@@ -69,7 +69,7 @@ class Concept extends Authenticatable
 
     public function almacenamiento()
     {
-        return $this->hasOne('App\Models\Almacenamiento', 'id_almacenamiento', 'id');
+        return $this->hasOne('App\Models\Almacenamiento', 'id', 'id_almacenamiento');
     }
 
     public function equipo_incendio()
