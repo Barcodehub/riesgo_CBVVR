@@ -29,7 +29,7 @@ class Concept extends Authenticatable
 
     public function inspection()
     {
-        return $this->hasOne('App\Models\Inspection', 'id', 'inspeccion_id');
+        return $this->belongsTo('App\Models\Inspection', 'inspeccion_id', 'id');
     }
 
     public function infoestablecimiento()

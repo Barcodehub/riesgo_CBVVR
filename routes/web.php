@@ -67,4 +67,5 @@ Route::prefix('cliente')->middleware(['cliente'])->group(function () {
     Route::post('storeCliente', [CompanyController::class, 'storeCliente'])->name('cliente.storeCliente');
     Route::patch('updateCliente/{id}', [CompanyController::class, 'updateCliente'])->name('cliente.updateCliente');
     Route::post('establecimiento/{id}', [EstablecimientoController::class, 'storeCliente'])->name('cliente.storeEstablecimiento');
+    Route::post('/inspections/{inspection}/storeEvidence', [InspectionController::class, 'storeEvidence'])->name('inspections.storeEvidence');
 });

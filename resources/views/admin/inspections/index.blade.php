@@ -34,6 +34,7 @@
             </tr>
             @endif
             @foreach ($inspections as $inspection)
+            
             <tr>
                 <td>{{$inspection->id}}</td>
                 <td>{{$inspection->company->razon_social}}</td>
@@ -54,7 +55,7 @@
                         <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#cotizarModal{{$inspection->id}}">Cotizar <i class="ps-2 fa-solid fa-pen"></i></a>
                         @endif
                         <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#asignarInspectorModal{{$inspection->id}}">Inspector <i class="fa-regular fa-square-check"></i></a>
-                        @if ($inspection->concept->first())
+                        @if ($inspection->concept && $inspection->concept->isNotEmpty())
                         <a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalVerConcepto{{$inspection->id}}">Concepto <i class="ps-2 fa-solid fa-magnifying-glass-plus"></i></a>
                         @endif
                     </div>
@@ -287,6 +288,7 @@
             </div>
 
             <!-- MODAL VER Concepto -->
+             @if($inspection->concept && $inspection->concept->isNotEmpty())
             <div class="modal fade" id="modalVerConcepto{{$inspection->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
@@ -999,7 +1001,7 @@
                     </div><!--div que cierra el modal content-->
                 </div><!--div que cierra el modal  dialog-->
             </div><!--div que cierra el modal-->
-
+            @endif
             <!----fin de modal ver detalle-->
 
 

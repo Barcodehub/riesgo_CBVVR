@@ -13,8 +13,9 @@ class Inspection extends Authenticatable
 
     public function company()
     {
-        return $this->hasOne('App\Models\Company', 'id', 'establecimiento_id');
+        return $this->belongsTo('App\Models\Company', 'establecimiento_id', 'id');
     }
+    
 
     public function user()
     {

@@ -11,6 +11,10 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use App\Models\Archivos;
 
 class InspectionController extends Controller
 {
@@ -176,4 +180,49 @@ class InspectionController extends Controller
         $inspections = \App\Models\Inspection::whereIn('company_id', $companies->pluck('id'))->get();
         return view('cliente.detalle-inspeccion', compact('companies', 'inspections'));
     }
+
+    public function storeEvidence(Request $request, $inspectionId)
+    {
+        // Buscar la inspección
+        $inspection = Inspection::findOrFail($inspectionId);
+    
+        // Validar los campos del formulario
+        $request->validate([
+            'recomendaciones' => 'required|string',
+            'evidencias' => 'nullable|array',
+            'evidencias.*' => 'mimes:jpg,jpeg,png,pdf|max:10240', // Max 10MB por archivo
+        ]);
+    
+        $empresa = $inspection->company; // Obtener la empresa
+        $empresaId = $empresa->id;
+        $concepto = $inspection->concept; // Obtener el concepto
+    
+        // Definir la ruta relativa para la carpeta 'evidencias'
+        $directory = "public/documentos/empresa-{$empresaId}/concepto-{$concepto->first()->id}/evidencias";
+    
+        // Crear las carpetas si no existen
+        if (!Storage::exists($directory)) {
+            Storage::makeDirectory($directory);
+        }
+    
+        // Subir los archivos de evidencia
+        if ($request->hasFile('evidencias')) {
+            foreach ($request->file('evidencias') as $photo) {
+                // Guardar el archivo con un nombre único
+                $filename = Str::random(20) . '.' . $photo->getClientOriginalExtension();
+                // Guardar el archivo en la carpeta de 'evidencias'
+                $path = $photo->storeAs($directory, $filename);
+    
+                // Registrar el archivo en la base de datos
+                Archivos::create([
+                    'tipo_archivo' => 'evidencia de concepto',
+                    'url' => str_replace('public/', 'storage/', $path),
+                    'id_concepto' => $concepto->first()->id,
+                ]);
+            }
+        }
+    
+        return redirect()->back()->with('success', 'Evidencias cargadas exitosamente.');
+    }
+    
 }

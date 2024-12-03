@@ -354,7 +354,7 @@ class ConceptController extends Controller
             'escaleras' => $validatedData["escaleras_{$inspection_id}"],
             'señalizadas' => $validatedData["señalizadas_{$inspection_id}"],
             'barandas' => $validatedData["barandas_{$inspection_id}"],
-            'antideslizante' => $validatedData["antideslizante_{$inspection_id}"],
+            ///'antideslizante' => $validatedData["antideslizante_{$inspection_id}"],
             'condicion_escaleras' => $validatedData["condicion_escaleras_{$inspection_id}"],
             'condicion_señalizadas' => $validatedData["condicion_señalizacion_{$inspection_id}"],
             'condicion_barandas' => $validatedData["condicion_barandas_{$inspection_id}"],
@@ -462,7 +462,8 @@ class ConceptController extends Controller
         if ($request->hasFile($input_name)) {
             foreach ($request->file($input_name) as $photo) {
                 // Ruta de almacenamiento
-                $empresaFolder = "public/documentos/empresa-{$inspection -> Company -> first() -> id}";
+                $empresa =$inspection->company;
+                $empresaFolder = "public/documentos/empresa-{$empresa -> id}";
                 $conceptFolder = "{$empresaFolder}/concepto-{$concepto -> id}";
     
                 // Crear las carpetas si no existen
