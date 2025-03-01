@@ -69,3 +69,7 @@ Route::prefix('cliente')->middleware(['cliente'])->group(function () {
     Route::post('establecimiento/{id}', [EstablecimientoController::class, 'storeCliente'])->name('cliente.storeEstablecimiento');
     Route::post('/inspections/{inspection}/storeEvidence', [InspectionController::class, 'storeEvidence'])->name('inspections.storeEvidence');
 });
+
+
+Route::patch('/inspector/finalizar/{id}', [InspectionController::class, 'finalizar'])->name('inspector.finalizar');
+Route::get('/cliente/descargar-certificado/{id}', [InspectionController::class, 'descargarCertificado'])->name('cliente.descargar-certificado');

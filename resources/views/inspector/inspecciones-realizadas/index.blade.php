@@ -51,6 +51,13 @@
                         @if ($inspection->concept)
                         <a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalVerConcepto{{$inspection->id}}">Concepto <i class="ps-2 fa-solid fa-magnifying-glass-plus"></i></a>
                         @endif
+                        @if ($inspection->estado == 'FINALIZADA')
+                        <form action="{{ route('inspector.finalizar', $inspection->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-success">Finalizar Inspección</button>
+                        </form>
+                        @endif
                     </div>
                 </td>
             </tr>

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('estado');
             $table->double('valor')->nullable(true);
             $table->string('numero_certificado')->nullable(true);
+            $table->string('certificado_url')->nullable(true);
             $table->timestamps();
         });
     }

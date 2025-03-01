@@ -239,17 +239,20 @@
 
                                             @if ($company->inspections->isEmpty())
                                             <h6 class="mt-4">No tiene inspecciones creadas</h6>
-                                            @else
+                                        @else
                                             @foreach ($company->inspections as $inspection)
-                                            <p>Inspector:
-                                                {{ $inspection->user ? $inspection->user->nombre . ' ' . $inspection->user->apellido : 'No tiene inspector asignado' }}
-                                            </p>
-                                            <p>Fecha Solicitud Inspección:
-                                                {{ $inspection->fecha_solicitud }}
-                                            </p>
-                                            <p>Estado Actual: {{ $inspection->estado }}</p>
+                                                <p>Inspector: {{ $inspection->user ? $inspection->user->nombre . ' ' . $inspection->user->apellido : 'No tiene inspector asignado' }}</p>
+                                                <p>Fecha Solicitud Inspección: {{ $inspection->fecha_solicitud }}</p>
+                                                <p>Estado Actual: {{ $inspection->estado }}</p>
+                                        
+                                                <!-- Botón de descarga del certificado -->
+                                                @if ($inspection->estado == 'FINALIZADA' && $inspection->certificado_url)
+                                                    <a href="{{ route('cliente.descargar-certificado', $inspection->id) }}" class="btn btn-primary btn-sm">
+                                                        <i class="fa-solid fa-download"></i> Descargar Certificado
+                                                    </a>
+                                                @endif
                                             @endforeach
-                                            @endif
+                                        @endif
                                         </div>
                                     </div>
                                 </div>
@@ -536,6 +539,9 @@
                 </div>
 
             </div>
+
+
+
             @endforeach
 
         </tbody>

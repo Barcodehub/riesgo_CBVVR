@@ -20,9 +20,9 @@ return new class extends Migration
             $table->boolean('hidrantes');
             $table->string('tipo_hidrante');
             $table->double('distancia');
-            $table->string('observaciones_hyr');
+            $table->string('observaciones_hyr')->nullable();
             $table->boolean('capacitacion');
-            $table->string('observaciones');
+            $table->string('observaciones')->nullable();
             $table->timestamps();
         });
     }

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\Archivos;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InspectionController extends Controller
 {
@@ -123,7 +124,7 @@ class InspectionController extends Controller
     }
 
 
-    public function finalizar($inspection_id)
+/*     public function finalizar($inspection_id)
     {
         $inspection = Inspection::find($inspection_id);
 
@@ -132,7 +133,7 @@ class InspectionController extends Controller
         $inspection->save();
 
         return redirect()->route('inspector.inspeccionesRealizadas')->with('success', 'La inspección se finalizó con éxito');
-    }
+    } */
 
     public function getInspectionsByStateAndInspector(array $estados, $inspector_id)
     {
@@ -224,5 +225,52 @@ class InspectionController extends Controller
     
         return redirect()->back()->with('success', 'Evidencias cargadas exitosamente.');
     }
+    
+
+
+    public function finalizar($id)
+{
+    // Buscar la inspección
+    $inspection = Inspection::findOrFail($id);
+
+    // Marcar como finalizada
+    $inspection->estado = 'FINALIZADA';
+    $inspection->save();
+
+    // Generar el certificado en PDF
+    $pdf = Pdf::loadView('certificado', compact('inspection'));
+
+    // Guardar el certificado en el almacenamiento
+    $filename = "certificado-{$inspection->id}.pdf";
+    Storage::put("public/certificados/{$filename}", $pdf->output());
+
+    // Asociar el certificado a la inspección (opcional, si tienes una columna en la tabla)
+    $inspection->certificado_url = "certificados/{$filename}";
+    $inspection->save();
+
+    return redirect()->back()->with('success', 'Inspección finalizada y certificado generado.');
+}
+
+
+
+
+public function descargarCertificado($id)
+{
+    // Buscar la inspección
+    $inspection = Inspection::findOrFail($id);
+
+    // Verificar si el certificado existe
+    if (!$inspection->certificado_url) {
+        return redirect()->back()->with('error', 'El certificado no está disponible.');
+    }
+
+    // Obtener la ruta del certificado
+    $path = Storage::path("public/{$inspection->certificado_url}");
+
+    // Descargar el archivo
+    return response()->download($path);
+}
+
+
     
 }
