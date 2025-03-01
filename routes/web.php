@@ -73,3 +73,4 @@ Route::prefix('cliente')->middleware(['cliente'])->group(function () {
 
 Route::patch('/inspector/finalizar/{id}', [InspectionController::class, 'finalizar'])->name('inspector.finalizar');
 Route::get('/cliente/descargar-certificado/{id}', [InspectionController::class, 'descargarCertificado'])->name('cliente.descargar-certificado');
+Route::get('/cliente/historico-inspecciones', [InspectionController::class, 'historicoInspecciones'])->name('cliente.historico-inspecciones');

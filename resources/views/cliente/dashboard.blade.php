@@ -23,6 +23,13 @@
                         <a class="nav-link" href="{{ route('cliente.datosEmpresa') }}">Datos de Empresa</a>
                     </li>
 
+                    <li class="nav-item">
+
+                    <a class="nav-link" href="{{ route('cliente.historico-inspecciones') }}" >
+                         Histórico de Inspecciones
+                    </a>
+                </li>
+
                     @if (Auth::user()->companies->first() && Auth::user()->companies->first()->inspections->first())
 
                     <li class="nav-item">

@@ -7,7 +7,7 @@ Sistema desarrollado con el framework de laravel
 Implementaciones completadas:
 R31: Generacion de certificado de inspecciones por parte del inspector
 R35: Agregado descarga de Certificado de inspecciones por parte del cliente
-
+R39: Historico de certificados
 
 instalar compose-artisan...
 npm install

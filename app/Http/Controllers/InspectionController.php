@@ -272,5 +272,19 @@ public function descargarCertificado($id)
 }
 
 
+
+
+public function historicoInspecciones()
+{
+    // Obtener el ID del cliente autenticado
+    $clientId = Auth::id();
+
+    // Obtener las inspecciones relacionadas con las empresas del cliente
+    $inspections = Inspection::whereHas('company', function ($query) use ($clientId) {
+        $query->where('cliente_id', $clientId);
+    })->orderBy('fecha_solicitud', 'desc')->get();
+
+    return view('cliente.historico-inspecciones', compact('inspections'));
+}
     
 }
