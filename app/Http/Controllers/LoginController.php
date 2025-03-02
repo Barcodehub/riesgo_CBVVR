@@ -104,4 +104,97 @@ class LoginController extends Controller
 
         return redirect()->route('login');
     }
+
+
+
+
+
+
+//login con huella
+public function loginFingerPrint(Request $request)
+{
+    $host = "127.0.0.1"; 
+    $port = 1234; 
+    $message = "login"."\n";
+
+    // Crear el socket
+    $socket = socket_create(AF_INET, SOCK_STREAM, 0);
+    if ($socket === false) {
+        return redirect()->route('login')->withErrors([
+            'error' => 'No se pudo conectar con el servidor de huellas.',
+        ]);
+    }
+
+    // Conectar al servidor
+    $result = socket_connect($socket, $host, $port);
+    if ($result === false) {
+        return redirect()->route('login')->withErrors([
+            'error' => 'No se pudo conectar con el servidor de huellas.',
+        ]);
+    }
+
+    // Enviar el mensaje
+    $result = socket_write($socket, $message, strlen($message));
+    if ($result === false) {
+        return redirect()->route('login')->withErrors([
+            'error' => 'No se pudo enviar datos al servidor de huellas.',
+        ]);
+    }
+
+    // Leer la respuesta
+    $result = socket_read($socket, 1024);
+    if ($result === false) {
+        return redirect()->route('login')->withErrors([
+            'error' => 'No se pudo leer la respuesta del servidor de huellas.',
+        ]);
+    }
+
+    // Cerrar el socket
+    socket_close($socket);
+
+    // Procesar la respuesta
+    $id = trim($result);  // Elimina espacios y saltos de línea
+
+    // Buscar al usuario por ID
+    $user = User::find($id);
+    if ($user) {
+        // Verificar si el usuario está habilitado
+        if ($user->disponibilidad == 0) {
+            return redirect()->route('login')->withErrors([
+                'error' => 'El usuario se encuentra deshabilitado.',
+            ]);
+        }
+
+        // Iniciar sesión
+        Auth::login($user);
+
+        // Redirigir según el rol
+        switch ($user->role->nombre) {
+            case 'ADMINISTRADOR':
+                return redirect()->intended(route('admin.dashboard'));
+            case 'INSPECTOR':
+                return redirect()->intended(route('inspector.dashboard'));
+            case 'CLIENTE':
+                return redirect()->intended(route('cliente.dashboard'));
+            default:
+                return redirect()->route('login')->withErrors([
+                    'error' => 'Rol no válido.',
+                ]);
+        }
+    } else {
+        return redirect()->route('login')->withErrors([
+            'error' => 'Huella no registrada o usuario no encontrado.',
+        ]);
+    }
 }
+
+
+    
+}
+
+
+
+
+
+
+

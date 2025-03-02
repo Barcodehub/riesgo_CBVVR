@@ -61,6 +61,10 @@
         </div>
         <button type="submit" class="btn btn-primary">Iniciar sesión</button>
       </form>
+      <form action="/login-huella" method="POST">
+        @csrf
+        <button type="submit">Iniciar sesión con huella digital</button>
+    </form>
 
     </div>
 

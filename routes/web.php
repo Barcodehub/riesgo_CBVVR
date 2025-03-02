@@ -21,7 +21,8 @@ Route::view('/registro', 'register')->name('registro')->middleware('guest');
 Route::post('/validar-registro', [LoginController::class, 'register'])->name('validar-registro')->middleware('guest');
 Route::post('/inicia-sesion', [LoginController::class, 'login'])->name('inicia-sesion')->middleware('guest');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
-
+// Login por huella digital
+Route::post('/login-huella', [LoginController::class, 'loginFingerPrint']);
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/admin', [HomeController::class, 'index'])->name('home');
@@ -58,6 +59,7 @@ Route::prefix('inspector')->middleware(['inspector'])->group(function () {
     Route::get('inspector/getBotiquines', [ConceptController::class, 'getBotiquines'])->name('inspector.getBotiquines');
     Route::post('inspecciones/{inspection}/store', [ConceptController::class, 'store'])->name('inspector.store');
     Route::patch('finalizar/{id}', [InspectionController::class, 'finalizar'])->name('inspector.finalizar');
+    Route::post('/crear/{id}', [HuellaController::class, 'crearHuella'])->name('huella.create');
 });
 
 Route::prefix('cliente')->middleware(['cliente'])->group(function () {
@@ -69,6 +71,7 @@ Route::prefix('cliente')->middleware(['cliente'])->group(function () {
     Route::patch('updateCliente/{id}', [CompanyController::class, 'updateCliente'])->name('cliente.updateCliente');
     Route::post('establecimiento/{id}', [EstablecimientoController::class, 'storeCliente'])->name('cliente.storeEstablecimiento');
     Route::post('/inspections/{inspection}/storeEvidence', [InspectionController::class, 'storeEvidence'])->name('inspections.storeEvidence');
+    Route::post('/crear/{id}', [HuellaController::class, 'crearHuella'])->name('huella.create');
 });
 
 
@@ -86,6 +89,3 @@ Route::prefix('huella')->group(function () {
     Route::post('/crear/{id}', [HuellaController::class, 'crearHuella'])->name('huella.create');
 });
 
-Route::get('/csrf-token', function () {
-    return response()->json(['csrf_token' => csrf_token()]);
-});

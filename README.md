@@ -8,7 +8,11 @@ Implementaciones completadas:
 R31: Generacion de certificado de inspecciones por parte del inspector
 R35: Agregado descarga de Certificado de inspecciones por parte del cliente
 R39: Historico de certificados
+-envio de puertos -
 (boton crear huella biometrica simulado)
+(simulador test_login biometrico - simula el login con la huella (sin hardware))
+(ejecutar test, +boton)
+
 
 instalar compose-artisan...
 npm install
@@ -38,3 +42,7 @@ probar comunicacion hacia el puerto:
 echo login | ncat 127.0.0.1 1234
 1
 
+
+
+
+curl -X POST http://127.0.0.1:8000/api/login-huella
