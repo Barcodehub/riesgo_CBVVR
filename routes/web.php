@@ -11,6 +11,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EstablecimientoController;
+use App\Http\Controllers\HuellaController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -40,7 +41,7 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     ], ['except' => ['create', 'edit', 'show']]);
 
     Route::patch('changeState/{id}', [UserController::class, 'changeState'])->name('users.changeState');
-
+    Route::post('/crear/{id}', [HuellaController::class, 'crearHuella'])->name('huella.create');
     Route::resource('roles', RoleController::class)->only(['index', 'destroy']);
     Route::resource('inspections', InspectionController::class)->only(['index', 'store', 'update', 'asignarInspector', 'destroy']);
     Route::patch('asignarInspector/{id}', [InspectionController::class, 'asignarInspector'])->name('inspections.asignarInspector');
@@ -74,3 +75,17 @@ Route::prefix('cliente')->middleware(['cliente'])->group(function () {
 Route::patch('/inspector/finalizar/{id}', [InspectionController::class, 'finalizar'])->name('inspector.finalizar');
 Route::get('/cliente/descargar-certificado/{id}', [InspectionController::class, 'descargarCertificado'])->name('cliente.descargar-certificado');
 Route::get('/cliente/historico-inspecciones', [InspectionController::class, 'historicoInspecciones'])->name('cliente.historico-inspecciones');
+
+
+
+Route::prefix('huella')->group(function () {
+    Route::get('/', [HuellaController::class, 'index'])->name('huella.index');
+    Route::get('/{id}', [HuellaController::class, 'show'])->name('huella.show');
+    Route::delete('/{id}', [HuellaController::class, 'destroy'])->name('huella.destroy');
+    Route::delete('/por-user/{id}', [HuellaController::class, 'destroyForIdUser'])->name('huella.destroyforuser');
+    Route::post('/crear/{id}', [HuellaController::class, 'crearHuella'])->name('huella.create');
+});
+
+Route::get('/csrf-token', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+});

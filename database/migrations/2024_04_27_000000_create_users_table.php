@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('email2')->unique();
             $table->string('password');
+            //$table->string('acceso_huella')->nullable();
+            $table->boolean('acceso_huella')->default(false);
             $table->unsignedBigInteger('rol_id');
             $table->foreign('rol_id')->references('id')->on('roles')->onDelete('restrict');
             $table->rememberToken();

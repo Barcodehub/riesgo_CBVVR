@@ -38,6 +38,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('kits.index') }}">Tipo de Botiquines</a>
                     </li>
+
+                    <li class="nav-item">
+                        
+                        
+                        <form action="{{ route('huella.create', ['id' => 1]) }}" method="POST">
+                            @csrf
+                            <button type="submit">Crear Huella</button>
+                        </form>
+
+                    </li>
+
+
                 </ul>
                 <span class="navbar-text d-flex">
                     <span class="me-4">{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</span>

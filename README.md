@@ -8,6 +8,7 @@ Implementaciones completadas:
 R31: Generacion de certificado de inspecciones por parte del inspector
 R35: Agregado descarga de Certificado de inspecciones por parte del cliente
 R39: Historico de certificados
+(boton crear huella biometrica simulado)
 
 instalar compose-artisan...
 npm install
@@ -22,4 +23,18 @@ por si falla la ejecucion con php-serve:
 php artisan config:clear
 php artisan config:cache
 php artisan serve --env=local
+
+
+
+
+crear huella
+test_server.py se puede probar la comunicacion = 1 con la simulacion de servicio de huella biometrico
+curl -X POST http://127.0.0.1:8000/api/huella/crear/1
+en el test de python = 1
+
+crear huella con el boton
+
+probar comunicacion hacia el puerto:
+echo login | ncat 127.0.0.1 1234
+1
 

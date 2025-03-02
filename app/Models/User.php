@@ -9,7 +9,7 @@ class User extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'apellido', 'documento', 'telefono', 'telefono2' , 'disponibilidad', 'email', 'email2' , 'password', 'rol_id'];
+    protected $fillable = ['nombre', 'apellido', 'documento', 'telefono', 'telefono2' , 'disponibilidad', 'email', 'email2' , 'password', 'rol_id', 'acceso_huella'];
 
     public function role()
     {
@@ -25,4 +25,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Company', 'cliente_id', 'id');
     }
+
+
+    public function huella()
+{
+    return $this->hasOne('App\Models\Huella', 'id_user');
+}
 }
