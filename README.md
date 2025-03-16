@@ -4,6 +4,12 @@
 
 Sistema desarrollado con el framework de laravel
 
+
+cliente(Crear empresa)->admin(infoEstablecimiento)->cliente(solicitudInspeccion)->admin(asignarInspector)->inspector(DarConcepto)->Finalizar->Descargar
+
+
+
+
 Implementaciones completadas:
 R31: Generacion de certificado de inspecciones por parte del inspector
 R35: Agregado descarga de Certificado de inspecciones por parte del cliente
@@ -21,7 +27,7 @@ npm run dev
 
 
 Correr migraciones, si falla, revisar con status cual falta y agregar una a una manualmente las que se puedan
-si quedan una o dos sin que funcione manualmente, conectarse a la bd localmente y hacer un DROP (eliminar la tabla) y volver a ejecutar el comando para migrar manualmente
+si quedan una o dos sin que funcione manualmente, conectarse a la bd localmente y hacer un DROP (eliminar la tabla) y volver a ejecutar el comando para migrar manualmente... correr el XAMPP
 
 por si falla la ejecucion con php-serve:
 php artisan config:clear

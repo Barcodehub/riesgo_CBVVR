@@ -113,7 +113,7 @@ class LoginController extends Controller
 //login con huella
 public function loginFingerPrint(Request $request)
 {
-    $host = "127.0.0.1"; 
+    $host = "127.0.0.1";   //env
     $port = 1234; 
     $message = "login"."\n";
 

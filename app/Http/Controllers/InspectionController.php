@@ -229,27 +229,32 @@ class InspectionController extends Controller
 
 
     public function finalizar($id)
-{
-    // Buscar la inspección
-    $inspection = Inspection::findOrFail($id);
+    {
+        // Buscar la inspección
+        $inspection = Inspection::findOrFail($id);
+    
+        // Obtener el concepto relacionado con la inspección
+        $concept = Concept::where('inspeccion_id', $inspection->id)->first();
+        
 
-    // Marcar como finalizada
-    $inspection->estado = 'FINALIZADA';
-    $inspection->save();
 
-    // Generar el certificado en PDF
-    $pdf = Pdf::loadView('certificado', compact('inspection'));
-
-    // Guardar el certificado en el almacenamiento
-    $filename = "certificado-{$inspection->id}.pdf";
-    Storage::put("public/certificados/{$filename}", $pdf->output());
-
-    // Asociar el certificado a la inspección (opcional, si tienes una columna en la tabla)
-    $inspection->certificado_url = "certificados/{$filename}";
-    $inspection->save();
-
-    return redirect()->back()->with('success', 'Inspección finalizada y certificado generado.');
-}
+        // Marcar como finalizada
+        $inspection->estado = 'FINALIZADA';
+        $inspection->save();
+    
+        // Generar el certificado en PDF
+        $pdf = Pdf::loadView('certificado', compact('inspection', 'concept'));
+    
+        // Guardar el certificado en el almacenamiento
+        $filename = "certificado-{$inspection->id}.pdf";
+        Storage::put("public/certificados/{$filename}", $pdf->output());
+    
+        // Asociar el certificado a la inspección
+        $inspection->certificado_url = "certificados/{$filename}";
+        $inspection->save();
+    
+        return redirect()->back()->with('success', 'Inspección finalizada y certificado generado.');
+    }
 
 
 

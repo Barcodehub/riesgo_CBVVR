@@ -55,7 +55,7 @@
                         <form action="{{ route('inspector.finalizar', $inspection->id) }}" method="POST">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="btn btn-success">Finalizar Inspección</button>
+                            <button type="submit" class="btn btn-success">Enviar Certificado</button>
                         </form>
                         @endif
                     </div>
