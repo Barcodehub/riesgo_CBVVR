@@ -45,4 +45,9 @@ class Company extends Authenticatable
     {
         return $this->hasMany('App\Models\Establecimiento', 'id_empresa', 'id');
     }
+
+    public function risks()
+{
+    return $this->hasMany('App\Models\Risk', 'company_id', 'id');
+}
 }

@@ -32,6 +32,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('roles.index') }}">Roles</a>
                     </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="{{ route('risks.show') }}">Riesgos</a> <!-- Nuevo enlace -->
+                    </li>
                 </ul>
                 <span class="navbar-text">
                     <a class="nav-link" href="{{ route('logout') }}"><i class="fa-solid fa-power-off me-4"></i></a>

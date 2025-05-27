@@ -31,4 +31,12 @@ return [
         ],
     ],
 
+    'maps' => [
+    'access_token' => env('MAPS_ACCESS_TOKEN'),
+],
+
+ 'biometric' => [
+        'host' => env('BIO_HOST', '127.0.0.1'),
+        'port' => env('BIO_PORT', 1234),
+    ],
 ];

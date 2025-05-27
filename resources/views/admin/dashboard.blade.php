@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    @stack('scripts')
     <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Home</a>
@@ -32,12 +33,19 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('roles.index') }}">Roles</a>
                     </li>
+                    </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="{{ route('risks.index') }}">Riesgos</a> <!-- Nuevo enlace -->
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('extintores.index') }}">Tipo de Extintores</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('kits.index') }}">Tipo de Botiquines</a>
                     </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="{{ route('risks.map') }}">Mapa de Riesgos</a>
+                </li>
 
                     <li class="nav-item">
                         

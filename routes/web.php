@@ -12,6 +12,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EstablecimientoController;
 use App\Http\Controllers\HuellaController;
+use App\Http\Controllers\RiskController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -47,6 +48,9 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::resource('inspections', InspectionController::class)->only(['index', 'store', 'update', 'asignarInspector', 'destroy']);
     Route::patch('asignarInspector/{id}', [InspectionController::class, 'asignarInspector'])->name('inspections.asignarInspector');
     Route::post('establecimiento/{id}', [EstablecimientoController::class, 'store'])->name('establecimiento.store');
+
+    Route::resource('risks', RiskController::class)->middleware('auth');
+    Route::get('mapa-empresas', [RiskController::class, 'mapView'])->name('risks.map');
 });
 
 
@@ -88,4 +92,5 @@ Route::prefix('huella')->group(function () {
     Route::delete('/por-user/{id}', [HuellaController::class, 'destroyForIdUser'])->name('huella.destroyforuser');
     Route::post('/crear/{id}', [HuellaController::class, 'crearHuella'])->name('huella.create');
 });
+
 

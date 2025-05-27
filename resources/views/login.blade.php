@@ -19,6 +19,53 @@
       justify-content: center;
       align-items: center;
     }
+
+    .fingerprint-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #6e8efb, #4a6cf7);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(74, 108, 247, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.fingerprint-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+
+.fingerprint-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 108, 247, 0.4);
+}
+
+.fingerprint-btn:hover::before {
+  left: 100%;
+}
+
+.fingerprint-btn i {
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.fingerprint-btn:hover i {
+  transform: scale(1.1);
+}
   </style>
 </head>
 
@@ -59,13 +106,17 @@
         <div>
           <p>¿No tienes cuenta? <a href="{{route('registro')}}">Regístrate</a></p>
         </div>
+        <div class="d-flex justify-content-between align-items-center mt-4">
         <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+         
+        
       </form>
-      <form action="/login-huella" method="POST">
-        @csrf
-        <button type="submit">Iniciar sesión con huella digital</button>
-    </form>
-
+     <form action="/login-huella" method="POST">
+            @csrf
+            <button type="submit" class="fingerprint-btn" aria-label="Iniciar sesión con huella digital">
+      <i class="fas fa-fingerprint"></i></button>
+         </form> 
+        </div>
     </div>
 
   </div>

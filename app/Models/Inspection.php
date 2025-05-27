@@ -26,4 +26,11 @@ class Inspection extends Authenticatable
     {
         return $this->hasMany('App\Models\Concept', 'inspeccion_id', 'id');
     }
+
+    public function risks()
+{
+    return $this->belongsToMany(Risk::class, 'inspection_risk', 'inspection_id', 'risk_id')
+                ->withPivot('observations', 'severity')
+                ->withTimestamps();
+}
 }

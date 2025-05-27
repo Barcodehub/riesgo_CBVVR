@@ -51,8 +51,10 @@ class HuellaController extends Controller
 
     public function crearHuella($idUser)
 {
-    $host = "127.0.0.1";  // Accede al host desde Docker
-    $port = 1234;
+    // en blade le pasamos un numero(idUser) con el id del usuario se crea su propia huella
+
+    $host = config('services.biometric.host');
+    $port = config('services.biometric.port');
     $message = $idUser . "\n";
 
     // Crear el socket
