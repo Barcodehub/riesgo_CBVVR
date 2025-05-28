@@ -29,6 +29,6 @@ class User extends Authenticatable
 
     public function huella()
 {
-    return $this->hasOne('App\Models\Huella', 'id_user');
+    return $this->hasOne(Huella::class, 'id_user', 'id');
 }
 }

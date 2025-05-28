@@ -39,9 +39,15 @@ class RiskController extends Controller
     }
 
     public function show(Risk $risk)
-    {
+{
+    $risk->load([
+        'company',
+        'concepts.inspection.user',
+        'concepts.archivos'
+    ]);
+    
         return view('admin.risks.show', compact('risk'));
-    }
+}
 
     public function edit(Risk $risk)
     {
@@ -74,13 +80,25 @@ class RiskController extends Controller
     }
 
 
-    public function mapView()
+public function mapView()
 {
-    // Obtener empresas con sus riesgos e inspecciones
-    $companies = Company::with(['risks', 'inspections'])->get();
+    // Obtener empresas con sus relaciones
+    $companies = Company::with([
+        'risks',
+        'inspections.user',
+        'inspections.concept.infoestablecimiento', // Cargar relación anidada
+        'info_establecimiento'
+    ])->get();
     
     // Preparar datos para el mapa
     $mapData = $companies->map(function($company) {
+        // Obtener conceptos no nulos de las inspecciones
+        $concepts = $company->inspections->filter(function($inspection) {
+            return !is_null($inspection->concept);
+        })->map(function($inspection) {
+            return $inspection->concept;
+        });
+        
         return [
             'id' => $company->id,
             'name' => $company->razon_social,
@@ -90,6 +108,7 @@ class RiskController extends Controller
             'lng' => $company->risks->avg('longitude') ?? null,
             'risks' => $company->risks->map(function($risk) {
                 return [
+                    'id' => $risk->id,
                     'name' => $risk->name,
                     'type' => $risk->risk_type,
                     'severity' => $risk->severity,
@@ -97,14 +116,18 @@ class RiskController extends Controller
                     'mitigation' => $risk->mitigation_measures
                 ];
             }),
-            'inspections' => $company->inspections->map(function($inspection) {
+            'concepts' => $concepts->map(function($concept) {
                 return [
-                    'date' => $inspection->fecha_solicitud,
-                    'status' => $inspection->estado,
-                    'value' => $inspection->valor,
-                    'inspector' => $inspection->user->name ?? 'N/A'
+                    'id' => $concept->id ?? null, // Manejo seguro del ID
+                    'date' => $concept->fecha_concepto ?? 'N/A',
+                    'favorable' => $concept->favorable ?? false,
+                    'recommendations' => $concept->recomendaciones ?? 'N/A',
+                    'inspection_id' => $concept->inspeccion_id ?? null,
+                    'inspector' => optional(optional($concept->inspection)->user)->name ?? 'N/A'
                 ];
-            })
+            })->filter(function($concept) {
+                return !is_null($concept['id']); // Filtrar conceptos sin ID
+            })->values() // Reindexar el array
         ];
     })->filter(function($company) {
         return !is_null($company['lat']) && !is_null($company['lng']);

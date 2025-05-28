@@ -1,6 +1,8 @@
 @extends('admin.dashboard')
 
 @section('content')
+
+<div class="w-full border p-4 m-4">
     <h1>Gestión de Riesgos</h1>
     
     @if(session('success'))
@@ -11,8 +13,8 @@
 
     <a href="{{ route('risks.create') }}" class="btn btn-primary mb-3">Crear Nuevo Riesgo</a>
 
-    <table class="table">
-        <thead>
+    <table class="table table-striped">
+        <thead class="table-dark">
             <tr>
                 <th>Empresa</th>
                 <th>Nombre del Riesgo</th>
@@ -48,4 +50,5 @@
             @endforeach
         </tbody>
     </table>
+ </div>    
 @endsection

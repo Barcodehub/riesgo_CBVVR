@@ -21,6 +21,7 @@ use App\Models\sistema_electrico;
 use App\Models\Sistema_iluminacion;
 use App\Models\Extintor_sistema_incendios;
 use App\Models\botiquin_primeros_auxilios;
+use App\Models\Risk;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -51,6 +52,30 @@ class ConceptController extends Controller
         // Devolver los tipos de extintores como JSON
         return response()->json($botiquines);
     }
+
+    public function show(Risk $risk)
+{
+    $risk->load([
+        'company',
+        'concepts' => function($query) {
+            $query->with([
+                'inspection.user',
+                'infoestablecimiento',
+                'construccion',
+                'sistema_electrico',
+                'sistema_iluminacion',
+                'ruta_evacuacion',
+                'otras_condiciones',
+                'almacenamiento',
+                'equipo_incendio.extintores.tipo',
+                'primeros_auxilios.botiquines.tipo',
+                'archivos'
+            ])->orderBy('fecha_concepto', 'desc');
+        }
+    ]);
+
+    return view('admin.risks.show', compact('risk'));
+}
 
     public function store(Request $request, $inspection_id)
     {

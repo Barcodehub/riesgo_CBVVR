@@ -50,7 +50,6 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::post('establecimiento/{id}', [EstablecimientoController::class, 'store'])->name('establecimiento.store');
 
     Route::resource('risks', RiskController::class)->middleware('auth');
-    Route::get('mapa-empresas', [RiskController::class, 'mapView'])->name('risks.map');
 });
 
 
@@ -83,6 +82,8 @@ Route::patch('/inspector/finalizar/{id}', [InspectionController::class, 'finaliz
 Route::get('/cliente/descargar-certificado/{id}', [InspectionController::class, 'descargarCertificado'])->name('cliente.descargar-certificado');
 Route::get('/cliente/historico-inspecciones', [InspectionController::class, 'historicoInspecciones'])->name('cliente.historico-inspecciones');
 
+Route::get('concepts/{concept}', [ConceptController::class, 'show'])->name('concepts.show');
+Route::get('admin/risks/{risk}/edit', [RiskController::class, 'edit'])->name('risks.edit');
 
 
 Route::prefix('huella')->group(function () {

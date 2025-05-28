@@ -15,39 +15,37 @@ class HuellaController extends Controller
      */
     public function index()
     {
-        return Huella::all();
+        $huellas = Huella::with('user')->get();
+        $users = User::whereDoesntHave('huella')->get(); // Solo usuarios sin huella registrada
+        return view('admin.huella.index', compact('huellas', 'users'));
     }
 
-   
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $huella = Huella::find($id);
-        return isset($huella) ? $huella : [];
+        $huella = Huella::with('user')->find($id);
+        return view('admin.huella.show', compact('huella'));
     }
 
+public function destroy($id)
+{
+    $huella = Huella::find($id);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $huella = Huella::find($id);
-        if ($huella) {
-            $huella->delete();
-            return $huella;
+    if ($huella) {
+        // Actualizar el estado del usuario
+        $user = $huella->user;
+        if ($user) {
+            $user->acceso_huella = null;
+            $user->save();
         }
-        return [];
+
+        $huella->delete();
+        
+        return redirect()->route('huella.index')  // Corregido aquí
+            ->with('success', 'Huella eliminada correctamente');
     }
+
+}
+
 
     public function crearHuella($idUser)
 {
@@ -112,6 +110,29 @@ class HuellaController extends Controller
     ]);
 }
 
+
+    public function destroyForIdUser($idUser)
+    {
+        $huella = Huella::where('id_user', $idUser)->first();
+        
+        if ($huella) {
+            // Actualizar el estado del usuario
+            $user = $huella->user;
+            if ($user) {
+                $user->acceso_huella = false;
+                $user->save();
+            }
+            
+            $huella->delete();
+            return redirect()->route('huella.index')
+                ->with('success', 'Huella eliminada correctamente');
+        }
+        
+        return redirect()->route('huella.index')
+            ->with('error', 'No se encontró huella para este usuario');
+    }
+
+    
     public function destroyForIdEmploye($idUser)
     {
         $huella = Huella::where('huella.id_user', '=', $idUser)->first();

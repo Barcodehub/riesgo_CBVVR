@@ -43,20 +43,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('kits.index') }}">Tipo de Botiquines</a>
                     </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="{{ route('risks.map') }}">Mapa de Riesgos</a>
-                </li>
 
-                    <li class="nav-item">
-                        
-                        
-                        <form action="{{ route('huella.create', ['id' => 1]) }}" method="POST">
-                            @csrf
-                            <button type="submit">Crear Huella</button>
-                        </form>
-
+                       <li class="nav-item">
+                        <a class="nav-link" href="{{ route('huella.index') }}">Huellas</a>
                     </li>
-
 
                 </ul>
                 <span class="navbar-text d-flex">

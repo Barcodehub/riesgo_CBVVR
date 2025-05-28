@@ -1,6 +1,8 @@
 @extends('admin.dashboard')
 
 @section('content')
+<div class="w-full border p-4 m-4">
+
     <h1>{{ isset($risk) ? 'Editar' : 'Crear' }} Riesgo</h1>
 
     <form action="{{ isset($risk) ? route('risks.update', $risk->id) : route('risks.store') }}" method="POST">
@@ -60,7 +62,8 @@
         <button type="submit" class="btn btn-primary">{{ isset($risk) ? 'Actualizar' : 'Guardar' }}</button>
         <a href="{{ route('risks.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
-
+ </div>
+ 
     @push('scripts')
         <script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.maps.access_token') }}&callback=initMap&libraries=places&v=weekly" async defer></script>
         <script>
