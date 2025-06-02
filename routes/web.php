@@ -88,6 +88,7 @@ Route::get('admin/risks/{risk}/edit', [RiskController::class, 'edit'])->name('ri
 
 Route::prefix('huella')->group(function () {
     Route::get('/', [HuellaController::class, 'index'])->name('huella.index');
+    Route::get('/user', [HuellaController::class, 'user'])->name('huella.user');
     Route::get('/{id}', [HuellaController::class, 'show'])->name('huella.show');
     Route::delete('/{id}', [HuellaController::class, 'destroy'])->name('huella.destroy');
     Route::delete('/por-user/{id}', [HuellaController::class, 'destroyForIdUser'])->name('huella.destroyforuser');

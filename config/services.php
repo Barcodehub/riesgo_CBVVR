@@ -37,6 +37,7 @@ return [
 
  'biometric' => [
         'host' => env('BIO_HOST', '127.0.0.1'),
-        'port' => env('BIO_PORT', 1234),
+        'port' => env('BIO_PORT', 8080),
+        'timeout' => env('BIOMETRIC_TIMEOUT', 30),
     ],
 ];

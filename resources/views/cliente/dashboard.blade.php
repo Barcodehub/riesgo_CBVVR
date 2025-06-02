@@ -30,13 +30,17 @@
                     </a>
                 </li>
 
-                    @if (Auth::user()->companies->first() && Auth::user()->companies->first()->inspections->first())
+                    {{-- @if (Auth::user()->companies->first() && Auth::user()->companies->first()->inspections->first())
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('cliente.detalleInspeccion') }}">Seguimiento</a>
                     </li>
 
-                    @endif
+                    @endif --}}
+
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{ route('huella.user') }}">Huellas</a>
+                    </li>
                 </ul>
                 <span class="navbar-text d-flex">
                     <span class="me-4">{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</span>

@@ -83,6 +83,15 @@ npm run dev
 php artisan serve
 ```
 
+### O Correr desde el Docker:
+
+```bash
+docker-compose up --build -d 
+docker-compose exec app php artisan migrate
+docker-compose exec app php artisan storage:link
+```
+
+
 ## 🔧 Solución de Problemas
 
 Si el servidor no inicia correctamente, ejecutar:
@@ -92,45 +101,32 @@ php artisan config:cache
 php artisan serve --env=local
 ```
 
-## 🔐 Sistema Biométrico (Simulación)
+## 🔐 Sistema Biométrico (DigitalPersona) -> app Java (no usar con docker)
 
-### Configuración del servidor de pruebas
-El sistema incluye un simulador biométrico para pruebas sin hardware físico.
+### Configuración del hardware biométrico
+El sistema integra autenticación por huella digital usando dispositivos DigitalPersona.
 
-0. Configurar el host y puerto en que corre el hardware biometrico en el archivo `.env` o usar los siguientes para el simulador:
-   ```
-   BIO_HOST=127.0.0.1 
-   BIO_PORT=1234
-   ```
-
-1. **Ejecutar servidor de simulación**:
-   ```bash
-   python tests/test_server.py
-   ```
-
-2. **Crear huella biométrica** (vía API):
-   ```bash
-   curl -X POST http://127.0.0.1:8000/api/huella/crear/1
-   ```
-
-3. **Probar comunicación con puerto**:
-   ```bash
-   echo login | ncat 127.0.0.1 1234
-   ```
-
-4. **Test de login biométrico**:
-   ```bash
-   curl -X POST http://127.0.0.1:8000/api/login-huella
-   ```
-
-5. **Prueba desde interfaz de administrador**:
-   - El Admin puede probar la creación de huella desde su interfaz usando el botón "Crear Huella"
-   - Ejecutar el test de comunicación:
-     ```bash
-     python tests/test_login.py
+1. **Configuración del servidor biométrico**:
+   - Configura el host y puerto en `.env`:
      ```
-   - En la pestaña de login ingresar con el boton de huella
-   - Esto permite probar la comunicación exitosa entre los puertos y acceder al sistema
+     BIO_HOST=127.0.0.1 
+     BIO_PORT=8080
+     ```
+
+2. **Ejecutar servidor biométrico**:
+   ```bash
+   java-service/run.bat
+
+3. Crear huella biométrica:
+
+   - Los usuarios pueden registrar huellas desde la interfaz de cada uno.
+
+4. Login biométrico:
+
+   - En la pantalla de login, usar el botón de huella digital
+   - El sistema validará contra las huellas registradas en la base de datos
+
+5. Si se desea usar con Docker, emular una VM con windows 10 o 11, (armar el docker si se desea), ejecutar y comunicar la ip de la vm con la otra (en Host)
 
 
 ## 🗺️ Integración con Google Maps
@@ -153,6 +149,7 @@ Para utilizar las funcionalidades de geolocalización:
 - **R31**: Generación de certificado de inspecciones por parte del inspector
 - **R35**: Descarga de certificado de inspecciones por parte del cliente
 - **R39**: Histórico de certificados
+- Integración con hardware biométrico DigitalPersona
 - Corrección de migraciones y migración a MySQL
 - CRUD de riesgos con geolocalización
 - Simulador biométrico funcional

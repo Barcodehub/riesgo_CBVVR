@@ -1,0 +1,17 @@
+.git
+.gitignore
+node_modules
+vendor
+storage/*.key
+.env
+docker-compose.override.yml
+*.log
+*.sqlite
+.DS_Store
+.idea
+.vscode
+npm-debug.log
+yarn-error.log
+/public/hot
+/public/storage
+/storage/*/cache

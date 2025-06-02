@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('apellido');
             $table->string('documento')->unique();
             $table->string('telefono');
-            $table->string('telefono2');
+            $table->string('telefono2')->nullable();
             $table->boolean('disponibilidad');
             $table->string('email')->unique();
-            $table->string('email2')->unique();
+            $table->string('email2')->nullable();
             $table->string('password');
             //$table->string('acceso_huella')->nullable();
             $table->boolean('acceso_huella')->default(false);

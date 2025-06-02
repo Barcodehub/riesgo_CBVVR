@@ -25,6 +25,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('inspector.inspeccionesRealizadas') }}">Inspecciones realizadas</a>
                     </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('huella.user') }}">Huellas</a>
+                    </li>
                 </ul>
                 <span class="navbar-text d-flex">
                     <span class="me-4">{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</span>
