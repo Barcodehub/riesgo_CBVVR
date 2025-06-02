@@ -35,7 +35,7 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock ./
 
 # Instalar dependencias
-RUN composer install --no-scripts
+#RUN composer install --no-scripts
 
 # Copiar el resto del código
 COPY . .
@@ -44,9 +44,9 @@ COPY . .
 RUN if [ ! -f .env ]; then cp .env.example .env; fi
 
 # Generar clave de aplicación y permisos
-RUN php artisan key:generate && \
-    chown -R www-data:www-data storage bootstrap/cache && \
-    chmod -R 775 storage bootstrap/cache
+# RUN php artisan key:generate && \
+#     chown -R www-data:www-data storage bootstrap/cache && \
+#     chmod -R 775 storage bootstrap/cache
 
 EXPOSE 80
 CMD ["apache2-foreground"]

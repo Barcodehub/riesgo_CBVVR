@@ -11,7 +11,7 @@ export default defineConfig({
        server: {
         host: '0.0.0.0',
         hmr: {
-            host: 'localhost',
+            host: 'localhost', //Cambiar a ip de tu mq virtual
         },
     },
 });

@@ -83,18 +83,50 @@ npm run dev
 php artisan serve
 ```
 
-### O Correr desde el Docker:
+### O Correr desde el Docker (ejemplo maquina virtual Fedora):
 
+- copia el archivo .env
 ```bash
-docker-compose up --build -d 
-docker-compose exec app php artisan migrate
-docker-compose exec app php artisan storage:link
+cp .env.example .env
 ```
 
+- Asegurate de incluir la ip de tu maquina virtual en el .env `APP_URL=http://localhost` segun corresponda
+- Asegurate de incluir la ip de tu maquina virtual en el archivo `vite.config.js`:
+
+```bash
+ hmr: {
+            host: 'localhost', #Cambiar a ip de mq virtual
+        },
+```
+
+- Desactiva temporalmente sobre el proyecto:
+```bash
+sudo setenforce 0
+sudo systemctl stop firewalld
+```
+
+- Corre los contenedores
+```bash
+docker-compose up --build -d 
+```
+
+- Accede al contenedor de la app
+```bash
+docker exec -it riesgo_cbvvr-app-1 bash
+composer install
+php artisan key:generate
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+```
+
+- Corre las migraciones
+```bash
+docker-compose exec app php artisan migrate
+```
 
 ## 🔧 Solución de Problemas
 
-Si el servidor no inicia correctamente, ejecutar:
+Si el servidor no inicia correctamente en local, ejecutar:
 ```bash
 php artisan config:clear
 php artisan config:cache

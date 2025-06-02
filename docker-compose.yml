@@ -4,7 +4,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html:Z
     environment:
       - DB_HOST=db
       - DB_PORT=${DB_PORT}
@@ -33,7 +33,7 @@ services:
     image: node:18
     working_dir: /var/www/html
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html:Z
     command: sh -c "npm install && npm run dev"
     ports:
       - "5173:5173"
@@ -45,6 +45,6 @@ services:
 volumes:
   mysql_data:
 
-networks:  # Add this section
+networks:  
   app-network:
     driver: bridge  
